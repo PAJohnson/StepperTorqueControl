@@ -1,0 +1,867 @@
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"Count7_1_PM.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	Count7_1_backup,2,4
+  20              		.section	.text.Count7_1_SaveConfig,"ax",%progbits
+  21              		.align	2
+  22              		.global	Count7_1_SaveConfig
+  23              		.thumb
+  24              		.thumb_func
+  25              		.type	Count7_1_SaveConfig, %function
+  26              	Count7_1_SaveConfig:
+  27              	.LFB0:
+  28              		.file 1 "Generated_Source\\PSoC5\\Count7_1_PM.c"
+   1:Generated_Source\PSoC5/Count7_1_PM.c **** /*******************************************************************************
+   2:Generated_Source\PSoC5/Count7_1_PM.c **** * File Name: Count7_1_PM.c
+   3:Generated_Source\PSoC5/Count7_1_PM.c **** * Version 1.0
+   4:Generated_Source\PSoC5/Count7_1_PM.c **** *
+   5:Generated_Source\PSoC5/Count7_1_PM.c **** * Description:
+   6:Generated_Source\PSoC5/Count7_1_PM.c **** *  This file provides Low power mode APIs for Count7 component.
+   7:Generated_Source\PSoC5/Count7_1_PM.c **** *
+   8:Generated_Source\PSoC5/Count7_1_PM.c **** * Note:
+   9:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  10:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  11:Generated_Source\PSoC5/Count7_1_PM.c **** ********************************************************************************
+  12:Generated_Source\PSoC5/Count7_1_PM.c **** * Copyright 2013, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC5/Count7_1_PM.c **** * You may use this file only in accordance with the license, terms, conditions,
+  14:Generated_Source\PSoC5/Count7_1_PM.c **** * disclaimers, and limitations in the end user license agreement accompanying
+  15:Generated_Source\PSoC5/Count7_1_PM.c **** * the software package with which this file was provided.
+  16:Generated_Source\PSoC5/Count7_1_PM.c **** *******************************************************************************/
+  17:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  18:Generated_Source\PSoC5/Count7_1_PM.c **** #include "Count7_1.h"
+  19:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  20:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  21:Generated_Source\PSoC5/Count7_1_PM.c **** Count7_1_BACKUP_STRUCT Count7_1_backup;
+  22:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  23:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  24:Generated_Source\PSoC5/Count7_1_PM.c **** /*******************************************************************************
+  25:Generated_Source\PSoC5/Count7_1_PM.c **** * Function Name: Count7_1_SaveConfig
+  26:Generated_Source\PSoC5/Count7_1_PM.c **** ********************************************************************************
+  27:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  28:Generated_Source\PSoC5/Count7_1_PM.c **** * Summary:
+  29:Generated_Source\PSoC5/Count7_1_PM.c **** *  This function saves the component configuration and non-retention registers.
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 2
+
+
+  30:Generated_Source\PSoC5/Count7_1_PM.c **** *  This function is called by the Count7_Sleep() function.
+  31:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  32:Generated_Source\PSoC5/Count7_1_PM.c **** * Parameters:
+  33:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  34:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  35:Generated_Source\PSoC5/Count7_1_PM.c **** * Return:
+  36:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  37:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  38:Generated_Source\PSoC5/Count7_1_PM.c **** * Global Variables:
+  39:Generated_Source\PSoC5/Count7_1_PM.c **** *  Count7_1_backup - used to save component configuration and non-
+  40:Generated_Source\PSoC5/Count7_1_PM.c **** *  retention registers before enter sleep mode.
+  41:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  42:Generated_Source\PSoC5/Count7_1_PM.c **** *******************************************************************************/
+  43:Generated_Source\PSoC5/Count7_1_PM.c **** void Count7_1_SaveConfig(void) 
+  44:Generated_Source\PSoC5/Count7_1_PM.c **** {
+  29              		.loc 1 44 0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 1, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  34 0000 80B4     		push	{r7}
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 7, -4
+  37 0002 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  45:Generated_Source\PSoC5/Count7_1_PM.c ****     Count7_1_backup.count = Count7_1_COUNT_REG;
+  39              		.loc 1 45 0
+  40 0004 044B     		ldr	r3, .L2
+  41 0006 1B78     		ldrb	r3, [r3]
+  42 0008 DAB2     		uxtb	r2, r3
+  43 000a 044B     		ldr	r3, .L2+4
+  44 000c 5A70     		strb	r2, [r3, #1]
+  46:Generated_Source\PSoC5/Count7_1_PM.c **** }
+  45              		.loc 1 46 0
+  46 000e 00BF     		nop
+  47 0010 BD46     		mov	sp, r7
+  48              		.cfi_def_cfa_register 13
+  49              		@ sp needed
+  50 0012 80BC     		pop	{r7}
+  51              		.cfi_restore 7
+  52              		.cfi_def_cfa_offset 0
+  53 0014 7047     		bx	lr
+  54              	.L3:
+  55 0016 00BF     		.align	2
+  56              	.L2:
+  57 0018 70640040 		.word	1073767536
+  58 001c 00000000 		.word	Count7_1_backup
+  59              		.cfi_endproc
+  60              	.LFE0:
+  61              		.size	Count7_1_SaveConfig, .-Count7_1_SaveConfig
+  62              		.section	.text.Count7_1_Sleep,"ax",%progbits
+  63              		.align	2
+  64              		.global	Count7_1_Sleep
+  65              		.thumb
+  66              		.thumb_func
+  67              		.type	Count7_1_Sleep, %function
+  68              	Count7_1_Sleep:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 3
+
+
+  69              	.LFB1:
+  47:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  48:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  49:Generated_Source\PSoC5/Count7_1_PM.c **** /*******************************************************************************
+  50:Generated_Source\PSoC5/Count7_1_PM.c **** * Function Name: Count7_1_Sleep
+  51:Generated_Source\PSoC5/Count7_1_PM.c **** ********************************************************************************
+  52:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  53:Generated_Source\PSoC5/Count7_1_PM.c **** * Summary:
+  54:Generated_Source\PSoC5/Count7_1_PM.c **** *  This is the preferred API to prepare the component for low power mode
+  55:Generated_Source\PSoC5/Count7_1_PM.c **** *  operation. The Count7_Sleep() API saves the current component state using
+  56:Generated_Source\PSoC5/Count7_1_PM.c **** *  Count7_SaveConfig() and disables the counter.
+  57:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  58:Generated_Source\PSoC5/Count7_1_PM.c **** * Parameters:
+  59:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  60:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  61:Generated_Source\PSoC5/Count7_1_PM.c **** * Return:
+  62:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  63:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  64:Generated_Source\PSoC5/Count7_1_PM.c **** *******************************************************************************/
+  65:Generated_Source\PSoC5/Count7_1_PM.c **** void Count7_1_Sleep(void) 
+  66:Generated_Source\PSoC5/Count7_1_PM.c **** {
+  70              		.loc 1 66 0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 1, uses_anonymous_args = 0
+  74 0000 80B5     		push	{r7, lr}
+  75              		.cfi_def_cfa_offset 8
+  76              		.cfi_offset 7, -8
+  77              		.cfi_offset 14, -4
+  78 0002 00AF     		add	r7, sp, #0
+  79              		.cfi_def_cfa_register 7
+  67:Generated_Source\PSoC5/Count7_1_PM.c ****     if(0u != (Count7_1_AUX_CONTROL_REG & Count7_1_COUNTER_START))
+  80              		.loc 1 67 0
+  81 0004 094B     		ldr	r3, .L7
+  82 0006 1B78     		ldrb	r3, [r3]
+  83 0008 DBB2     		uxtb	r3, r3
+  84 000a 03F02003 		and	r3, r3, #32
+  85 000e 002B     		cmp	r3, #0
+  86 0010 05D0     		beq	.L5
+  68:Generated_Source\PSoC5/Count7_1_PM.c ****     {
+  69:Generated_Source\PSoC5/Count7_1_PM.c ****         Count7_1_backup.enableState = 1u;
+  87              		.loc 1 69 0
+  88 0012 074B     		ldr	r3, .L7+4
+  89 0014 0122     		movs	r2, #1
+  90 0016 1A70     		strb	r2, [r3]
+  70:Generated_Source\PSoC5/Count7_1_PM.c ****         Count7_1_Stop();
+  91              		.loc 1 70 0
+  92 0018 FFF7FEFF 		bl	Count7_1_Stop
+  93 001c 02E0     		b	.L6
+  94              	.L5:
+  71:Generated_Source\PSoC5/Count7_1_PM.c ****     }
+  72:Generated_Source\PSoC5/Count7_1_PM.c ****     else
+  73:Generated_Source\PSoC5/Count7_1_PM.c ****     {
+  74:Generated_Source\PSoC5/Count7_1_PM.c ****         Count7_1_backup.enableState = 0u;
+  95              		.loc 1 74 0
+  96 001e 044B     		ldr	r3, .L7+4
+  97 0020 0022     		movs	r2, #0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 4
+
+
+  98 0022 1A70     		strb	r2, [r3]
+  99              	.L6:
+  75:Generated_Source\PSoC5/Count7_1_PM.c ****     }
+  76:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  77:Generated_Source\PSoC5/Count7_1_PM.c ****     Count7_1_SaveConfig();
+ 100              		.loc 1 77 0
+ 101 0024 FFF7FEFF 		bl	Count7_1_SaveConfig
+  78:Generated_Source\PSoC5/Count7_1_PM.c **** }
+ 102              		.loc 1 78 0
+ 103 0028 00BF     		nop
+ 104 002a 80BD     		pop	{r7, pc}
+ 105              	.L8:
+ 106              		.align	2
+ 107              	.L7:
+ 108 002c 90640040 		.word	1073767568
+ 109 0030 00000000 		.word	Count7_1_backup
+ 110              		.cfi_endproc
+ 111              	.LFE1:
+ 112              		.size	Count7_1_Sleep, .-Count7_1_Sleep
+ 113              		.section	.text.Count7_1_RestoreConfig,"ax",%progbits
+ 114              		.align	2
+ 115              		.global	Count7_1_RestoreConfig
+ 116              		.thumb
+ 117              		.thumb_func
+ 118              		.type	Count7_1_RestoreConfig, %function
+ 119              	Count7_1_RestoreConfig:
+ 120              	.LFB2:
+  79:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  80:Generated_Source\PSoC5/Count7_1_PM.c **** 
+  81:Generated_Source\PSoC5/Count7_1_PM.c **** /*******************************************************************************
+  82:Generated_Source\PSoC5/Count7_1_PM.c **** * Function Name: Count7_1_RestoreConfig
+  83:Generated_Source\PSoC5/Count7_1_PM.c **** ********************************************************************************
+  84:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  85:Generated_Source\PSoC5/Count7_1_PM.c **** * Summary:
+  86:Generated_Source\PSoC5/Count7_1_PM.c **** *  This function restores the component configuration and non-retention
+  87:Generated_Source\PSoC5/Count7_1_PM.c **** *  registers. This function is called by the Count7_Wakeup() function.
+  88:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  89:Generated_Source\PSoC5/Count7_1_PM.c **** * Parameters:
+  90:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  91:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  92:Generated_Source\PSoC5/Count7_1_PM.c **** * Return:
+  93:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+  94:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  95:Generated_Source\PSoC5/Count7_1_PM.c **** * Global Variables:
+  96:Generated_Source\PSoC5/Count7_1_PM.c **** *  Count7_1_backup - used to save component configuration and
+  97:Generated_Source\PSoC5/Count7_1_PM.c **** *  non-retention registers before exit sleep mode.
+  98:Generated_Source\PSoC5/Count7_1_PM.c **** *
+  99:Generated_Source\PSoC5/Count7_1_PM.c **** *******************************************************************************/
+ 100:Generated_Source\PSoC5/Count7_1_PM.c **** void Count7_1_RestoreConfig(void) 
+ 101:Generated_Source\PSoC5/Count7_1_PM.c **** {
+ 121              		.loc 1 101 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 1, uses_anonymous_args = 0
+ 125              		@ link register save eliminated.
+ 126 0000 80B4     		push	{r7}
+ 127              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 5
+
+
+ 128              		.cfi_offset 7, -4
+ 129 0002 00AF     		add	r7, sp, #0
+ 130              		.cfi_def_cfa_register 7
+ 102:Generated_Source\PSoC5/Count7_1_PM.c ****     Count7_1_COUNT_REG = Count7_1_backup.count;
+ 131              		.loc 1 102 0
+ 132 0004 034B     		ldr	r3, .L10
+ 133 0006 044A     		ldr	r2, .L10+4
+ 134 0008 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 135 000a 1A70     		strb	r2, [r3]
+ 103:Generated_Source\PSoC5/Count7_1_PM.c **** }
+ 136              		.loc 1 103 0
+ 137 000c 00BF     		nop
+ 138 000e BD46     		mov	sp, r7
+ 139              		.cfi_def_cfa_register 13
+ 140              		@ sp needed
+ 141 0010 80BC     		pop	{r7}
+ 142              		.cfi_restore 7
+ 143              		.cfi_def_cfa_offset 0
+ 144 0012 7047     		bx	lr
+ 145              	.L11:
+ 146              		.align	2
+ 147              	.L10:
+ 148 0014 70640040 		.word	1073767536
+ 149 0018 00000000 		.word	Count7_1_backup
+ 150              		.cfi_endproc
+ 151              	.LFE2:
+ 152              		.size	Count7_1_RestoreConfig, .-Count7_1_RestoreConfig
+ 153              		.section	.text.Count7_1_Wakeup,"ax",%progbits
+ 154              		.align	2
+ 155              		.global	Count7_1_Wakeup
+ 156              		.thumb
+ 157              		.thumb_func
+ 158              		.type	Count7_1_Wakeup, %function
+ 159              	Count7_1_Wakeup:
+ 160              	.LFB3:
+ 104:Generated_Source\PSoC5/Count7_1_PM.c **** 
+ 105:Generated_Source\PSoC5/Count7_1_PM.c **** 
+ 106:Generated_Source\PSoC5/Count7_1_PM.c **** /*******************************************************************************
+ 107:Generated_Source\PSoC5/Count7_1_PM.c **** * Function Name: Count7_1_Wakeup
+ 108:Generated_Source\PSoC5/Count7_1_PM.c **** ********************************************************************************
+ 109:Generated_Source\PSoC5/Count7_1_PM.c **** *
+ 110:Generated_Source\PSoC5/Count7_1_PM.c **** * Summary:
+ 111:Generated_Source\PSoC5/Count7_1_PM.c **** *  This is the preferred API to restore the component to the state when
+ 112:Generated_Source\PSoC5/Count7_1_PM.c **** *  Count7_Sleep() was called. The Count7_Wakeup() function calls the
+ 113:Generated_Source\PSoC5/Count7_1_PM.c **** *  Count7_RestoreConfig() function to restore the configuration.
+ 114:Generated_Source\PSoC5/Count7_1_PM.c **** *
+ 115:Generated_Source\PSoC5/Count7_1_PM.c **** * Parameters:
+ 116:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+ 117:Generated_Source\PSoC5/Count7_1_PM.c **** *
+ 118:Generated_Source\PSoC5/Count7_1_PM.c **** * Return:
+ 119:Generated_Source\PSoC5/Count7_1_PM.c **** *  None
+ 120:Generated_Source\PSoC5/Count7_1_PM.c **** *
+ 121:Generated_Source\PSoC5/Count7_1_PM.c **** *******************************************************************************/
+ 122:Generated_Source\PSoC5/Count7_1_PM.c **** void Count7_1_Wakeup(void) 
+ 123:Generated_Source\PSoC5/Count7_1_PM.c **** {
+ 161              		.loc 1 123 0
+ 162              		.cfi_startproc
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 6
+
+
+ 163              		@ args = 0, pretend = 0, frame = 0
+ 164              		@ frame_needed = 1, uses_anonymous_args = 0
+ 165 0000 80B5     		push	{r7, lr}
+ 166              		.cfi_def_cfa_offset 8
+ 167              		.cfi_offset 7, -8
+ 168              		.cfi_offset 14, -4
+ 169 0002 00AF     		add	r7, sp, #0
+ 170              		.cfi_def_cfa_register 7
+ 124:Generated_Source\PSoC5/Count7_1_PM.c ****     Count7_1_RestoreConfig();
+ 171              		.loc 1 124 0
+ 172 0004 FFF7FEFF 		bl	Count7_1_RestoreConfig
+ 125:Generated_Source\PSoC5/Count7_1_PM.c **** 
+ 126:Generated_Source\PSoC5/Count7_1_PM.c ****     /* Restore enable state */
+ 127:Generated_Source\PSoC5/Count7_1_PM.c ****     if (Count7_1_backup.enableState != 0u)
+ 173              		.loc 1 127 0
+ 174 0008 034B     		ldr	r3, .L15
+ 175 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 176 000c 002B     		cmp	r3, #0
+ 177 000e 01D0     		beq	.L14
+ 128:Generated_Source\PSoC5/Count7_1_PM.c ****     {
+ 129:Generated_Source\PSoC5/Count7_1_PM.c ****         Count7_1_Enable();
+ 178              		.loc 1 129 0
+ 179 0010 FFF7FEFF 		bl	Count7_1_Enable
+ 180              	.L14:
+ 130:Generated_Source\PSoC5/Count7_1_PM.c ****     }
+ 131:Generated_Source\PSoC5/Count7_1_PM.c **** }
+ 181              		.loc 1 131 0
+ 182 0014 00BF     		nop
+ 183 0016 80BD     		pop	{r7, pc}
+ 184              	.L16:
+ 185              		.align	2
+ 186              	.L15:
+ 187 0018 00000000 		.word	Count7_1_backup
+ 188              		.cfi_endproc
+ 189              	.LFE3:
+ 190              		.size	Count7_1_Wakeup, .-Count7_1_Wakeup
+ 191              		.text
+ 192              	.Letext0:
+ 193              		.file 2 "Generated_Source\\PSoC5\\cytypes.h"
+ 194              		.file 3 "Generated_Source\\PSoC5\\Count7_1.h"
+ 195              		.section	.debug_info,"",%progbits
+ 196              	.Ldebug_info0:
+ 197 0000 29010000 		.4byte	0x129
+ 198 0004 0400     		.2byte	0x4
+ 199 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 200 000a 04       		.byte	0x4
+ 201 000b 01       		.uleb128 0x1
+ 202 000c DC000000 		.4byte	.LASF23
+ 203 0010 0C       		.byte	0xc
+ 204 0011 92010000 		.4byte	.LASF24
+ 205 0015 8C000000 		.4byte	.LASF25
+ 206 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 207 001d 00000000 		.4byte	0
+ 208 0021 00000000 		.4byte	.Ldebug_line0
+ 209 0025 02       		.uleb128 0x2
+ 210 0026 01       		.byte	0x1
+ 211 0027 06       		.byte	0x6
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 7
+
+
+ 212 0028 FC010000 		.4byte	.LASF0
+ 213 002c 02       		.uleb128 0x2
+ 214 002d 01       		.byte	0x1
+ 215 002e 08       		.byte	0x8
+ 216 002f 6A010000 		.4byte	.LASF1
+ 217 0033 02       		.uleb128 0x2
+ 218 0034 02       		.byte	0x2
+ 219 0035 05       		.byte	0x5
+ 220 0036 24020000 		.4byte	.LASF2
+ 221 003a 02       		.uleb128 0x2
+ 222 003b 02       		.byte	0x2
+ 223 003c 07       		.byte	0x7
+ 224 003d E9010000 		.4byte	.LASF3
+ 225 0041 02       		.uleb128 0x2
+ 226 0042 04       		.byte	0x4
+ 227 0043 05       		.byte	0x5
+ 228 0044 E0010000 		.4byte	.LASF4
+ 229 0048 02       		.uleb128 0x2
+ 230 0049 04       		.byte	0x4
+ 231 004a 07       		.byte	0x7
+ 232 004b C7010000 		.4byte	.LASF5
+ 233 004f 02       		.uleb128 0x2
+ 234 0050 08       		.byte	0x8
+ 235 0051 05       		.byte	0x5
+ 236 0052 00000000 		.4byte	.LASF6
+ 237 0056 02       		.uleb128 0x2
+ 238 0057 08       		.byte	0x8
+ 239 0058 07       		.byte	0x7
+ 240 0059 6F000000 		.4byte	.LASF7
+ 241 005d 03       		.uleb128 0x3
+ 242 005e 04       		.byte	0x4
+ 243 005f 05       		.byte	0x5
+ 244 0060 696E7400 		.ascii	"int\000"
+ 245 0064 02       		.uleb128 0x2
+ 246 0065 04       		.byte	0x4
+ 247 0066 07       		.byte	0x7
+ 248 0067 1A000000 		.4byte	.LASF8
+ 249 006b 04       		.uleb128 0x4
+ 250 006c 52000000 		.4byte	.LASF12
+ 251 0070 02       		.byte	0x2
+ 252 0071 9201     		.2byte	0x192
+ 253 0073 2C000000 		.4byte	0x2c
+ 254 0077 02       		.uleb128 0x2
+ 255 0078 04       		.byte	0x4
+ 256 0079 04       		.byte	0x4
+ 257 007a 86000000 		.4byte	.LASF9
+ 258 007e 02       		.uleb128 0x2
+ 259 007f 08       		.byte	0x8
+ 260 0080 04       		.byte	0x4
+ 261 0081 D9010000 		.4byte	.LASF10
+ 262 0085 02       		.uleb128 0x2
+ 263 0086 01       		.byte	0x1
+ 264 0087 08       		.byte	0x8
+ 265 0088 78010000 		.4byte	.LASF11
+ 266 008c 04       		.uleb128 0x4
+ 267 008d 2E020000 		.4byte	.LASF13
+ 268 0091 02       		.byte	0x2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 8
+
+
+ 269 0092 3C02     		.2byte	0x23c
+ 270 0094 98000000 		.4byte	0x98
+ 271 0098 05       		.uleb128 0x5
+ 272 0099 6B000000 		.4byte	0x6b
+ 273 009d 02       		.uleb128 0x2
+ 274 009e 08       		.byte	0x8
+ 275 009f 04       		.byte	0x4
+ 276 00a0 08020000 		.4byte	.LASF14
+ 277 00a4 02       		.uleb128 0x2
+ 278 00a5 04       		.byte	0x4
+ 279 00a6 07       		.byte	0x7
+ 280 00a7 33020000 		.4byte	.LASF15
+ 281 00ab 06       		.uleb128 0x6
+ 282 00ac 02       		.byte	0x2
+ 283 00ad 03       		.byte	0x3
+ 284 00ae 36       		.byte	0x36
+ 285 00af CC000000 		.4byte	0xcc
+ 286 00b3 07       		.uleb128 0x7
+ 287 00b4 0E000000 		.4byte	.LASF16
+ 288 00b8 03       		.byte	0x3
+ 289 00b9 38       		.byte	0x38
+ 290 00ba 6B000000 		.4byte	0x6b
+ 291 00be 00       		.byte	0
+ 292 00bf 07       		.uleb128 0x7
+ 293 00c0 8C010000 		.4byte	.LASF17
+ 294 00c4 03       		.byte	0x3
+ 295 00c5 39       		.byte	0x39
+ 296 00c6 6B000000 		.4byte	0x6b
+ 297 00ca 01       		.byte	0x1
+ 298 00cb 00       		.byte	0
+ 299 00cc 08       		.uleb128 0x8
+ 300 00cd 58000000 		.4byte	.LASF18
+ 301 00d1 03       		.byte	0x3
+ 302 00d2 3A       		.byte	0x3a
+ 303 00d3 AB000000 		.4byte	0xab
+ 304 00d7 09       		.uleb128 0x9
+ 305 00d8 27000000 		.4byte	.LASF19
+ 306 00dc 01       		.byte	0x1
+ 307 00dd 2B       		.byte	0x2b
+ 308 00de 00000000 		.4byte	.LFB0
+ 309 00e2 20000000 		.4byte	.LFE0-.LFB0
+ 310 00e6 01       		.uleb128 0x1
+ 311 00e7 9C       		.byte	0x9c
+ 312 00e8 0A       		.uleb128 0xa
+ 313 00e9 7D010000 		.4byte	.LASF20
+ 314 00ed 01       		.byte	0x1
+ 315 00ee 41       		.byte	0x41
+ 316 00ef 00000000 		.4byte	.LFB1
+ 317 00f3 34000000 		.4byte	.LFE1-.LFB1
+ 318 00f7 01       		.uleb128 0x1
+ 319 00f8 9C       		.byte	0x9c
+ 320 00f9 09       		.uleb128 0x9
+ 321 00fa 3B000000 		.4byte	.LASF21
+ 322 00fe 01       		.byte	0x1
+ 323 00ff 64       		.byte	0x64
+ 324 0100 00000000 		.4byte	.LFB2
+ 325 0104 1C000000 		.4byte	.LFE2-.LFB2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 9
+
+
+ 326 0108 01       		.uleb128 0x1
+ 327 0109 9C       		.byte	0x9c
+ 328 010a 0A       		.uleb128 0xa
+ 329 010b B7010000 		.4byte	.LASF22
+ 330 010f 01       		.byte	0x1
+ 331 0110 7A       		.byte	0x7a
+ 332 0111 00000000 		.4byte	.LFB3
+ 333 0115 1C000000 		.4byte	.LFE3-.LFB3
+ 334 0119 01       		.uleb128 0x1
+ 335 011a 9C       		.byte	0x9c
+ 336 011b 0B       		.uleb128 0xb
+ 337 011c 14020000 		.4byte	.LASF26
+ 338 0120 01       		.byte	0x1
+ 339 0121 15       		.byte	0x15
+ 340 0122 CC000000 		.4byte	0xcc
+ 341 0126 05       		.uleb128 0x5
+ 342 0127 03       		.byte	0x3
+ 343 0128 00000000 		.4byte	Count7_1_backup
+ 344 012c 00       		.byte	0
+ 345              		.section	.debug_abbrev,"",%progbits
+ 346              	.Ldebug_abbrev0:
+ 347 0000 01       		.uleb128 0x1
+ 348 0001 11       		.uleb128 0x11
+ 349 0002 01       		.byte	0x1
+ 350 0003 25       		.uleb128 0x25
+ 351 0004 0E       		.uleb128 0xe
+ 352 0005 13       		.uleb128 0x13
+ 353 0006 0B       		.uleb128 0xb
+ 354 0007 03       		.uleb128 0x3
+ 355 0008 0E       		.uleb128 0xe
+ 356 0009 1B       		.uleb128 0x1b
+ 357 000a 0E       		.uleb128 0xe
+ 358 000b 55       		.uleb128 0x55
+ 359 000c 17       		.uleb128 0x17
+ 360 000d 11       		.uleb128 0x11
+ 361 000e 01       		.uleb128 0x1
+ 362 000f 10       		.uleb128 0x10
+ 363 0010 17       		.uleb128 0x17
+ 364 0011 00       		.byte	0
+ 365 0012 00       		.byte	0
+ 366 0013 02       		.uleb128 0x2
+ 367 0014 24       		.uleb128 0x24
+ 368 0015 00       		.byte	0
+ 369 0016 0B       		.uleb128 0xb
+ 370 0017 0B       		.uleb128 0xb
+ 371 0018 3E       		.uleb128 0x3e
+ 372 0019 0B       		.uleb128 0xb
+ 373 001a 03       		.uleb128 0x3
+ 374 001b 0E       		.uleb128 0xe
+ 375 001c 00       		.byte	0
+ 376 001d 00       		.byte	0
+ 377 001e 03       		.uleb128 0x3
+ 378 001f 24       		.uleb128 0x24
+ 379 0020 00       		.byte	0
+ 380 0021 0B       		.uleb128 0xb
+ 381 0022 0B       		.uleb128 0xb
+ 382 0023 3E       		.uleb128 0x3e
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 10
+
+
+ 383 0024 0B       		.uleb128 0xb
+ 384 0025 03       		.uleb128 0x3
+ 385 0026 08       		.uleb128 0x8
+ 386 0027 00       		.byte	0
+ 387 0028 00       		.byte	0
+ 388 0029 04       		.uleb128 0x4
+ 389 002a 16       		.uleb128 0x16
+ 390 002b 00       		.byte	0
+ 391 002c 03       		.uleb128 0x3
+ 392 002d 0E       		.uleb128 0xe
+ 393 002e 3A       		.uleb128 0x3a
+ 394 002f 0B       		.uleb128 0xb
+ 395 0030 3B       		.uleb128 0x3b
+ 396 0031 05       		.uleb128 0x5
+ 397 0032 49       		.uleb128 0x49
+ 398 0033 13       		.uleb128 0x13
+ 399 0034 00       		.byte	0
+ 400 0035 00       		.byte	0
+ 401 0036 05       		.uleb128 0x5
+ 402 0037 35       		.uleb128 0x35
+ 403 0038 00       		.byte	0
+ 404 0039 49       		.uleb128 0x49
+ 405 003a 13       		.uleb128 0x13
+ 406 003b 00       		.byte	0
+ 407 003c 00       		.byte	0
+ 408 003d 06       		.uleb128 0x6
+ 409 003e 13       		.uleb128 0x13
+ 410 003f 01       		.byte	0x1
+ 411 0040 0B       		.uleb128 0xb
+ 412 0041 0B       		.uleb128 0xb
+ 413 0042 3A       		.uleb128 0x3a
+ 414 0043 0B       		.uleb128 0xb
+ 415 0044 3B       		.uleb128 0x3b
+ 416 0045 0B       		.uleb128 0xb
+ 417 0046 01       		.uleb128 0x1
+ 418 0047 13       		.uleb128 0x13
+ 419 0048 00       		.byte	0
+ 420 0049 00       		.byte	0
+ 421 004a 07       		.uleb128 0x7
+ 422 004b 0D       		.uleb128 0xd
+ 423 004c 00       		.byte	0
+ 424 004d 03       		.uleb128 0x3
+ 425 004e 0E       		.uleb128 0xe
+ 426 004f 3A       		.uleb128 0x3a
+ 427 0050 0B       		.uleb128 0xb
+ 428 0051 3B       		.uleb128 0x3b
+ 429 0052 0B       		.uleb128 0xb
+ 430 0053 49       		.uleb128 0x49
+ 431 0054 13       		.uleb128 0x13
+ 432 0055 38       		.uleb128 0x38
+ 433 0056 0B       		.uleb128 0xb
+ 434 0057 00       		.byte	0
+ 435 0058 00       		.byte	0
+ 436 0059 08       		.uleb128 0x8
+ 437 005a 16       		.uleb128 0x16
+ 438 005b 00       		.byte	0
+ 439 005c 03       		.uleb128 0x3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 11
+
+
+ 440 005d 0E       		.uleb128 0xe
+ 441 005e 3A       		.uleb128 0x3a
+ 442 005f 0B       		.uleb128 0xb
+ 443 0060 3B       		.uleb128 0x3b
+ 444 0061 0B       		.uleb128 0xb
+ 445 0062 49       		.uleb128 0x49
+ 446 0063 13       		.uleb128 0x13
+ 447 0064 00       		.byte	0
+ 448 0065 00       		.byte	0
+ 449 0066 09       		.uleb128 0x9
+ 450 0067 2E       		.uleb128 0x2e
+ 451 0068 00       		.byte	0
+ 452 0069 3F       		.uleb128 0x3f
+ 453 006a 19       		.uleb128 0x19
+ 454 006b 03       		.uleb128 0x3
+ 455 006c 0E       		.uleb128 0xe
+ 456 006d 3A       		.uleb128 0x3a
+ 457 006e 0B       		.uleb128 0xb
+ 458 006f 3B       		.uleb128 0x3b
+ 459 0070 0B       		.uleb128 0xb
+ 460 0071 27       		.uleb128 0x27
+ 461 0072 19       		.uleb128 0x19
+ 462 0073 11       		.uleb128 0x11
+ 463 0074 01       		.uleb128 0x1
+ 464 0075 12       		.uleb128 0x12
+ 465 0076 06       		.uleb128 0x6
+ 466 0077 40       		.uleb128 0x40
+ 467 0078 18       		.uleb128 0x18
+ 468 0079 9742     		.uleb128 0x2117
+ 469 007b 19       		.uleb128 0x19
+ 470 007c 00       		.byte	0
+ 471 007d 00       		.byte	0
+ 472 007e 0A       		.uleb128 0xa
+ 473 007f 2E       		.uleb128 0x2e
+ 474 0080 00       		.byte	0
+ 475 0081 3F       		.uleb128 0x3f
+ 476 0082 19       		.uleb128 0x19
+ 477 0083 03       		.uleb128 0x3
+ 478 0084 0E       		.uleb128 0xe
+ 479 0085 3A       		.uleb128 0x3a
+ 480 0086 0B       		.uleb128 0xb
+ 481 0087 3B       		.uleb128 0x3b
+ 482 0088 0B       		.uleb128 0xb
+ 483 0089 27       		.uleb128 0x27
+ 484 008a 19       		.uleb128 0x19
+ 485 008b 11       		.uleb128 0x11
+ 486 008c 01       		.uleb128 0x1
+ 487 008d 12       		.uleb128 0x12
+ 488 008e 06       		.uleb128 0x6
+ 489 008f 40       		.uleb128 0x40
+ 490 0090 18       		.uleb128 0x18
+ 491 0091 9642     		.uleb128 0x2116
+ 492 0093 19       		.uleb128 0x19
+ 493 0094 00       		.byte	0
+ 494 0095 00       		.byte	0
+ 495 0096 0B       		.uleb128 0xb
+ 496 0097 34       		.uleb128 0x34
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 12
+
+
+ 497 0098 00       		.byte	0
+ 498 0099 03       		.uleb128 0x3
+ 499 009a 0E       		.uleb128 0xe
+ 500 009b 3A       		.uleb128 0x3a
+ 501 009c 0B       		.uleb128 0xb
+ 502 009d 3B       		.uleb128 0x3b
+ 503 009e 0B       		.uleb128 0xb
+ 504 009f 49       		.uleb128 0x49
+ 505 00a0 13       		.uleb128 0x13
+ 506 00a1 3F       		.uleb128 0x3f
+ 507 00a2 19       		.uleb128 0x19
+ 508 00a3 02       		.uleb128 0x2
+ 509 00a4 18       		.uleb128 0x18
+ 510 00a5 00       		.byte	0
+ 511 00a6 00       		.byte	0
+ 512 00a7 00       		.byte	0
+ 513              		.section	.debug_aranges,"",%progbits
+ 514 0000 34000000 		.4byte	0x34
+ 515 0004 0200     		.2byte	0x2
+ 516 0006 00000000 		.4byte	.Ldebug_info0
+ 517 000a 04       		.byte	0x4
+ 518 000b 00       		.byte	0
+ 519 000c 0000     		.2byte	0
+ 520 000e 0000     		.2byte	0
+ 521 0010 00000000 		.4byte	.LFB0
+ 522 0014 20000000 		.4byte	.LFE0-.LFB0
+ 523 0018 00000000 		.4byte	.LFB1
+ 524 001c 34000000 		.4byte	.LFE1-.LFB1
+ 525 0020 00000000 		.4byte	.LFB2
+ 526 0024 1C000000 		.4byte	.LFE2-.LFB2
+ 527 0028 00000000 		.4byte	.LFB3
+ 528 002c 1C000000 		.4byte	.LFE3-.LFB3
+ 529 0030 00000000 		.4byte	0
+ 530 0034 00000000 		.4byte	0
+ 531              		.section	.debug_ranges,"",%progbits
+ 532              	.Ldebug_ranges0:
+ 533 0000 00000000 		.4byte	.LFB0
+ 534 0004 20000000 		.4byte	.LFE0
+ 535 0008 00000000 		.4byte	.LFB1
+ 536 000c 34000000 		.4byte	.LFE1
+ 537 0010 00000000 		.4byte	.LFB2
+ 538 0014 1C000000 		.4byte	.LFE2
+ 539 0018 00000000 		.4byte	.LFB3
+ 540 001c 1C000000 		.4byte	.LFE3
+ 541 0020 00000000 		.4byte	0
+ 542 0024 00000000 		.4byte	0
+ 543              		.section	.debug_line,"",%progbits
+ 544              	.Ldebug_line0:
+ 545 0000 A9000000 		.section	.debug_str,"MS",%progbits,1
+ 545      02005600 
+ 545      00000201 
+ 545      FB0E0D00 
+ 545      01010101 
+ 546              	.LASF6:
+ 547 0000 6C6F6E67 		.ascii	"long long int\000"
+ 547      206C6F6E 
+ 547      6720696E 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 13
+
+
+ 547      7400
+ 548              	.LASF16:
+ 549 000e 656E6162 		.ascii	"enableState\000"
+ 549      6C655374 
+ 549      61746500 
+ 550              	.LASF8:
+ 551 001a 756E7369 		.ascii	"unsigned int\000"
+ 551      676E6564 
+ 551      20696E74 
+ 551      00
+ 552              	.LASF19:
+ 553 0027 436F756E 		.ascii	"Count7_1_SaveConfig\000"
+ 553      74375F31 
+ 553      5F536176 
+ 553      65436F6E 
+ 553      66696700 
+ 554              	.LASF21:
+ 555 003b 436F756E 		.ascii	"Count7_1_RestoreConfig\000"
+ 555      74375F31 
+ 555      5F526573 
+ 555      746F7265 
+ 555      436F6E66 
+ 556              	.LASF12:
+ 557 0052 75696E74 		.ascii	"uint8\000"
+ 557      3800
+ 558              	.LASF18:
+ 559 0058 436F756E 		.ascii	"Count7_1_BACKUP_STRUCT\000"
+ 559      74375F31 
+ 559      5F424143 
+ 559      4B55505F 
+ 559      53545255 
+ 560              	.LASF7:
+ 561 006f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 561      206C6F6E 
+ 561      6720756E 
+ 561      7369676E 
+ 561      65642069 
+ 562              	.LASF9:
+ 563 0086 666C6F61 		.ascii	"float\000"
+ 563      7400
+ 564              	.LASF25:
+ 565 008c 433A5C55 		.ascii	"C:\\Users\\pajoh\\Desktop\\closed_loop_printer\\cod"
+ 565      73657273 
+ 565      5C70616A 
+ 565      6F685C44 
+ 565      65736B74 
+ 566 00ba 655C416E 		.ascii	"e\\Angle_Sensor\\Angle_Sensor.cydsn\000"
+ 566      676C655F 
+ 566      53656E73 
+ 566      6F725C41 
+ 566      6E676C65 
+ 567              	.LASF23:
+ 568 00dc 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 568      43313120 
+ 568      352E342E 
+ 568      31203230 
+ 568      31363036 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 14
+
+
+ 569 010f 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 569      20726576 
+ 569      6973696F 
+ 569      6E203233 
+ 569      37373135 
+ 570 0142 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 570      66756E63 
+ 570      74696F6E 
+ 570      2D736563 
+ 570      74696F6E 
+ 571              	.LASF1:
+ 572 016a 756E7369 		.ascii	"unsigned char\000"
+ 572      676E6564 
+ 572      20636861 
+ 572      7200
+ 573              	.LASF11:
+ 574 0178 63686172 		.ascii	"char\000"
+ 574      00
+ 575              	.LASF20:
+ 576 017d 436F756E 		.ascii	"Count7_1_Sleep\000"
+ 576      74375F31 
+ 576      5F536C65 
+ 576      657000
+ 577              	.LASF17:
+ 578 018c 636F756E 		.ascii	"count\000"
+ 578      7400
+ 579              	.LASF24:
+ 580 0192 47656E65 		.ascii	"Generated_Source\\PSoC5\\Count7_1_PM.c\000"
+ 580      72617465 
+ 580      645F536F 
+ 580      75726365 
+ 580      5C50536F 
+ 581              	.LASF22:
+ 582 01b7 436F756E 		.ascii	"Count7_1_Wakeup\000"
+ 582      74375F31 
+ 582      5F57616B 
+ 582      65757000 
+ 583              	.LASF5:
+ 584 01c7 6C6F6E67 		.ascii	"long unsigned int\000"
+ 584      20756E73 
+ 584      69676E65 
+ 584      6420696E 
+ 584      7400
+ 585              	.LASF10:
+ 586 01d9 646F7562 		.ascii	"double\000"
+ 586      6C6500
+ 587              	.LASF4:
+ 588 01e0 6C6F6E67 		.ascii	"long int\000"
+ 588      20696E74 
+ 588      00
+ 589              	.LASF3:
+ 590 01e9 73686F72 		.ascii	"short unsigned int\000"
+ 590      7420756E 
+ 590      7369676E 
+ 590      65642069 
+ 590      6E7400
+ 591              	.LASF0:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccS6MNfh.s 			page 15
+
+
+ 592 01fc 7369676E 		.ascii	"signed char\000"
+ 592      65642063 
+ 592      68617200 
+ 593              	.LASF14:
+ 594 0208 6C6F6E67 		.ascii	"long double\000"
+ 594      20646F75 
+ 594      626C6500 
+ 595              	.LASF26:
+ 596 0214 436F756E 		.ascii	"Count7_1_backup\000"
+ 596      74375F31 
+ 596      5F626163 
+ 596      6B757000 
+ 597              	.LASF2:
+ 598 0224 73686F72 		.ascii	"short int\000"
+ 598      7420696E 
+ 598      7400
+ 599              	.LASF13:
+ 600 022e 72656738 		.ascii	"reg8\000"
+ 600      00
+ 601              	.LASF15:
+ 602 0233 73697A65 		.ascii	"sizetype\000"
+ 602      74797065 
+ 602      00
+ 603              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

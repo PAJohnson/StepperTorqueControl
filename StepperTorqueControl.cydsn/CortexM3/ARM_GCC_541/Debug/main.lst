@@ -1,0 +1,4339 @@
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.comm	ACC_Read_buffer,10,4
+  20              		.comm	ACC_Write_buffer,8,4
+  21              		.global	read_angle_command
+  22              		.data
+  23              		.align	1
+  24              		.type	read_angle_command, %object
+  25              		.size	read_angle_command, 2
+  26              	read_angle_command:
+  27 0000 FF7F     		.short	32767
+  28              		.comm	angle,4,4
+  29              		.comm	angle_electric,4,4
+  30              		.comm	angle_diff,4,4
+  31              		.global	torque_command
+  32              		.bss
+  33              		.align	2
+  34              		.type	torque_command, %object
+  35              		.size	torque_command, 4
+  36              	torque_command:
+  37 0000 00000000 		.space	4
+  38              		.comm	angle_old,4,4
+  39              		.comm	angle_sum,4,4
+  40              		.comm	transmit_buff,80,4
+  41              		.comm	controller_tick,1,1
+  42              		.global	axis_position_filtered
+  43              		.align	2
+  44              		.type	axis_position_filtered, %object
+  45              		.size	axis_position_filtered, 4
+  46              	axis_position_filtered:
+  47 0004 00000000 		.space	4
+  48              		.global	axis_position_filtered_2
+  49              		.align	2
+  50              		.type	axis_position_filtered_2, %object
+  51              		.size	axis_position_filtered_2, 4
+  52              	axis_position_filtered_2:
+  53 0008 00000000 		.space	4
+  54              		.comm	position,2,2
+  55              		.global	position_ref
+  56              		.align	2
+  57              		.type	position_ref, %object
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 2
+
+
+  58              		.size	position_ref, 4
+  59              	position_ref:
+  60 000c 00000000 		.space	4
+  61              		.global	position_ref_initial
+  62              		.align	2
+  63              		.type	position_ref_initial, %object
+  64              		.size	position_ref_initial, 4
+  65              	position_ref_initial:
+  66 0010 00000000 		.space	4
+  67              		.global	position_ref_old
+  68              		.align	2
+  69              		.type	position_ref_old, %object
+  70              		.size	position_ref_old, 4
+  71              	position_ref_old:
+  72 0014 00000000 		.space	4
+  73              		.comm	axis_position,4,4
+  74              		.global	lead_angle
+  75              		.align	2
+  76              		.type	lead_angle, %object
+  77              		.size	lead_angle, 4
+  78              	lead_angle:
+  79 0018 00000000 		.space	4
+  80              		.global	step_array
+  81              		.data
+  82 0002 0000     		.align	2
+  83              		.type	step_array, %object
+  84              		.size	step_array, 68
+  85              	step_array:
+  86 0004 00000000 		.word	0
+  87 0008 02000000 		.word	2
+  88 000c 0A000000 		.word	10
+  89 0010 2A000000 		.word	42
+  90 0014 AA000000 		.word	170
+  91 0018 AA020000 		.word	682
+  92 001c AA0A0000 		.word	2730
+  93 0020 AA2A0000 		.word	10922
+  94 0024 AAAA0000 		.word	43690
+  95 0028 AAAA0200 		.word	174762
+  96 002c AAAA0A00 		.word	699050
+  97 0030 AAAA2A00 		.word	2796202
+  98 0034 AAAAAA00 		.word	11184810
+  99 0038 AAAAAA02 		.word	44739242
+ 100 003c AAAAAA0A 		.word	178956970
+ 101 0040 AAAAAA2A 		.word	715827882
+ 102 0044 AAAAAAAA 		.word	-1431655766
+ 103              		.global	switch_val
+ 104              		.bss
+ 105              		.type	switch_val, %object
+ 106              		.size	switch_val, 1
+ 107              	switch_val:
+ 108 001c 00       		.space	1
+ 109              		.global	switch_old
+ 110              		.type	switch_old, %object
+ 111              		.size	switch_old, 1
+ 112              	switch_old:
+ 113 001d 00       		.space	1
+ 114              		.global	step_count
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 3
+
+
+ 115              		.type	step_count, %object
+ 116              		.size	step_count, 1
+ 117              	step_count:
+ 118 001e 00       		.space	1
+ 119              		.comm	fullstepMap,800,4
+ 120              		.comm	fullstepMapSorted,800,4
+ 121              		.global	offsetMap
+ 122              		.data
+ 123              		.align	2
+ 124              		.type	offsetMap, %object
+ 125              		.size	offsetMap, 2048
+ 126              	offsetMap:
+ 127 0048 00000000 		.word	0
+ 128 004c 00000000 		.word	0
+ 129 0050 00000000 		.word	0
+ 130 0054 FDFFFFFF 		.word	-3
+ 131 0058 FDFFFFFF 		.word	-3
+ 132 005c FDFFFFFF 		.word	-3
+ 133 0060 FEFFFFFF 		.word	-2
+ 134 0064 FEFFFFFF 		.word	-2
+ 135 0068 FAFFFFFF 		.word	-6
+ 136 006c FAFFFFFF 		.word	-6
+ 137 0070 FAFFFFFF 		.word	-6
+ 138 0074 FDFFFFFF 		.word	-3
+ 139 0078 FDFFFFFF 		.word	-3
+ 140 007c FBFFFFFF 		.word	-5
+ 141 0080 FBFFFFFF 		.word	-5
+ 142 0084 FBFFFFFF 		.word	-5
+ 143 0088 FBFFFFFF 		.word	-5
+ 144 008c FBFFFFFF 		.word	-5
+ 145 0090 F8FFFFFF 		.word	-8
+ 146 0094 F8FFFFFF 		.word	-8
+ 147 0098 F8FFFFFF 		.word	-8
+ 148 009c FAFFFFFF 		.word	-6
+ 149 00a0 FAFFFFFF 		.word	-6
+ 150 00a4 FAFFFFFF 		.word	-6
+ 151 00a8 F8FFFFFF 		.word	-8
+ 152 00ac F8FFFFFF 		.word	-8
+ 153 00b0 F9FFFFFF 		.word	-7
+ 154 00b4 F9FFFFFF 		.word	-7
+ 155 00b8 F9FFFFFF 		.word	-7
+ 156 00bc F6FFFFFF 		.word	-10
+ 157 00c0 F6FFFFFF 		.word	-10
+ 158 00c4 F8FFFFFF 		.word	-8
+ 159 00c8 F8FFFFFF 		.word	-8
+ 160 00cc F8FFFFFF 		.word	-8
+ 161 00d0 F5FFFFFF 		.word	-11
+ 162 00d4 F5FFFFFF 		.word	-11
+ 163 00d8 F6FFFFFF 		.word	-10
+ 164 00dc F6FFFFFF 		.word	-10
+ 165 00e0 F6FFFFFF 		.word	-10
+ 166 00e4 F3FFFFFF 		.word	-13
+ 167 00e8 F3FFFFFF 		.word	-13
+ 168 00ec F5FFFFFF 		.word	-11
+ 169 00f0 F5FFFFFF 		.word	-11
+ 170 00f4 F5FFFFFF 		.word	-11
+ 171 00f8 F4FFFFFF 		.word	-12
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 4
+
+
+ 172 00fc F4FFFFFF 		.word	-12
+ 173 0100 F4FFFFFF 		.word	-12
+ 174 0104 F4FFFFFF 		.word	-12
+ 175 0108 F4FFFFFF 		.word	-12
+ 176 010c F1FFFFFF 		.word	-15
+ 177 0110 F1FFFFFF 		.word	-15
+ 178 0114 F1FFFFFF 		.word	-15
+ 179 0118 F4FFFFFF 		.word	-12
+ 180 011c F4FFFFFF 		.word	-12
+ 181 0120 F2FFFFFF 		.word	-14
+ 182 0124 F2FFFFFF 		.word	-14
+ 183 0128 F2FFFFFF 		.word	-14
+ 184 012c F4FFFFFF 		.word	-12
+ 185 0130 F4FFFFFF 		.word	-12
+ 186 0134 F1FFFFFF 		.word	-15
+ 187 0138 F1FFFFFF 		.word	-15
+ 188 013c F1FFFFFF 		.word	-15
+ 189 0140 F3FFFFFF 		.word	-13
+ 190 0144 F3FFFFFF 		.word	-13
+ 191 0148 F2FFFFFF 		.word	-14
+ 192 014c F2FFFFFF 		.word	-14
+ 193 0150 F2FFFFFF 		.word	-14
+ 194 0154 F3FFFFFF 		.word	-13
+ 195 0158 F3FFFFFF 		.word	-13
+ 196 015c F3FFFFFF 		.word	-13
+ 197 0160 F1FFFFFF 		.word	-15
+ 198 0164 F1FFFFFF 		.word	-15
+ 199 0168 F3FFFFFF 		.word	-13
+ 200 016c F3FFFFFF 		.word	-13
+ 201 0170 F3FFFFFF 		.word	-13
+ 202 0174 F2FFFFFF 		.word	-14
+ 203 0178 F2FFFFFF 		.word	-14
+ 204 017c F3FFFFFF 		.word	-13
+ 205 0180 F3FFFFFF 		.word	-13
+ 206 0184 F3FFFFFF 		.word	-13
+ 207 0188 F1FFFFFF 		.word	-15
+ 208 018c F1FFFFFF 		.word	-15
+ 209 0190 F4FFFFFF 		.word	-12
+ 210 0194 F4FFFFFF 		.word	-12
+ 211 0198 F4FFFFFF 		.word	-12
+ 212 019c F4FFFFFF 		.word	-12
+ 213 01a0 F4FFFFFF 		.word	-12
+ 214 01a4 F4FFFFFF 		.word	-12
+ 215 01a8 F5FFFFFF 		.word	-11
+ 216 01ac F5FFFFFF 		.word	-11
+ 217 01b0 F3FFFFFF 		.word	-13
+ 218 01b4 F3FFFFFF 		.word	-13
+ 219 01b8 F3FFFFFF 		.word	-13
+ 220 01bc F6FFFFFF 		.word	-10
+ 221 01c0 F6FFFFFF 		.word	-10
+ 222 01c4 F5FFFFFF 		.word	-11
+ 223 01c8 F5FFFFFF 		.word	-11
+ 224 01cc F5FFFFFF 		.word	-11
+ 225 01d0 F6FFFFFF 		.word	-10
+ 226 01d4 F6FFFFFF 		.word	-10
+ 227 01d8 F4FFFFFF 		.word	-12
+ 228 01dc F4FFFFFF 		.word	-12
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 5
+
+
+ 229 01e0 F4FFFFFF 		.word	-12
+ 230 01e4 F7FFFFFF 		.word	-9
+ 231 01e8 F7FFFFFF 		.word	-9
+ 232 01ec F7FFFFFF 		.word	-9
+ 233 01f0 F7FFFFFF 		.word	-9
+ 234 01f4 F7FFFFFF 		.word	-9
+ 235 01f8 F8FFFFFF 		.word	-8
+ 236 01fc F8FFFFFF 		.word	-8
+ 237 0200 F8FFFFFF 		.word	-8
+ 238 0204 F7FFFFFF 		.word	-9
+ 239 0208 F7FFFFFF 		.word	-9
+ 240 020c F9FFFFFF 		.word	-7
+ 241 0210 F9FFFFFF 		.word	-7
+ 242 0214 F9FFFFFF 		.word	-7
+ 243 0218 F9FFFFFF 		.word	-7
+ 244 021c F9FFFFFF 		.word	-7
+ 245 0220 FBFFFFFF 		.word	-5
+ 246 0224 FBFFFFFF 		.word	-5
+ 247 0228 FBFFFFFF 		.word	-5
+ 248 022c F9FFFFFF 		.word	-7
+ 249 0230 F9FFFFFF 		.word	-7
+ 250 0234 FCFFFFFF 		.word	-4
+ 251 0238 FCFFFFFF 		.word	-4
+ 252 023c FCFFFFFF 		.word	-4
+ 253 0240 FCFFFFFF 		.word	-4
+ 254 0244 FCFFFFFF 		.word	-4
+ 255 0248 FCFFFFFF 		.word	-4
+ 256 024c FCFFFFFF 		.word	-4
+ 257 0250 FCFFFFFF 		.word	-4
+ 258 0254 FBFFFFFF 		.word	-5
+ 259 0258 FBFFFFFF 		.word	-5
+ 260 025c FBFFFFFF 		.word	-5
+ 261 0260 FDFFFFFF 		.word	-3
+ 262 0264 FDFFFFFF 		.word	-3
+ 263 0268 FEFFFFFF 		.word	-2
+ 264 026c FEFFFFFF 		.word	-2
+ 265 0270 FEFFFFFF 		.word	-2
+ 266 0274 FFFFFFFF 		.word	-1
+ 267 0278 FFFFFFFF 		.word	-1
+ 268 027c FDFFFFFF 		.word	-3
+ 269 0280 FDFFFFFF 		.word	-3
+ 270 0284 FDFFFFFF 		.word	-3
+ 271 0288 00000000 		.word	0
+ 272 028c 00000000 		.word	0
+ 273 0290 00000000 		.word	0
+ 274 0294 00000000 		.word	0
+ 275 0298 00000000 		.word	0
+ 276 029c 01000000 		.word	1
+ 277 02a0 01000000 		.word	1
+ 278 02a4 01000000 		.word	1
+ 279 02a8 00000000 		.word	0
+ 280 02ac 00000000 		.word	0
+ 281 02b0 02000000 		.word	2
+ 282 02b4 02000000 		.word	2
+ 283 02b8 02000000 		.word	2
+ 284 02bc 02000000 		.word	2
+ 285 02c0 02000000 		.word	2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 6
+
+
+ 286 02c4 04000000 		.word	4
+ 287 02c8 04000000 		.word	4
+ 288 02cc 04000000 		.word	4
+ 289 02d0 02000000 		.word	2
+ 290 02d4 02000000 		.word	2
+ 291 02d8 05000000 		.word	5
+ 292 02dc 05000000 		.word	5
+ 293 02e0 05000000 		.word	5
+ 294 02e4 04000000 		.word	4
+ 295 02e8 04000000 		.word	4
+ 296 02ec 06000000 		.word	6
+ 297 02f0 06000000 		.word	6
+ 298 02f4 06000000 		.word	6
+ 299 02f8 05000000 		.word	5
+ 300 02fc 05000000 		.word	5
+ 301 0300 05000000 		.word	5
+ 302 0304 08000000 		.word	8
+ 303 0308 08000000 		.word	8
+ 304 030c 07000000 		.word	7
+ 305 0310 07000000 		.word	7
+ 306 0314 07000000 		.word	7
+ 307 0318 09000000 		.word	9
+ 308 031c 09000000 		.word	9
+ 309 0320 08000000 		.word	8
+ 310 0324 08000000 		.word	8
+ 311 0328 08000000 		.word	8
+ 312 032c 0B000000 		.word	11
+ 313 0330 0B000000 		.word	11
+ 314 0334 0A000000 		.word	10
+ 315 0338 0A000000 		.word	10
+ 316 033c 0A000000 		.word	10
+ 317 0340 0B000000 		.word	11
+ 318 0344 0B000000 		.word	11
+ 319 0348 0A000000 		.word	10
+ 320 034c 0A000000 		.word	10
+ 321 0350 0A000000 		.word	10
+ 322 0354 0C000000 		.word	12
+ 323 0358 0C000000 		.word	12
+ 324 035c 0C000000 		.word	12
+ 325 0360 0B000000 		.word	11
+ 326 0364 0B000000 		.word	11
+ 327 0368 0D000000 		.word	13
+ 328 036c 0D000000 		.word	13
+ 329 0370 0D000000 		.word	13
+ 330 0374 0B000000 		.word	11
+ 331 0378 0B000000 		.word	11
+ 332 037c 0D000000 		.word	13
+ 333 0380 0D000000 		.word	13
+ 334 0384 0D000000 		.word	13
+ 335 0388 0C000000 		.word	12
+ 336 038c 0C000000 		.word	12
+ 337 0390 0D000000 		.word	13
+ 338 0394 0D000000 		.word	13
+ 339 0398 0D000000 		.word	13
+ 340 039c 0B000000 		.word	11
+ 341 03a0 0B000000 		.word	11
+ 342 03a4 0B000000 		.word	11
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 7
+
+
+ 343 03a8 0E000000 		.word	14
+ 344 03ac 0E000000 		.word	14
+ 345 03b0 0C000000 		.word	12
+ 346 03b4 0C000000 		.word	12
+ 347 03b8 0C000000 		.word	12
+ 348 03bc 0E000000 		.word	14
+ 349 03c0 0E000000 		.word	14
+ 350 03c4 0B000000 		.word	11
+ 351 03c8 0B000000 		.word	11
+ 352 03cc 0B000000 		.word	11
+ 353 03d0 0C000000 		.word	12
+ 354 03d4 0C000000 		.word	12
+ 355 03d8 0B000000 		.word	11
+ 356 03dc 0B000000 		.word	11
+ 357 03e0 0B000000 		.word	11
+ 358 03e4 0C000000 		.word	12
+ 359 03e8 0C000000 		.word	12
+ 360 03ec 09000000 		.word	9
+ 361 03f0 09000000 		.word	9
+ 362 03f4 09000000 		.word	9
+ 363 03f8 0B000000 		.word	11
+ 364 03fc 0B000000 		.word	11
+ 365 0400 0B000000 		.word	11
+ 366 0404 09000000 		.word	9
+ 367 0408 09000000 		.word	9
+ 368 040c 0A000000 		.word	10
+ 369 0410 0A000000 		.word	10
+ 370 0414 0A000000 		.word	10
+ 371 0418 07000000 		.word	7
+ 372 041c 07000000 		.word	7
+ 373 0420 08000000 		.word	8
+ 374 0424 08000000 		.word	8
+ 375 0428 08000000 		.word	8
+ 376 042c 07000000 		.word	7
+ 377 0430 07000000 		.word	7
+ 378 0434 06000000 		.word	6
+ 379 0438 06000000 		.word	6
+ 380 043c 06000000 		.word	6
+ 381 0440 04000000 		.word	4
+ 382 0444 04000000 		.word	4
+ 383 0448 06000000 		.word	6
+ 384 044c 06000000 		.word	6
+ 385 0450 06000000 		.word	6
+ 386 0454 03000000 		.word	3
+ 387 0458 03000000 		.word	3
+ 388 045c 03000000 		.word	3
+ 389 0460 02000000 		.word	2
+ 390 0464 02000000 		.word	2
+ 391 0468 00000000 		.word	0
+ 392 046c 00000000 		.word	0
+ 393 0470 00000000 		.word	0
+ 394 0474 01000000 		.word	1
+ 395 0478 01000000 		.word	1
+ 396 047c 00000000 		.word	0
+ 397 0480 00000000 		.word	0
+ 398 0484 00000000 		.word	0
+ 399 0488 00000000 		.word	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 8
+
+
+ 400 048c 00000000 		.word	0
+ 401 0490 FDFFFFFF 		.word	-3
+ 402 0494 FDFFFFFF 		.word	-3
+ 403 0498 FDFFFFFF 		.word	-3
+ 404 049c FEFFFFFF 		.word	-2
+ 405 04a0 FEFFFFFF 		.word	-2
+ 406 04a4 FEFFFFFF 		.word	-2
+ 407 04a8 FCFFFFFF 		.word	-4
+ 408 04ac FCFFFFFF 		.word	-4
+ 409 04b0 FCFFFFFF 		.word	-4
+ 410 04b4 FCFFFFFF 		.word	-4
+ 411 04b8 FCFFFFFF 		.word	-4
+ 412 04bc F9FFFFFF 		.word	-7
+ 413 04c0 F9FFFFFF 		.word	-7
+ 414 04c4 FAFFFFFF 		.word	-6
+ 415 04c8 FAFFFFFF 		.word	-6
+ 416 04cc FAFFFFFF 		.word	-6
+ 417 04d0 F7FFFFFF 		.word	-9
+ 418 04d4 F7FFFFFF 		.word	-9
+ 419 04d8 F7FFFFFF 		.word	-9
+ 420 04dc F7FFFFFF 		.word	-9
+ 421 04e0 F7FFFFFF 		.word	-9
+ 422 04e4 F4FFFFFF 		.word	-12
+ 423 04e8 F4FFFFFF 		.word	-12
+ 424 04ec F6FFFFFF 		.word	-10
+ 425 04f0 F6FFFFFF 		.word	-10
+ 426 04f4 F6FFFFFF 		.word	-10
+ 427 04f8 F4FFFFFF 		.word	-12
+ 428 04fc F4FFFFFF 		.word	-12
+ 429 0500 F4FFFFFF 		.word	-12
+ 430 0504 F5FFFFFF 		.word	-11
+ 431 0508 F5FFFFFF 		.word	-11
+ 432 050c F2FFFFFF 		.word	-14
+ 433 0510 F2FFFFFF 		.word	-14
+ 434 0514 F2FFFFFF 		.word	-14
+ 435 0518 F3FFFFFF 		.word	-13
+ 436 051c F3FFFFFF 		.word	-13
+ 437 0520 F2FFFFFF 		.word	-14
+ 438 0524 F2FFFFFF 		.word	-14
+ 439 0528 F2FFFFFF 		.word	-14
+ 440 052c F2FFFFFF 		.word	-14
+ 441 0530 F2FFFFFF 		.word	-14
+ 442 0534 EFFFFFFF 		.word	-17
+ 443 0538 EFFFFFFF 		.word	-17
+ 444 053c EFFFFFFF 		.word	-17
+ 445 0540 F1FFFFFF 		.word	-15
+ 446 0544 F1FFFFFF 		.word	-15
+ 447 0548 EFFFFFFF 		.word	-17
+ 448 054c EFFFFFFF 		.word	-17
+ 449 0550 EFFFFFFF 		.word	-17
+ 450 0554 F0FFFFFF 		.word	-16
+ 451 0558 F0FFFFFF 		.word	-16
+ 452 055c F0FFFFFF 		.word	-16
+ 453 0560 EDFFFFFF 		.word	-19
+ 454 0564 EDFFFFFF 		.word	-19
+ 455 0568 EFFFFFFF 		.word	-17
+ 456 056c EFFFFFFF 		.word	-17
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 9
+
+
+ 457 0570 EFFFFFFF 		.word	-17
+ 458 0574 EEFFFFFF 		.word	-18
+ 459 0578 EEFFFFFF 		.word	-18
+ 460 057c EFFFFFFF 		.word	-17
+ 461 0580 EFFFFFFF 		.word	-17
+ 462 0584 EFFFFFFF 		.word	-17
+ 463 0588 ECFFFFFF 		.word	-20
+ 464 058c ECFFFFFF 		.word	-20
+ 465 0590 EFFFFFFF 		.word	-17
+ 466 0594 EFFFFFFF 		.word	-17
+ 467 0598 EFFFFFFF 		.word	-17
+ 468 059c EDFFFFFF 		.word	-19
+ 469 05a0 EDFFFFFF 		.word	-19
+ 470 05a4 EDFFFFFF 		.word	-19
+ 471 05a8 EFFFFFFF 		.word	-17
+ 472 05ac EFFFFFFF 		.word	-17
+ 473 05b0 ECFFFFFF 		.word	-20
+ 474 05b4 ECFFFFFF 		.word	-20
+ 475 05b8 ECFFFFFF 		.word	-20
+ 476 05bc EFFFFFFF 		.word	-17
+ 477 05c0 EFFFFFFF 		.word	-17
+ 478 05c4 EEFFFFFF 		.word	-18
+ 479 05c8 EEFFFFFF 		.word	-18
+ 480 05cc EEFFFFFF 		.word	-18
+ 481 05d0 EEFFFFFF 		.word	-18
+ 482 05d4 EEFFFFFF 		.word	-18
+ 483 05d8 ECFFFFFF 		.word	-20
+ 484 05dc ECFFFFFF 		.word	-20
+ 485 05e0 ECFFFFFF 		.word	-20
+ 486 05e4 EEFFFFFF 		.word	-18
+ 487 05e8 EEFFFFFF 		.word	-18
+ 488 05ec EDFFFFFF 		.word	-19
+ 489 05f0 EDFFFFFF 		.word	-19
+ 490 05f4 EDFFFFFF 		.word	-19
+ 491 05f8 EFFFFFFF 		.word	-17
+ 492 05fc EFFFFFFF 		.word	-17
+ 493 0600 EFFFFFFF 		.word	-17
+ 494 0604 ECFFFFFF 		.word	-20
+ 495 0608 ECFFFFFF 		.word	-20
+ 496 060c EFFFFFFF 		.word	-17
+ 497 0610 EFFFFFFF 		.word	-17
+ 498 0614 EFFFFFFF 		.word	-17
+ 499 0618 EFFFFFFF 		.word	-17
+ 500 061c EFFFFFFF 		.word	-17
+ 501 0620 F0FFFFFF 		.word	-16
+ 502 0624 F0FFFFFF 		.word	-16
+ 503 0628 F0FFFFFF 		.word	-16
+ 504 062c EEFFFFFF 		.word	-18
+ 505 0630 EEFFFFFF 		.word	-18
+ 506 0634 F0FFFFFF 		.word	-16
+ 507 0638 F0FFFFFF 		.word	-16
+ 508 063c F0FFFFFF 		.word	-16
+ 509 0640 F0FFFFFF 		.word	-16
+ 510 0644 F0FFFFFF 		.word	-16
+ 511 0648 F1FFFFFF 		.word	-15
+ 512 064c F1FFFFFF 		.word	-15
+ 513 0650 F1FFFFFF 		.word	-15
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 10
+
+
+ 514 0654 EFFFFFFF 		.word	-17
+ 515 0658 EFFFFFFF 		.word	-17
+ 516 065c EFFFFFFF 		.word	-17
+ 517 0660 F1FFFFFF 		.word	-15
+ 518 0664 F1FFFFFF 		.word	-15
+ 519 0668 F1FFFFFF 		.word	-15
+ 520 066c F1FFFFFF 		.word	-15
+ 521 0670 F1FFFFFF 		.word	-15
+ 522 0674 F2FFFFFF 		.word	-14
+ 523 0678 F2FFFFFF 		.word	-14
+ 524 067c F1FFFFFF 		.word	-15
+ 525 0680 F1FFFFFF 		.word	-15
+ 526 0684 F1FFFFFF 		.word	-15
+ 527 0688 F4FFFFFF 		.word	-12
+ 528 068c F4FFFFFF 		.word	-12
+ 529 0690 F3FFFFFF 		.word	-13
+ 530 0694 F3FFFFFF 		.word	-13
+ 531 0698 F3FFFFFF 		.word	-13
+ 532 069c F5FFFFFF 		.word	-11
+ 533 06a0 F5FFFFFF 		.word	-11
+ 534 06a4 F5FFFFFF 		.word	-11
+ 535 06a8 F4FFFFFF 		.word	-12
+ 536 06ac F4FFFFFF 		.word	-12
+ 537 06b0 F6FFFFFF 		.word	-10
+ 538 06b4 F6FFFFFF 		.word	-10
+ 539 06b8 F6FFFFFF 		.word	-10
+ 540 06bc F6FFFFFF 		.word	-10
+ 541 06c0 F6FFFFFF 		.word	-10
+ 542 06c4 F8FFFFFF 		.word	-8
+ 543 06c8 F8FFFFFF 		.word	-8
+ 544 06cc F8FFFFFF 		.word	-8
+ 545 06d0 F5FFFFFF 		.word	-11
+ 546 06d4 F5FFFFFF 		.word	-11
+ 547 06d8 F9FFFFFF 		.word	-7
+ 548 06dc F9FFFFFF 		.word	-7
+ 549 06e0 F9FFFFFF 		.word	-7
+ 550 06e4 F8FFFFFF 		.word	-8
+ 551 06e8 F8FFFFFF 		.word	-8
+ 552 06ec FAFFFFFF 		.word	-6
+ 553 06f0 FAFFFFFF 		.word	-6
+ 554 06f4 FAFFFFFF 		.word	-6
+ 555 06f8 F9FFFFFF 		.word	-7
+ 556 06fc F9FFFFFF 		.word	-7
+ 557 0700 F9FFFFFF 		.word	-7
+ 558 0704 FCFFFFFF 		.word	-4
+ 559 0708 FCFFFFFF 		.word	-4
+ 560 070c FBFFFFFF 		.word	-5
+ 561 0710 FBFFFFFF 		.word	-5
+ 562 0714 FBFFFFFF 		.word	-5
+ 563 0718 FDFFFFFF 		.word	-3
+ 564 071c FDFFFFFF 		.word	-3
+ 565 0720 FCFFFFFF 		.word	-4
+ 566 0724 FCFFFFFF 		.word	-4
+ 567 0728 FCFFFFFF 		.word	-4
+ 568 072c FFFFFFFF 		.word	-1
+ 569 0730 FFFFFFFF 		.word	-1
+ 570 0734 FEFFFFFF 		.word	-2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 11
+
+
+ 571 0738 FEFFFFFF 		.word	-2
+ 572 073c FEFFFFFF 		.word	-2
+ 573 0740 00000000 		.word	0
+ 574 0744 00000000 		.word	0
+ 575 0748 FEFFFFFF 		.word	-2
+ 576 074c FEFFFFFF 		.word	-2
+ 577 0750 FEFFFFFF 		.word	-2
+ 578 0754 00000000 		.word	0
+ 579 0758 00000000 		.word	0
+ 580 075c 00000000 		.word	0
+ 581 0760 00000000 		.word	0
+ 582 0764 00000000 		.word	0
+ 583 0768 01000000 		.word	1
+ 584 076c 01000000 		.word	1
+ 585 0770 01000000 		.word	1
+ 586 0774 00000000 		.word	0
+ 587 0778 00000000 		.word	0
+ 588 077c 02000000 		.word	2
+ 589 0780 02000000 		.word	2
+ 590 0784 02000000 		.word	2
+ 591 0788 01000000 		.word	1
+ 592 078c 01000000 		.word	1
+ 593 0790 03000000 		.word	3
+ 594 0794 03000000 		.word	3
+ 595 0798 03000000 		.word	3
+ 596 079c 01000000 		.word	1
+ 597 07a0 01000000 		.word	1
+ 598 07a4 01000000 		.word	1
+ 599 07a8 03000000 		.word	3
+ 600 07ac 03000000 		.word	3
+ 601 07b0 02000000 		.word	2
+ 602 07b4 02000000 		.word	2
+ 603 07b8 02000000 		.word	2
+ 604 07bc 03000000 		.word	3
+ 605 07c0 03000000 		.word	3
+ 606 07c4 02000000 		.word	2
+ 607 07c8 02000000 		.word	2
+ 608 07cc 02000000 		.word	2
+ 609 07d0 03000000 		.word	3
+ 610 07d4 03000000 		.word	3
+ 611 07d8 02000000 		.word	2
+ 612 07dc 02000000 		.word	2
+ 613 07e0 02000000 		.word	2
+ 614 07e4 03000000 		.word	3
+ 615 07e8 03000000 		.word	3
+ 616 07ec 00000000 		.word	0
+ 617 07f0 00000000 		.word	0
+ 618 07f4 00000000 		.word	0
+ 619 07f8 03000000 		.word	3
+ 620 07fc 03000000 		.word	3
+ 621 0800 03000000 		.word	3
+ 622 0804 01000000 		.word	1
+ 623 0808 01000000 		.word	1
+ 624 080c 02000000 		.word	2
+ 625 0810 02000000 		.word	2
+ 626 0814 02000000 		.word	2
+ 627 0818 00000000 		.word	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 12
+
+
+ 628 081c 00000000 		.word	0
+ 629 0820 01000000 		.word	1
+ 630 0824 01000000 		.word	1
+ 631 0828 01000000 		.word	1
+ 632 082c 00000000 		.word	0
+ 633 0830 00000000 		.word	0
+ 634 0834 00000000 		.word	0
+ 635 0838 00000000 		.word	0
+ 636 083c 00000000 		.word	0
+ 637 0840 FFFFFFFF 		.word	-1
+ 638 0844 FFFFFFFF 		.word	-1
+ 639              		.comm	min,4,4
+ 640              		.comm	min_index,4,4
+ 641              		.comm	split_position,4,4
+ 642              		.comm	closest_int,4,4
+ 643              		.section	.rodata
+ 644              		.align	2
+ 645              	.LC0:
+ 646 0000 256C642C 		.ascii	"%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld\012\000"
+ 646      256C642C 
+ 646      256C642C 
+ 646      256C642C 
+ 646      256C642C 
+ 647              		.section	.text.main,"ax",%progbits
+ 648              		.align	2
+ 649              		.global	main
+ 650              		.thumb
+ 651              		.thumb_func
+ 652              		.type	main, %function
+ 653              	main:
+ 654              	.LFB64:
+ 655              		.file 1 "main.c"
+   1:main.c        **** /*******************************************************************************
+   2:main.c        **** * File Name: main.c
+   3:main.c        **** ********************************************************************************
+   4:main.c        **** * Copyright 2012-2015, Cypress Semiconductor Corporation. All rights reserved.
+   5:main.c        **** * This software is owned by Cypress Semiconductor Corporation and is protected
+   6:main.c        **** * by and subject to worldwide patent and copyright laws and treaties.
+   7:main.c        **** * Therefore, you may use this software only as provided in the license agreement
+   8:main.c        **** * accompanying the software package from which you obtained this software.
+   9:main.c        **** * CYPRESS AND ITS SUPPLIERS MAKE NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+  10:main.c        **** * WITH REGARD TO THIS SOFTWARE, INCLUDING, BUT NOT LIMITED TO, NONINFRINGEMENT,
+  11:main.c        **** * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+  12:main.c        **** *******************************************************************************/
+  13:main.c        **** 
+  14:main.c        **** #include <project.h>
+  15:main.c        **** #include "string.h"
+  16:main.c        **** #include "stdio.h"
+  17:main.c        **** #include "pid.h"
+  18:main.c        **** 
+  19:main.c        **** //with direction held high,
+  20:main.c        **** //angle increases and shaft rotates clockwise viewed from top
+  21:main.c        **** 
+  22:main.c        **** #define SPI_CMD_READ 0x4000 /*!< flag indicating read attempt when using SPI interface */
+  23:main.c        **** #define SPI_REG_AGC 0x3ffd /*!< agc register when using SPI */
+  24:main.c        **** #define SPI_REG_MAG 0x3ffe /*!< magnitude register when using SPI */
+  25:main.c        **** #define SPI_REG_DATA 0x3fff /*!< data register when using SPI */
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 13
+
+
+  26:main.c        **** #define SPI_REG_CLRERR 0x1 /*!< clear error register when using SPI */
+  27:main.c        **** 
+  28:main.c        **** #define LIS3DH_ADDRESS    (0x18)
+  29:main.c        **** #define FULL_STEP (0u)
+  30:main.c        **** #define HALF_STEP (1u)
+  31:main.c        **** #define QUARTER_STEP (2u)
+  32:main.c        **** #define EIGHTH_STEP (3u)
+  33:main.c        **** #define SIXTEENTH_STEP (7u)
+  34:main.c        **** 
+  35:main.c        **** uint8 ACC_Read_buffer[10];
+  36:main.c        **** uint8 ACC_Write_buffer[8];
+  37:main.c        **** 
+  38:main.c        **** 
+  39:main.c        **** volatile uint16 read_angle_command = SPI_CMD_READ | SPI_REG_DATA;
+  40:main.c        **** 
+  41:main.c        **** volatile int32 angle;
+  42:main.c        **** volatile int32 angle_electric;
+  43:main.c        **** volatile int32 angle_diff;
+  44:main.c        **** volatile int32 torque_command = 0;
+  45:main.c        **** 
+  46:main.c        **** int32 angle_old;
+  47:main.c        **** struct accel{
+  48:main.c        ****     int16 accel_x;
+  49:main.c        ****     int16 accel_y;
+  50:main.c        ****     int16 accel_z;
+  51:main.c        ****     int16 x_offset;
+  52:main.c        ****     int16 y_offset;
+  53:main.c        ****     int16 z_offset;
+  54:main.c        ****     int32 x_sum;
+  55:main.c        ****     int32 y_sum;
+  56:main.c        ****     int32 z_sum;
+  57:main.c        ****     int16 x_buffer[128];
+  58:main.c        ****     int16 y_buffer[128];
+  59:main.c        ****     int16 z_buffer[128];
+  60:main.c        ****     uint16 x_index;
+  61:main.c        ****     uint16 y_index;
+  62:main.c        ****     uint16 z_index;
+  63:main.c        **** };
+  64:main.c        **** 
+  65:main.c        **** 
+  66:main.c        **** volatile uint32 angle_sum;
+  67:main.c        **** char transmit_buff[80];
+  68:main.c        **** volatile uint8 controller_tick;
+  69:main.c        **** volatile int32 axis_position_filtered = 0;
+  70:main.c        **** volatile int32 axis_position_filtered_2 = 0;
+  71:main.c        **** int16 position;
+  72:main.c        **** int32 position_ref = 0;
+  73:main.c        **** int32 position_ref_initial = 0;
+  74:main.c        **** int32 position_ref_old = 0;
+  75:main.c        **** volatile int32 axis_position;
+  76:main.c        **** volatile int32 lead_angle = 0;
+  77:main.c        **** 
+  78:main.c        **** uint8 spiCalcEvenParity(uint16 value);
+  79:main.c        **** void writeRegister8(uint8 reg, uint8 val);
+  80:main.c        **** uint8 readRegister8(uint8 reg);
+  81:main.c        **** int32 axis_update(int32 axis, int32 angle);
+  82:main.c        **** void accel_update(struct accel * acc_struct);
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 14
+
+
+  83:main.c        **** uint32 angle_update(void);
+  84:main.c        **** void accel_offset_update(struct accel * acc_struct);
+  85:main.c        **** 
+  86:main.c        **** volatile uint32 step_array[17] = {   0x00000000,
+  87:main.c        ****                             0x00000002,
+  88:main.c        ****                             0x0000000A,
+  89:main.c        ****                             0x0000002A,
+  90:main.c        ****                             0x000000AA,
+  91:main.c        ****                             0x000002AA,
+  92:main.c        ****                             0x00000AAA,
+  93:main.c        ****                             0x00002AAA,
+  94:main.c        ****                             0x0000AAAA,
+  95:main.c        ****                             0x0002AAAA,
+  96:main.c        ****                             0x000AAAAA,
+  97:main.c        ****                             0x002AAAAA,
+  98:main.c        ****                             0x00AAAAAA,
+  99:main.c        ****                             0x02AAAAAA,
+ 100:main.c        ****                             0x0AAAAAAA,
+ 101:main.c        ****                             0x2AAAAAAA,
+ 102:main.c        ****                             0xAAAAAAAA  };
+ 103:main.c        **** 
+ 104:main.c        **** uint8 switch_val = 0;
+ 105:main.c        **** uint8 switch_old = 0;
+ 106:main.c        **** uint8 step_count = 0;
+ 107:main.c        **** 
+ 108:main.c        **** int32 fullstepMap[200];
+ 109:main.c        **** int32 fullstepMapSorted[200];
+ 110:main.c        **** volatile int32 offsetMap[512] = {0,
+ 111:main.c        **** 0,
+ 112:main.c        **** 0,
+ 113:main.c        **** -3,
+ 114:main.c        **** -3,
+ 115:main.c        **** -3,
+ 116:main.c        **** -2,
+ 117:main.c        **** -2,
+ 118:main.c        **** -6,
+ 119:main.c        **** -6,
+ 120:main.c        **** -6,
+ 121:main.c        **** -3,
+ 122:main.c        **** -3,
+ 123:main.c        **** -5,
+ 124:main.c        **** -5,
+ 125:main.c        **** -5,
+ 126:main.c        **** -5,
+ 127:main.c        **** -5,
+ 128:main.c        **** -8,
+ 129:main.c        **** -8,
+ 130:main.c        **** -8,
+ 131:main.c        **** -6,
+ 132:main.c        **** -6,
+ 133:main.c        **** -6,
+ 134:main.c        **** -8,
+ 135:main.c        **** -8,
+ 136:main.c        **** -7,
+ 137:main.c        **** -7,
+ 138:main.c        **** -7,
+ 139:main.c        **** -10,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 15
+
+
+ 140:main.c        **** -10,
+ 141:main.c        **** -8,
+ 142:main.c        **** -8,
+ 143:main.c        **** -8,
+ 144:main.c        **** -11,
+ 145:main.c        **** -11,
+ 146:main.c        **** -10,
+ 147:main.c        **** -10,
+ 148:main.c        **** -10,
+ 149:main.c        **** -13,
+ 150:main.c        **** -13,
+ 151:main.c        **** -11,
+ 152:main.c        **** -11,
+ 153:main.c        **** -11,
+ 154:main.c        **** -12,
+ 155:main.c        **** -12,
+ 156:main.c        **** -12,
+ 157:main.c        **** -12,
+ 158:main.c        **** -12,
+ 159:main.c        **** -15,
+ 160:main.c        **** -15,
+ 161:main.c        **** -15,
+ 162:main.c        **** -12,
+ 163:main.c        **** -12,
+ 164:main.c        **** -14,
+ 165:main.c        **** -14,
+ 166:main.c        **** -14,
+ 167:main.c        **** -12,
+ 168:main.c        **** -12,
+ 169:main.c        **** -15,
+ 170:main.c        **** -15,
+ 171:main.c        **** -15,
+ 172:main.c        **** -13,
+ 173:main.c        **** -13,
+ 174:main.c        **** -14,
+ 175:main.c        **** -14,
+ 176:main.c        **** -14,
+ 177:main.c        **** -13,
+ 178:main.c        **** -13,
+ 179:main.c        **** -13,
+ 180:main.c        **** -15,
+ 181:main.c        **** -15,
+ 182:main.c        **** -13,
+ 183:main.c        **** -13,
+ 184:main.c        **** -13,
+ 185:main.c        **** -14,
+ 186:main.c        **** -14,
+ 187:main.c        **** -13,
+ 188:main.c        **** -13,
+ 189:main.c        **** -13,
+ 190:main.c        **** -15,
+ 191:main.c        **** -15,
+ 192:main.c        **** -12,
+ 193:main.c        **** -12,
+ 194:main.c        **** -12,
+ 195:main.c        **** -12,
+ 196:main.c        **** -12,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 16
+
+
+ 197:main.c        **** -12,
+ 198:main.c        **** -11,
+ 199:main.c        **** -11,
+ 200:main.c        **** -13,
+ 201:main.c        **** -13,
+ 202:main.c        **** -13,
+ 203:main.c        **** -10,
+ 204:main.c        **** -10,
+ 205:main.c        **** -11,
+ 206:main.c        **** -11,
+ 207:main.c        **** -11,
+ 208:main.c        **** -10,
+ 209:main.c        **** -10,
+ 210:main.c        **** -12,
+ 211:main.c        **** -12,
+ 212:main.c        **** -12,
+ 213:main.c        **** -9,
+ 214:main.c        **** -9,
+ 215:main.c        **** -9,
+ 216:main.c        **** -9,
+ 217:main.c        **** -9,
+ 218:main.c        **** -8,
+ 219:main.c        **** -8,
+ 220:main.c        **** -8,
+ 221:main.c        **** -9,
+ 222:main.c        **** -9,
+ 223:main.c        **** -7,
+ 224:main.c        **** -7,
+ 225:main.c        **** -7,
+ 226:main.c        **** -7,
+ 227:main.c        **** -7,
+ 228:main.c        **** -5,
+ 229:main.c        **** -5,
+ 230:main.c        **** -5,
+ 231:main.c        **** -7,
+ 232:main.c        **** -7,
+ 233:main.c        **** -4,
+ 234:main.c        **** -4,
+ 235:main.c        **** -4,
+ 236:main.c        **** -4,
+ 237:main.c        **** -4,
+ 238:main.c        **** -4,
+ 239:main.c        **** -4,
+ 240:main.c        **** -4,
+ 241:main.c        **** -5,
+ 242:main.c        **** -5,
+ 243:main.c        **** -5,
+ 244:main.c        **** -3,
+ 245:main.c        **** -3,
+ 246:main.c        **** -2,
+ 247:main.c        **** -2,
+ 248:main.c        **** -2,
+ 249:main.c        **** -1,
+ 250:main.c        **** -1,
+ 251:main.c        **** -3,
+ 252:main.c        **** -3,
+ 253:main.c        **** -3,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 17
+
+
+ 254:main.c        **** 0,
+ 255:main.c        **** 0,
+ 256:main.c        **** 0,
+ 257:main.c        **** 0,
+ 258:main.c        **** 0,
+ 259:main.c        **** 1,
+ 260:main.c        **** 1,
+ 261:main.c        **** 1,
+ 262:main.c        **** 0,
+ 263:main.c        **** 0,
+ 264:main.c        **** 2,
+ 265:main.c        **** 2,
+ 266:main.c        **** 2,
+ 267:main.c        **** 2,
+ 268:main.c        **** 2,
+ 269:main.c        **** 4,
+ 270:main.c        **** 4,
+ 271:main.c        **** 4,
+ 272:main.c        **** 2,
+ 273:main.c        **** 2,
+ 274:main.c        **** 5,
+ 275:main.c        **** 5,
+ 276:main.c        **** 5,
+ 277:main.c        **** 4,
+ 278:main.c        **** 4,
+ 279:main.c        **** 6,
+ 280:main.c        **** 6,
+ 281:main.c        **** 6,
+ 282:main.c        **** 5,
+ 283:main.c        **** 5,
+ 284:main.c        **** 5,
+ 285:main.c        **** 8,
+ 286:main.c        **** 8,
+ 287:main.c        **** 7,
+ 288:main.c        **** 7,
+ 289:main.c        **** 7,
+ 290:main.c        **** 9,
+ 291:main.c        **** 9,
+ 292:main.c        **** 8,
+ 293:main.c        **** 8,
+ 294:main.c        **** 8,
+ 295:main.c        **** 11,
+ 296:main.c        **** 11,
+ 297:main.c        **** 10,
+ 298:main.c        **** 10,
+ 299:main.c        **** 10,
+ 300:main.c        **** 11,
+ 301:main.c        **** 11,
+ 302:main.c        **** 10,
+ 303:main.c        **** 10,
+ 304:main.c        **** 10,
+ 305:main.c        **** 12,
+ 306:main.c        **** 12,
+ 307:main.c        **** 12,
+ 308:main.c        **** 11,
+ 309:main.c        **** 11,
+ 310:main.c        **** 13,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 18
+
+
+ 311:main.c        **** 13,
+ 312:main.c        **** 13,
+ 313:main.c        **** 11,
+ 314:main.c        **** 11,
+ 315:main.c        **** 13,
+ 316:main.c        **** 13,
+ 317:main.c        **** 13,
+ 318:main.c        **** 12,
+ 319:main.c        **** 12,
+ 320:main.c        **** 13,
+ 321:main.c        **** 13,
+ 322:main.c        **** 13,
+ 323:main.c        **** 11,
+ 324:main.c        **** 11,
+ 325:main.c        **** 11,
+ 326:main.c        **** 14,
+ 327:main.c        **** 14,
+ 328:main.c        **** 12,
+ 329:main.c        **** 12,
+ 330:main.c        **** 12,
+ 331:main.c        **** 14,
+ 332:main.c        **** 14,
+ 333:main.c        **** 11,
+ 334:main.c        **** 11,
+ 335:main.c        **** 11,
+ 336:main.c        **** 12,
+ 337:main.c        **** 12,
+ 338:main.c        **** 11,
+ 339:main.c        **** 11,
+ 340:main.c        **** 11,
+ 341:main.c        **** 12,
+ 342:main.c        **** 12,
+ 343:main.c        **** 9,
+ 344:main.c        **** 9,
+ 345:main.c        **** 9,
+ 346:main.c        **** 11,
+ 347:main.c        **** 11,
+ 348:main.c        **** 11,
+ 349:main.c        **** 9,
+ 350:main.c        **** 9,
+ 351:main.c        **** 10,
+ 352:main.c        **** 10,
+ 353:main.c        **** 10,
+ 354:main.c        **** 7,
+ 355:main.c        **** 7,
+ 356:main.c        **** 8,
+ 357:main.c        **** 8,
+ 358:main.c        **** 8,
+ 359:main.c        **** 7,
+ 360:main.c        **** 7,
+ 361:main.c        **** 6,
+ 362:main.c        **** 6,
+ 363:main.c        **** 6,
+ 364:main.c        **** 4,
+ 365:main.c        **** 4,
+ 366:main.c        **** 6,
+ 367:main.c        **** 6,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 19
+
+
+ 368:main.c        **** 6,
+ 369:main.c        **** 3,
+ 370:main.c        **** 3,
+ 371:main.c        **** 3,
+ 372:main.c        **** 2,
+ 373:main.c        **** 2,
+ 374:main.c        **** 0,
+ 375:main.c        **** 0,
+ 376:main.c        **** 0,
+ 377:main.c        **** 1,
+ 378:main.c        **** 1,
+ 379:main.c        **** 0,
+ 380:main.c        **** 0,
+ 381:main.c        **** 0,
+ 382:main.c        **** 0,
+ 383:main.c        **** 0,
+ 384:main.c        **** -3,
+ 385:main.c        **** -3,
+ 386:main.c        **** -3,
+ 387:main.c        **** -2,
+ 388:main.c        **** -2,
+ 389:main.c        **** -2,
+ 390:main.c        **** -4,
+ 391:main.c        **** -4,
+ 392:main.c        **** -4,
+ 393:main.c        **** -4,
+ 394:main.c        **** -4,
+ 395:main.c        **** -7,
+ 396:main.c        **** -7,
+ 397:main.c        **** -6,
+ 398:main.c        **** -6,
+ 399:main.c        **** -6,
+ 400:main.c        **** -9,
+ 401:main.c        **** -9,
+ 402:main.c        **** -9,
+ 403:main.c        **** -9,
+ 404:main.c        **** -9,
+ 405:main.c        **** -12,
+ 406:main.c        **** -12,
+ 407:main.c        **** -10,
+ 408:main.c        **** -10,
+ 409:main.c        **** -10,
+ 410:main.c        **** -12,
+ 411:main.c        **** -12,
+ 412:main.c        **** -12,
+ 413:main.c        **** -11,
+ 414:main.c        **** -11,
+ 415:main.c        **** -14,
+ 416:main.c        **** -14,
+ 417:main.c        **** -14,
+ 418:main.c        **** -13,
+ 419:main.c        **** -13,
+ 420:main.c        **** -14,
+ 421:main.c        **** -14,
+ 422:main.c        **** -14,
+ 423:main.c        **** -14,
+ 424:main.c        **** -14,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 20
+
+
+ 425:main.c        **** -17,
+ 426:main.c        **** -17,
+ 427:main.c        **** -17,
+ 428:main.c        **** -15,
+ 429:main.c        **** -15,
+ 430:main.c        **** -17,
+ 431:main.c        **** -17,
+ 432:main.c        **** -17,
+ 433:main.c        **** -16,
+ 434:main.c        **** -16,
+ 435:main.c        **** -16,
+ 436:main.c        **** -19,
+ 437:main.c        **** -19,
+ 438:main.c        **** -17,
+ 439:main.c        **** -17,
+ 440:main.c        **** -17,
+ 441:main.c        **** -18,
+ 442:main.c        **** -18,
+ 443:main.c        **** -17,
+ 444:main.c        **** -17,
+ 445:main.c        **** -17,
+ 446:main.c        **** -20,
+ 447:main.c        **** -20,
+ 448:main.c        **** -17,
+ 449:main.c        **** -17,
+ 450:main.c        **** -17,
+ 451:main.c        **** -19,
+ 452:main.c        **** -19,
+ 453:main.c        **** -19,
+ 454:main.c        **** -17,
+ 455:main.c        **** -17,
+ 456:main.c        **** -20,
+ 457:main.c        **** -20,
+ 458:main.c        **** -20,
+ 459:main.c        **** -17,
+ 460:main.c        **** -17,
+ 461:main.c        **** -18,
+ 462:main.c        **** -18,
+ 463:main.c        **** -18,
+ 464:main.c        **** -18,
+ 465:main.c        **** -18,
+ 466:main.c        **** -20,
+ 467:main.c        **** -20,
+ 468:main.c        **** -20,
+ 469:main.c        **** -18,
+ 470:main.c        **** -18,
+ 471:main.c        **** -19,
+ 472:main.c        **** -19,
+ 473:main.c        **** -19,
+ 474:main.c        **** -17,
+ 475:main.c        **** -17,
+ 476:main.c        **** -17,
+ 477:main.c        **** -20,
+ 478:main.c        **** -20,
+ 479:main.c        **** -17,
+ 480:main.c        **** -17,
+ 481:main.c        **** -17,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 21
+
+
+ 482:main.c        **** -17,
+ 483:main.c        **** -17,
+ 484:main.c        **** -16,
+ 485:main.c        **** -16,
+ 486:main.c        **** -16,
+ 487:main.c        **** -18,
+ 488:main.c        **** -18,
+ 489:main.c        **** -16,
+ 490:main.c        **** -16,
+ 491:main.c        **** -16,
+ 492:main.c        **** -16,
+ 493:main.c        **** -16,
+ 494:main.c        **** -15,
+ 495:main.c        **** -15,
+ 496:main.c        **** -15,
+ 497:main.c        **** -17,
+ 498:main.c        **** -17,
+ 499:main.c        **** -17,
+ 500:main.c        **** -15,
+ 501:main.c        **** -15,
+ 502:main.c        **** -15,
+ 503:main.c        **** -15,
+ 504:main.c        **** -15,
+ 505:main.c        **** -14,
+ 506:main.c        **** -14,
+ 507:main.c        **** -15,
+ 508:main.c        **** -15,
+ 509:main.c        **** -15,
+ 510:main.c        **** -12,
+ 511:main.c        **** -12,
+ 512:main.c        **** -13,
+ 513:main.c        **** -13,
+ 514:main.c        **** -13,
+ 515:main.c        **** -11,
+ 516:main.c        **** -11,
+ 517:main.c        **** -11,
+ 518:main.c        **** -12,
+ 519:main.c        **** -12,
+ 520:main.c        **** -10,
+ 521:main.c        **** -10,
+ 522:main.c        **** -10,
+ 523:main.c        **** -10,
+ 524:main.c        **** -10,
+ 525:main.c        **** -8,
+ 526:main.c        **** -8,
+ 527:main.c        **** -8,
+ 528:main.c        **** -11,
+ 529:main.c        **** -11,
+ 530:main.c        **** -7,
+ 531:main.c        **** -7,
+ 532:main.c        **** -7,
+ 533:main.c        **** -8,
+ 534:main.c        **** -8,
+ 535:main.c        **** -6,
+ 536:main.c        **** -6,
+ 537:main.c        **** -6,
+ 538:main.c        **** -7,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 22
+
+
+ 539:main.c        **** -7,
+ 540:main.c        **** -7,
+ 541:main.c        **** -4,
+ 542:main.c        **** -4,
+ 543:main.c        **** -5,
+ 544:main.c        **** -5,
+ 545:main.c        **** -5,
+ 546:main.c        **** -3,
+ 547:main.c        **** -3,
+ 548:main.c        **** -4,
+ 549:main.c        **** -4,
+ 550:main.c        **** -4,
+ 551:main.c        **** -1,
+ 552:main.c        **** -1,
+ 553:main.c        **** -2,
+ 554:main.c        **** -2,
+ 555:main.c        **** -2,
+ 556:main.c        **** 0,
+ 557:main.c        **** 0,
+ 558:main.c        **** -2,
+ 559:main.c        **** -2,
+ 560:main.c        **** -2,
+ 561:main.c        **** 0,
+ 562:main.c        **** 0,
+ 563:main.c        **** 0,
+ 564:main.c        **** 0,
+ 565:main.c        **** 0,
+ 566:main.c        **** 1,
+ 567:main.c        **** 1,
+ 568:main.c        **** 1,
+ 569:main.c        **** 0,
+ 570:main.c        **** 0,
+ 571:main.c        **** 2,
+ 572:main.c        **** 2,
+ 573:main.c        **** 2,
+ 574:main.c        **** 1,
+ 575:main.c        **** 1,
+ 576:main.c        **** 3,
+ 577:main.c        **** 3,
+ 578:main.c        **** 3,
+ 579:main.c        **** 1,
+ 580:main.c        **** 1,
+ 581:main.c        **** 1,
+ 582:main.c        **** 3,
+ 583:main.c        **** 3,
+ 584:main.c        **** 2,
+ 585:main.c        **** 2,
+ 586:main.c        **** 2,
+ 587:main.c        **** 3,
+ 588:main.c        **** 3,
+ 589:main.c        **** 2,
+ 590:main.c        **** 2,
+ 591:main.c        **** 2,
+ 592:main.c        **** 3,
+ 593:main.c        **** 3,
+ 594:main.c        **** 2,
+ 595:main.c        **** 2,
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 23
+
+
+ 596:main.c        **** 2,
+ 597:main.c        **** 3,
+ 598:main.c        **** 3,
+ 599:main.c        **** 0,
+ 600:main.c        **** 0,
+ 601:main.c        **** 0,
+ 602:main.c        **** 3,
+ 603:main.c        **** 3,
+ 604:main.c        **** 3,
+ 605:main.c        **** 1,
+ 606:main.c        **** 1,
+ 607:main.c        **** 2,
+ 608:main.c        **** 2,
+ 609:main.c        **** 2,
+ 610:main.c        **** 0,
+ 611:main.c        **** 0,
+ 612:main.c        **** 1,
+ 613:main.c        **** 1,
+ 614:main.c        **** 1,
+ 615:main.c        **** 0,
+ 616:main.c        **** 0,
+ 617:main.c        **** 0,
+ 618:main.c        **** 0,
+ 619:main.c        **** 0,
+ 620:main.c        **** -1,
+ 621:main.c        **** -1 };
+ 622:main.c        **** 
+ 623:main.c        **** int32 min;
+ 624:main.c        **** int32 min_index;
+ 625:main.c        **** float split_position;
+ 626:main.c        **** int32 closest_int;
+ 627:main.c        **** 
+ 628:main.c        **** 
+ 629:main.c        **** /*******************************************************************************
+ 630:main.c        **** * Function Name: main
+ 631:main.c        **** ********************************************************************************
+ 632:main.c        **** * Summary:
+ 633:main.c        **** *  Main function performs following functions:
+ 634:main.c        **** *   1. Starts Character LCD and print project info
+ 635:main.c        **** *   2. Starts SPI Master component
+ 636:main.c        **** *   3. Configures the DMA transfer for RX and TX directions
+ 637:main.c        **** *   4. Displays the results on Character LCD
+ 638:main.c        **** *   
+ 639:main.c        **** * Parameters:
+ 640:main.c        **** *  None.
+ 641:main.c        **** *
+ 642:main.c        **** * Return:
+ 643:main.c        **** *  None.
+ 644:main.c        **** *
+ 645:main.c        **** *******************************************************************************/
+ 646:main.c        **** int main()
+ 647:main.c        **** {
+ 656              		.loc 1 647 0
+ 657              		.cfi_startproc
+ 658              		@ args = 0, pretend = 0, frame = 904
+ 659              		@ frame_needed = 1, uses_anonymous_args = 0
+ 660 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 24
+
+
+ 661              		.cfi_def_cfa_offset 20
+ 662              		.cfi_offset 4, -20
+ 663              		.cfi_offset 5, -16
+ 664              		.cfi_offset 6, -12
+ 665              		.cfi_offset 7, -8
+ 666              		.cfi_offset 14, -4
+ 667 0002 ADF5697D 		sub	sp, sp, #932
+ 668              		.cfi_def_cfa_offset 952
+ 669 0006 06AF     		add	r7, sp, #24
+ 670              		.cfi_def_cfa 7, 928
+ 648:main.c        ****     uint8 i = 0;
+ 671              		.loc 1 648 0
+ 672 0008 0023     		movs	r3, #0
+ 673 000a 87F88733 		strb	r3, [r7, #903]
+ 649:main.c        ****     uint16 j = 0;
+ 674              		.loc 1 649 0
+ 675 000e 0023     		movs	r3, #0
+ 676 0010 A7F88433 		strh	r3, [r7, #900]	@ movhi
+ 650:main.c        ****     struct accel accel_value;
+ 651:main.c        ****     pid_ts position_pid;
+ 652:main.c        ****     CyDelay(200u);
+ 677              		.loc 1 652 0
+ 678 0014 C820     		movs	r0, #200
+ 679 0016 FFF7FEFF 		bl	CyDelay
+ 653:main.c        ****     SPIM_Start();
+ 680              		.loc 1 653 0
+ 681 001a FFF7FEFF 		bl	SPIM_Start
+ 654:main.c        ****     UART_1_Start();
+ 682              		.loc 1 654 0
+ 683 001e FFF7FEFF 		bl	UART_1_Start
+ 655:main.c        ****     //I2C_1_Start();
+ 656:main.c        ****     Timer_1_Start();
+ 684              		.loc 1 656 0
+ 685 0022 FFF7FEFF 		bl	Timer_1_Start
+ 657:main.c        ****     ShiftReg_1_Start();
+ 686              		.loc 1 657 0
+ 687 0026 FFF7FEFF 		bl	ShiftReg_1_Start
+ 658:main.c        ****     Microstep_Write(SIXTEENTH_STEP);
+ 688              		.loc 1 658 0
+ 689 002a 0720     		movs	r0, #7
+ 690 002c FFF7FEFF 		bl	Microstep_Write
+ 659:main.c        **** 
+ 660:main.c        ****     ADC_DelSig_1_Start();
+ 691              		.loc 1 660 0
+ 692 0030 FFF7FEFF 		bl	ADC_DelSig_1_Start
+ 661:main.c        ****     ADC_DelSig_1_StartConvert();
+ 693              		.loc 1 661 0
+ 694 0034 FFF7FEFF 		bl	ADC_DelSig_1_StartConvert
+ 662:main.c        ****     StepDir_Start();
+ 695              		.loc 1 662 0
+ 696 0038 FFF7FEFF 		bl	StepDir_Start
+ 663:main.c        ****     StepDir_Stop();
+ 697              		.loc 1 663 0
+ 698 003c FFF7FEFF 		bl	StepDir_Stop
+ 664:main.c        ****     StepDir_WritePeriod(2000000000);
+ 699              		.loc 1 664 0
+ 700 0040 7148     		ldr	r0, .L8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 25
+
+
+ 701 0042 FFF7FEFF 		bl	StepDir_WritePeriod
+ 665:main.c        ****     StepDir_Enable();
+ 702              		.loc 1 665 0
+ 703 0046 FFF7FEFF 		bl	StepDir_Enable
+ 666:main.c        **** 
+ 667:main.c        ****     ACC_Write_buffer[0] = 0x0F;
+ 704              		.loc 1 667 0
+ 705 004a 704B     		ldr	r3, .L8+4
+ 706 004c 0F22     		movs	r2, #15
+ 707 004e 1A70     		strb	r2, [r3]
+ 668:main.c        ****     
+ 669:main.c        ****     read_angle_command |= spiCalcEvenParity(read_angle_command) << 15;
+ 708              		.loc 1 669 0
+ 709 0050 6F4B     		ldr	r3, .L8+8
+ 710 0052 1B88     		ldrh	r3, [r3]	@ movhi
+ 711 0054 9BB2     		uxth	r3, r3
+ 712 0056 1846     		mov	r0, r3
+ 713 0058 FFF7FEFF 		bl	spiCalcEvenParity
+ 714 005c 0346     		mov	r3, r0
+ 715 005e DB03     		lsls	r3, r3, #15
+ 716 0060 1AB2     		sxth	r2, r3
+ 717 0062 6B4B     		ldr	r3, .L8+8
+ 718 0064 1B88     		ldrh	r3, [r3]	@ movhi
+ 719 0066 9BB2     		uxth	r3, r3
+ 720 0068 1BB2     		sxth	r3, r3
+ 721 006a 1343     		orrs	r3, r3, r2
+ 722 006c 1BB2     		sxth	r3, r3
+ 723 006e 9AB2     		uxth	r2, r3
+ 724 0070 674B     		ldr	r3, .L8+8
+ 725 0072 1A80     		strh	r2, [r3]	@ movhi
+ 670:main.c        ****     angle = angle_update();
+ 726              		.loc 1 670 0
+ 727 0074 FFF7FEFF 		bl	angle_update
+ 728 0078 0346     		mov	r3, r0
+ 729 007a 1A46     		mov	r2, r3
+ 730 007c 654B     		ldr	r3, .L8+12
+ 731 007e 1A60     		str	r2, [r3]
+ 671:main.c        **** 
+ 672:main.c        ****     PIDConfig(10,0,0,10000,-10000,100,&position_pid);
+ 732              		.loc 1 672 0
+ 733 0080 07F10803 		add	r3, r7, #8
+ 734 0084 0293     		str	r3, [sp, #8]
+ 735 0086 6423     		movs	r3, #100
+ 736 0088 0193     		str	r3, [sp, #4]
+ 737 008a 634B     		ldr	r3, .L8+16
+ 738 008c 0093     		str	r3, [sp]
+ 739 008e 42F21073 		movw	r3, #10000
+ 740 0092 0022     		movs	r2, #0
+ 741 0094 0021     		movs	r1, #0
+ 742 0096 0A20     		movs	r0, #10
+ 743 0098 FFF7FEFF 		bl	PIDConfig
+ 673:main.c        ****     
+ 674:main.c        ****     //SPIM_WriteTxData(read_angle_command);
+ 675:main.c        ****     //accel initializaton
+ 676:main.c        ****     //writeRegister8(0x20,0x07);  //enable all axes
+ 677:main.c        ****     //writeRegister8(0x20, readRegister8(0x20) | (0b0111 << 4)); //400Hz rate
+ 678:main.c        ****     //writeRegister8(0x23, readRegister8(0x23) | (0b00100000));   //+/-8g range
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 26
+
+
+ 679:main.c        ****     
+ 680:main.c        ****     //accel_update(&accel_value);
+ 681:main.c        ****     CyGlobalIntEnable;
+ 744              		.loc 1 681 0
+ 745              		.syntax unified
+ 746              	@ 681 "main.c" 1
+ 747 009c 62B6     		CPSIE   i
+ 748              	@ 0 "" 2
+ 682:main.c        ****     tick_Start();
+ 749              		.loc 1 682 0
+ 750              		.thumb
+ 751              		.syntax unified
+ 752 009e FFF7FEFF 		bl	tick_Start
+ 683:main.c        ****     //angle_electric = axis_update(axis_position,angle_update()) * 3200/16384;
+ 684:main.c        ****     if(ADC_DelSig_1_IsEndConversion(ADC_DelSig_1_WAIT_FOR_RESULT)){
+ 753              		.loc 1 684 0
+ 754 00a2 0020     		movs	r0, #0
+ 755 00a4 FFF7FEFF 		bl	ADC_DelSig_1_IsEndConversion
+ 756 00a8 0346     		mov	r3, r0
+ 757 00aa 002B     		cmp	r3, #0
+ 758 00ac 10D0     		beq	.L2
+ 685:main.c        ****             position_ref_initial = ADC_DelSig_1_GetResult16();
+ 759              		.loc 1 685 0
+ 760 00ae FFF7FEFF 		bl	ADC_DelSig_1_GetResult16
+ 761 00b2 0346     		mov	r3, r0
+ 762 00b4 1A46     		mov	r2, r3
+ 763 00b6 594B     		ldr	r3, .L8+20
+ 764 00b8 1A60     		str	r2, [r3]
+ 686:main.c        ****             position_ref_initial = ((position_ref_initial * 2) - 16384);   
+ 765              		.loc 1 686 0
+ 766 00ba 584B     		ldr	r3, .L8+20
+ 767 00bc 1B68     		ldr	r3, [r3]
+ 768 00be A3F50053 		sub	r3, r3, #8192
+ 769 00c2 5B00     		lsls	r3, r3, #1
+ 770 00c4 554A     		ldr	r2, .L8+20
+ 771 00c6 1360     		str	r3, [r2]
+ 687:main.c        ****             position_ref_old = position_ref_initial;
+ 772              		.loc 1 687 0
+ 773 00c8 544B     		ldr	r3, .L8+20
+ 774 00ca 1B68     		ldr	r3, [r3]
+ 775 00cc 544A     		ldr	r2, .L8+24
+ 776 00ce 1360     		str	r3, [r2]
+ 777              	.L2:
+ 688:main.c        ****     }
+ 689:main.c        **** 
+ 690:main.c        ****     for(;;)
+ 691:main.c        ****     {
+ 692:main.c        ****         if(controller_tick == 1){
+ 778              		.loc 1 692 0
+ 779 00d0 544B     		ldr	r3, .L8+28
+ 780 00d2 1B78     		ldrb	r3, [r3]
+ 781 00d4 DBB2     		uxtb	r3, r3
+ 782 00d6 012B     		cmp	r3, #1
+ 783 00d8 4CD1     		bne	.L3
+ 693:main.c        ****             Microstep_Write(SIXTEENTH_STEP);
+ 784              		.loc 1 693 0
+ 785 00da 0720     		movs	r0, #7
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 27
+
+
+ 786 00dc FFF7FEFF 		bl	Microstep_Write
+ 694:main.c        ****             angle = angle_update();
+ 787              		.loc 1 694 0
+ 788 00e0 FFF7FEFF 		bl	angle_update
+ 789 00e4 0346     		mov	r3, r0
+ 790 00e6 1A46     		mov	r2, r3
+ 791 00e8 4A4B     		ldr	r3, .L8+12
+ 792 00ea 1A60     		str	r2, [r3]
+ 695:main.c        **** 
+ 696:main.c        ****             controller_tick = 0;
+ 793              		.loc 1 696 0
+ 794 00ec 4D4B     		ldr	r3, .L8+28
+ 795 00ee 0022     		movs	r2, #0
+ 796 00f0 1A70     		strb	r2, [r3]
+ 697:main.c        ****            
+ 698:main.c        ****             torque_command = PID(axis_position_filtered_2,position_ref,0,&position_pid);
+ 797              		.loc 1 698 0
+ 798 00f2 4D4B     		ldr	r3, .L8+32
+ 799 00f4 1868     		ldr	r0, [r3]
+ 800 00f6 4D4B     		ldr	r3, .L8+36
+ 801 00f8 1968     		ldr	r1, [r3]
+ 802 00fa 07F10803 		add	r3, r7, #8
+ 803 00fe 0022     		movs	r2, #0
+ 804 0100 FFF7FEFF 		bl	PID
+ 805 0104 0246     		mov	r2, r0
+ 806 0106 4A4B     		ldr	r3, .L8+40
+ 807 0108 1A60     		str	r2, [r3]
+ 699:main.c        ****             
+ 700:main.c        ****             torque_command = 0;
+ 808              		.loc 1 700 0
+ 809 010a 494B     		ldr	r3, .L8+40
+ 810 010c 0022     		movs	r2, #0
+ 811 010e 1A60     		str	r2, [r3]
+ 701:main.c        ****             
+ 702:main.c        ****             sprintf(transmit_buff,"%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld\n",position_pid.input,position_p
+ 812              		.loc 1 702 0
+ 813 0110 07F10803 		add	r3, r7, #8
+ 814 0114 1868     		ldr	r0, [r3]
+ 815 0116 07F10803 		add	r3, r7, #8
+ 816 011a 5D68     		ldr	r5, [r3, #4]
+ 817 011c 07F10803 		add	r3, r7, #8
+ 818 0120 9A68     		ldr	r2, [r3, #8]
+ 819 0122 07F10803 		add	r3, r7, #8
+ 820 0126 03F12804 		add	r4, r3, #40
+ 821 012a D4E90034 		ldrd	r3, [r4]
+ 822 012e 1E46     		mov	r6, r3
+ 823 0130 07F10803 		add	r3, r7, #8
+ 824 0134 03F13004 		add	r4, r3, #48
+ 825 0138 D4E90034 		ldrd	r3, [r4]
+ 826 013c 7B60     		str	r3, [r7, #4]
+ 827 013e 07F10803 		add	r3, r7, #8
+ 828 0142 03F13804 		add	r4, r3, #56
+ 829 0146 D4E90034 		ldrd	r3, [r4]
+ 830 014a 1C46     		mov	r4, r3
+ 831 014c 394B     		ldr	r3, .L8+44
+ 832 014e 1B68     		ldr	r3, [r3]
+ 833 0150 3949     		ldr	r1, .L8+48
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 28
+
+
+ 834 0152 0968     		ldr	r1, [r1]
+ 835 0154 0591     		str	r1, [sp, #20]
+ 836 0156 0493     		str	r3, [sp, #16]
+ 837 0158 0394     		str	r4, [sp, #12]
+ 838 015a 7B68     		ldr	r3, [r7, #4]
+ 839 015c 0293     		str	r3, [sp, #8]
+ 840 015e 0196     		str	r6, [sp, #4]
+ 841 0160 0092     		str	r2, [sp]
+ 842 0162 2B46     		mov	r3, r5
+ 843 0164 0246     		mov	r2, r0
+ 844 0166 3549     		ldr	r1, .L8+52
+ 845 0168 3548     		ldr	r0, .L8+56
+ 846 016a FFF7FEFF 		bl	sprintf
+ 703:main.c        ****             UART_1_PutString(transmit_buff);
+ 847              		.loc 1 703 0
+ 848 016e 3448     		ldr	r0, .L8+56
+ 849 0170 FFF7FEFF 		bl	UART_1_PutString
+ 850              	.L3:
+ 704:main.c        ****             
+ 705:main.c        ****         }
+ 706:main.c        ****         //accel_update(&accel_value);
+ 707:main.c        ****         //angle = angle_update();
+ 708:main.c        ****         //axis_position = axis_update(axis_position,angle);
+ 709:main.c        ****         
+ 710:main.c        ****         
+ 711:main.c        ****         
+ 712:main.c        ****         if(ADC_DelSig_1_IsEndConversion(ADC_DelSig_1_WAIT_FOR_RESULT)){
+ 851              		.loc 1 712 0
+ 852 0174 0020     		movs	r0, #0
+ 853 0176 FFF7FEFF 		bl	ADC_DelSig_1_IsEndConversion
+ 854 017a 0346     		mov	r3, r0
+ 855 017c 002B     		cmp	r3, #0
+ 856 017e 0CD0     		beq	.L4
+ 713:main.c        ****             position_ref = ADC_DelSig_1_GetResult16();
+ 857              		.loc 1 713 0
+ 858 0180 FFF7FEFF 		bl	ADC_DelSig_1_GetResult16
+ 859 0184 0346     		mov	r3, r0
+ 860 0186 1A46     		mov	r2, r3
+ 861 0188 284B     		ldr	r3, .L8+36
+ 862 018a 1A60     		str	r2, [r3]
+ 714:main.c        ****             position_ref = ((position_ref * 2) - 16384);   
+ 863              		.loc 1 714 0
+ 864 018c 274B     		ldr	r3, .L8+36
+ 865 018e 1B68     		ldr	r3, [r3]
+ 866 0190 A3F50053 		sub	r3, r3, #8192
+ 867 0194 5B00     		lsls	r3, r3, #1
+ 868 0196 254A     		ldr	r2, .L8+36
+ 869 0198 1360     		str	r3, [r2]
+ 870              	.L4:
+ 715:main.c        ****         }
+ 716:main.c        ****         position_ref = (99 * position_ref_old + 1 * position_ref) / 100;
+ 871              		.loc 1 716 0
+ 872 019a 214B     		ldr	r3, .L8+24
+ 873 019c 1A68     		ldr	r2, [r3]
+ 874 019e 1346     		mov	r3, r2
+ 875 01a0 5B00     		lsls	r3, r3, #1
+ 876 01a2 1344     		add	r3, r3, r2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 29
+
+
+ 877 01a4 5A01     		lsls	r2, r3, #5
+ 878 01a6 1A44     		add	r2, r2, r3
+ 879 01a8 204B     		ldr	r3, .L8+36
+ 880 01aa 1B68     		ldr	r3, [r3]
+ 881 01ac 1344     		add	r3, r3, r2
+ 882 01ae 254A     		ldr	r2, .L8+60
+ 883 01b0 82FB0312 		smull	r1, r2, r2, r3
+ 884 01b4 5211     		asrs	r2, r2, #5
+ 885 01b6 DB17     		asrs	r3, r3, #31
+ 886 01b8 D31A     		subs	r3, r2, r3
+ 887 01ba 1C4A     		ldr	r2, .L8+36
+ 888 01bc 1360     		str	r3, [r2]
+ 717:main.c        ****         position_ref_old = position_ref;
+ 889              		.loc 1 717 0
+ 890 01be 1B4B     		ldr	r3, .L8+36
+ 891 01c0 1B68     		ldr	r3, [r3]
+ 892 01c2 174A     		ldr	r2, .L8+24
+ 893 01c4 1360     		str	r3, [r2]
+ 718:main.c        ****         
+ 719:main.c        ****         if(position_ref > (16384*2-100)){
+ 894              		.loc 1 719 0
+ 895 01c6 194B     		ldr	r3, .L8+36
+ 896 01c8 1B68     		ldr	r3, [r3]
+ 897 01ca 47F69C72 		movw	r2, #32668
+ 898 01ce 9342     		cmp	r3, r2
+ 899 01d0 04DD     		ble	.L5
+ 720:main.c        ****             position_ref = 16384*2 - 100;
+ 900              		.loc 1 720 0
+ 901 01d2 164B     		ldr	r3, .L8+36
+ 902 01d4 47F69C72 		movw	r2, #32668
+ 903 01d8 1A60     		str	r2, [r3]
+ 904 01da 07E0     		b	.L6
+ 905              	.L5:
+ 721:main.c        ****         }
+ 722:main.c        ****         else if(position_ref < (-16384*2+100)){
+ 906              		.loc 1 722 0
+ 907 01dc 134B     		ldr	r3, .L8+36
+ 908 01de 1B68     		ldr	r3, [r3]
+ 909 01e0 194A     		ldr	r2, .L8+64
+ 910 01e2 9342     		cmp	r3, r2
+ 911 01e4 02DA     		bge	.L6
+ 723:main.c        ****             position_ref = -16384*2+100;
+ 912              		.loc 1 723 0
+ 913 01e6 114B     		ldr	r3, .L8+36
+ 914 01e8 174A     		ldr	r2, .L8+64
+ 915 01ea 1A60     		str	r2, [r3]
+ 916              	.L6:
+ 724:main.c        ****         }
+ 725:main.c        ****         else{
+ 726:main.c        ****             
+ 727:main.c        ****         }
+ 728:main.c        **** //        if(position_ref > 100){
+ 729:main.c        **** //            position_ref = 40000;  
+ 730:main.c        **** //        }
+ 731:main.c        **** //        else if(position_ref < -100){
+ 732:main.c        **** //            position_ref = 0;
+ 733:main.c        **** //        }
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 30
+
+
+ 734:main.c        **** 
+ 735:main.c        **** 
+ 736:main.c        ****         
+ 737:main.c        ****         //full step calibration map
+ 738:main.c        ****         switch_val = sw1_read_Read();
+ 917              		.loc 1 738 0
+ 918 01ec FFF7FEFF 		bl	sw1_read_Read
+ 919 01f0 0346     		mov	r3, r0
+ 920 01f2 1A46     		mov	r2, r3
+ 921 01f4 154B     		ldr	r3, .L8+68
+ 922 01f6 1A70     		strb	r2, [r3]
+ 739:main.c        ****         if(switch_val == 0 && switch_old == 1){
+ 923              		.loc 1 739 0
+ 924 01f8 144B     		ldr	r3, .L8+68
+ 925 01fa 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 926 01fc 002B     		cmp	r3, #0
+ 740:main.c        **** //            Direction_Write(1);
+ 741:main.c        **** //    	    Microstep_Write(FULL_STEP);
+ 742:main.c        **** //            Step_reg_Write(0);
+ 743:main.c        **** //            Step_reg_Write(2);
+ 744:main.c        **** //            CyDelay(2);
+ 745:main.c        **** //            Step_reg_Write(0);
+ 746:main.c        **** //            CyDelay(100);
+ 747:main.c        **** //            Direction_Write(0);
+ 748:main.c        **** //    	    Microstep_Write(FULL_STEP);
+ 749:main.c        **** //            Step_reg_Write(0);
+ 750:main.c        **** //            Step_reg_Write(2);
+ 751:main.c        **** //            CyDelay(2);
+ 752:main.c        **** //            Step_reg_Write(0);
+ 753:main.c        **** //            CyDelay(100);
+ 754:main.c        **** //            for(j = 0; j < 200; j++){
+ 755:main.c        **** //    			//increment one full step
+ 756:main.c        **** //    			//wait for 500ms
+ 757:main.c        **** //    			//take 10 readings, average, output to uart
+ 758:main.c        **** //    			//increment step count
+ 759:main.c        **** //                Direction_Write(1);
+ 760:main.c        **** //    			Microstep_Write(SIXTEENTH_STEP);
+ 761:main.c        **** //                for(i = 0; i < 16; i++){
+ 762:main.c        **** //                    Step_reg_Write(0);
+ 763:main.c        **** //                    CyDelay(2);
+ 764:main.c        **** //                    Step_reg_Write(2);
+ 765:main.c        **** //                    CyDelay(2);
+ 766:main.c        **** //                }
+ 767:main.c        **** //    			CyDelay(100);
+ 768:main.c        **** //
+ 769:main.c        **** //                //flush old angle
+ 770:main.c        **** //                CyDelay(10);
+ 771:main.c        **** //                angle_sum = angle_update();
+ 772:main.c        **** //                CyDelay(10);
+ 773:main.c        **** //                angle_sum = angle_update();
+ 774:main.c        **** //                CyDelay(10);
+ 775:main.c        **** //    			angle_sum = 0;
+ 776:main.c        **** //    			for(i = 0; i < 100; i++){
+ 777:main.c        **** //                    angle = angle_update();
+ 778:main.c        **** //    				angle_sum = angle_sum + angle;
+ 779:main.c        **** //                    //sprintf(transmit_buff,"i = %d, angle_sum = %ld \n",i,angle);
+ 780:main.c        **** //                    //UART_1_PutString(transmit_buff);
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 31
+
+
+ 781:main.c        **** //    				CyDelay(1);
+ 782:main.c        **** //    			}
+ 783:main.c        **** //    			angle = angle_sum / 100;
+ 784:main.c        **** //                fullstepMap[j] = angle;
+ 785:main.c        **** //                //sprintf(transmit_buff,"%d,%ld\n",step_count,angle);
+ 786:main.c        **** //                //UART_1_PutString(transmit_buff);
+ 787:main.c        **** //                step_count++;
+ 788:main.c        **** //            }
+ 789:main.c        **** //            //linearization map
+ 790:main.c        **** //            //rotate fullstepMap array to be from low to high
+ 791:main.c        **** //            min = fullstepMap[0];
+ 792:main.c        **** //            for(j = 0; j < 200; j++){
+ 793:main.c        **** //                if(fullstepMap[j] < min){
+ 794:main.c        **** //                    min = fullstepMap[j];
+ 795:main.c        **** //                    min_index = j;
+ 796:main.c        **** //                }
+ 797:main.c        **** //            }
+ 798:main.c        **** //            for(j = 0; j < 200; j++){
+ 799:main.c        **** //                fullstepMapSorted[j] = fullstepMap[(j+min_index)%200];
+ 800:main.c        **** //                fullstepMapSorted[j] = (min + 1.8 * j * 16384.0 / 360.0) - fullstepMapSorted[j];
+ 801:main.c        **** //                sprintf(transmit_buff,"%ld,\n",fullstepMapSorted[j]);
+ 802:main.c        **** //                UART_1_PutString(transmit_buff);
+ 803:main.c        **** //            }
+ 804:main.c        **** //            for(j = 0; j < 512; j++){
+ 805:main.c        **** //                //dont bother with trying to interpolate some strange way
+ 806:main.c        **** //                //upsample by 256, downsample by 100
+ 807:main.c        **** //                //128 50
+ 808:main.c        **** //                //64 25
+ 809:main.c        **** //                //could do this by scaling points
+ 810:main.c        **** //                //what does the upsample look like?
+ 811:main.c        **** //                //for(j = 0; j < 12800; j++){
+ 812:main.c        **** //                //    upsample[j] = og[(j*25)/64] + ((og[(j*25)/64 + 1] - og[(j*25)/64]) * ((j*25
+ 813:main.c        **** //                //}
+ 814:main.c        **** //                //offsetMap[j] = upsample[j*25]
+ 815:main.c        **** //                //if j < 507
+ 816:main.c        **** //                offsetMap[j] = fullstepMapSorted[j*25/64];
+ 817:main.c        **** //                sprintf(transmit_buff,"%d,%ld\n",j,offsetMap[j]);
+ 818:main.c        **** //                UART_1_PutString(transmit_buff);
+ 819:main.c        **** //                //else offsetMap[j] = offsetMap[506]
+ 820:main.c        **** //            }
+ 821:main.c        **** //            //sprintf(transmit_buff,"int32 offsetMap[512] = {");
+ 822:main.c        **** //            //UART_1_PutString(transmit_buff);
+ 823:main.c        **** //            //for(j = 0; j < 511; j++){
+ 824:main.c        **** //            //    sprintf(transmit_buff,"%ld,\n",offsetMap[j]);   
+ 825:main.c        **** //            //    UART_1_PutString(transmit_buff);
+ 826:main.c        **** //            //}
+ 827:main.c        **** //            //sprintf(transmit_buff,"%ld };",offsetMap[511]);
+ 828:main.c        **** //            //UART_1_PutString(transmit_buff);
+ 829:main.c        ****         }
+ 830:main.c        ****         
+ 831:main.c        ****         switch_old = switch_val;
+ 927              		.loc 1 831 0
+ 928 01fe 134B     		ldr	r3, .L8+68
+ 929 0200 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 930 0202 134B     		ldr	r3, .L8+72
+ 931 0204 1A70     		strb	r2, [r3]
+ 832:main.c        **** //        sprintf(transmit_buff,"%ld\n",angle_update());
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 32
+
+
+ 833:main.c        **** //        UART_1_PutString(transmit_buff);
+ 834:main.c        **** //        ShiftReg_1_Stop();
+ 835:main.c        **** //        ShiftReg_1_WriteRegValue(0x00AA);
+ 836:main.c        **** //        ShiftReg_1_Enable();
+ 837:main.c        **** 
+ 838:main.c        ****     }
+ 932              		.loc 1 838 0
+ 933 0206 63E7     		b	.L2
+ 934              	.L9:
+ 935              		.align	2
+ 936              	.L8:
+ 937 0208 00943577 		.word	2000000000
+ 938 020c 00000000 		.word	ACC_Write_buffer
+ 939 0210 00000000 		.word	read_angle_command
+ 940 0214 00000000 		.word	angle
+ 941 0218 F0D8FFFF 		.word	-10000
+ 942 021c 00000000 		.word	position_ref_initial
+ 943 0220 00000000 		.word	position_ref_old
+ 944 0224 00000000 		.word	controller_tick
+ 945 0228 00000000 		.word	axis_position_filtered_2
+ 946 022c 00000000 		.word	position_ref
+ 947 0230 00000000 		.word	torque_command
+ 948 0234 00000000 		.word	angle_diff
+ 949 0238 00000000 		.word	lead_angle
+ 950 023c 00000000 		.word	.LC0
+ 951 0240 00000000 		.word	transmit_buff
+ 952 0244 1F85EB51 		.word	1374389535
+ 953 0248 6480FFFF 		.word	-32668
+ 954 024c 00000000 		.word	switch_val
+ 955 0250 00000000 		.word	switch_old
+ 956              		.cfi_endproc
+ 957              	.LFE64:
+ 958              		.size	main, .-main
+ 959              		.section	.text.spiCalcEvenParity,"ax",%progbits
+ 960              		.align	2
+ 961              		.global	spiCalcEvenParity
+ 962              		.thumb
+ 963              		.thumb_func
+ 964              		.type	spiCalcEvenParity, %function
+ 965              	spiCalcEvenParity:
+ 966              	.LFB65:
+ 839:main.c        **** }
+ 840:main.c        **** 
+ 841:main.c        **** uint8 spiCalcEvenParity(uint16 value)
+ 842:main.c        **** {
+ 967              		.loc 1 842 0
+ 968              		.cfi_startproc
+ 969              		@ args = 0, pretend = 0, frame = 16
+ 970              		@ frame_needed = 1, uses_anonymous_args = 0
+ 971              		@ link register save eliminated.
+ 972 0000 80B4     		push	{r7}
+ 973              		.cfi_def_cfa_offset 4
+ 974              		.cfi_offset 7, -4
+ 975 0002 85B0     		sub	sp, sp, #20
+ 976              		.cfi_def_cfa_offset 24
+ 977 0004 00AF     		add	r7, sp, #0
+ 978              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 33
+
+
+ 979 0006 0346     		mov	r3, r0
+ 980 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 843:main.c        ****     uint8 cnt = 0;
+ 981              		.loc 1 843 0
+ 982 000a 0023     		movs	r3, #0
+ 983 000c FB73     		strb	r3, [r7, #15]
+ 844:main.c        ****     uint8 i;
+ 845:main.c        ****     for (i = 0; i < 16; i++)
+ 984              		.loc 1 845 0
+ 985 000e 0023     		movs	r3, #0
+ 986 0010 BB73     		strb	r3, [r7, #14]
+ 987 0012 0DE0     		b	.L11
+ 988              	.L13:
+ 846:main.c        ****     {
+ 847:main.c        ****         if (value & 0x1)
+ 989              		.loc 1 847 0
+ 990 0014 FB88     		ldrh	r3, [r7, #6]
+ 991 0016 03F00103 		and	r3, r3, #1
+ 992 001a 002B     		cmp	r3, #0
+ 993 001c 02D0     		beq	.L12
+ 848:main.c        ****         {
+ 849:main.c        ****         cnt++;
+ 994              		.loc 1 849 0
+ 995 001e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 996 0020 0133     		adds	r3, r3, #1
+ 997 0022 FB73     		strb	r3, [r7, #15]
+ 998              	.L12:
+ 850:main.c        ****         }
+ 851:main.c        ****     value >>= 1;
+ 999              		.loc 1 851 0 discriminator 2
+ 1000 0024 FB88     		ldrh	r3, [r7, #6]
+ 1001 0026 5B08     		lsrs	r3, r3, #1
+ 1002 0028 FB80     		strh	r3, [r7, #6]	@ movhi
+ 845:main.c        ****     {
+ 1003              		.loc 1 845 0 discriminator 2
+ 1004 002a BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1005 002c 0133     		adds	r3, r3, #1
+ 1006 002e BB73     		strb	r3, [r7, #14]
+ 1007              	.L11:
+ 845:main.c        ****     {
+ 1008              		.loc 1 845 0 is_stmt 0 discriminator 1
+ 1009 0030 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1010 0032 0F2B     		cmp	r3, #15
+ 1011 0034 EED9     		bls	.L13
+ 852:main.c        ****     }
+ 853:main.c        ****     return cnt & 0x1;
+ 1012              		.loc 1 853 0 is_stmt 1
+ 1013 0036 FB7B     		ldrb	r3, [r7, #15]
+ 1014 0038 03F00103 		and	r3, r3, #1
+ 1015 003c DBB2     		uxtb	r3, r3
+ 854:main.c        **** }
+ 1016              		.loc 1 854 0
+ 1017 003e 1846     		mov	r0, r3
+ 1018 0040 1437     		adds	r7, r7, #20
+ 1019              		.cfi_def_cfa_offset 4
+ 1020 0042 BD46     		mov	sp, r7
+ 1021              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 34
+
+
+ 1022              		@ sp needed
+ 1023 0044 80BC     		pop	{r7}
+ 1024              		.cfi_restore 7
+ 1025              		.cfi_def_cfa_offset 0
+ 1026 0046 7047     		bx	lr
+ 1027              		.cfi_endproc
+ 1028              	.LFE65:
+ 1029              		.size	spiCalcEvenParity, .-spiCalcEvenParity
+ 1030              		.section	.text.writeRegister8,"ax",%progbits
+ 1031              		.align	2
+ 1032              		.global	writeRegister8
+ 1033              		.thumb
+ 1034              		.thumb_func
+ 1035              		.type	writeRegister8, %function
+ 1036              	writeRegister8:
+ 1037              	.LFB66:
+ 855:main.c        **** 
+ 856:main.c        **** void writeRegister8(uint8 reg, uint8 val){
+ 1038              		.loc 1 856 0
+ 1039              		.cfi_startproc
+ 1040              		@ args = 0, pretend = 0, frame = 8
+ 1041              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1042 0000 80B5     		push	{r7, lr}
+ 1043              		.cfi_def_cfa_offset 8
+ 1044              		.cfi_offset 7, -8
+ 1045              		.cfi_offset 14, -4
+ 1046 0002 82B0     		sub	sp, sp, #8
+ 1047              		.cfi_def_cfa_offset 16
+ 1048 0004 00AF     		add	r7, sp, #0
+ 1049              		.cfi_def_cfa_register 7
+ 1050 0006 0346     		mov	r3, r0
+ 1051 0008 0A46     		mov	r2, r1
+ 1052 000a FB71     		strb	r3, [r7, #7]
+ 1053 000c 1346     		mov	r3, r2
+ 1054 000e BB71     		strb	r3, [r7, #6]
+ 857:main.c        ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_WRITE_XFER_MODE);
+ 1055              		.loc 1 857 0
+ 1056 0010 0021     		movs	r1, #0
+ 1057 0012 1820     		movs	r0, #24
+ 1058 0014 FFF7FEFF 		bl	I2C_1_MasterSendStart
+ 858:main.c        ****     I2C_1_MasterWriteByte(reg);
+ 1059              		.loc 1 858 0
+ 1060 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1061 001a 1846     		mov	r0, r3
+ 1062 001c FFF7FEFF 		bl	I2C_1_MasterWriteByte
+ 859:main.c        ****     I2C_1_MasterWriteByte(val);    //enable all axes, normal mode
+ 1063              		.loc 1 859 0
+ 1064 0020 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1065 0022 1846     		mov	r0, r3
+ 1066 0024 FFF7FEFF 		bl	I2C_1_MasterWriteByte
+ 860:main.c        ****     I2C_1_MasterSendStop();
+ 1067              		.loc 1 860 0
+ 1068 0028 FFF7FEFF 		bl	I2C_1_MasterSendStop
+ 861:main.c        **** }
+ 1069              		.loc 1 861 0
+ 1070 002c 00BF     		nop
+ 1071 002e 0837     		adds	r7, r7, #8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 35
+
+
+ 1072              		.cfi_def_cfa_offset 8
+ 1073 0030 BD46     		mov	sp, r7
+ 1074              		.cfi_def_cfa_register 13
+ 1075              		@ sp needed
+ 1076 0032 80BD     		pop	{r7, pc}
+ 1077              		.cfi_endproc
+ 1078              	.LFE66:
+ 1079              		.size	writeRegister8, .-writeRegister8
+ 1080              		.section	.text.readRegister8,"ax",%progbits
+ 1081              		.align	2
+ 1082              		.global	readRegister8
+ 1083              		.thumb
+ 1084              		.thumb_func
+ 1085              		.type	readRegister8, %function
+ 1086              	readRegister8:
+ 1087              	.LFB67:
+ 862:main.c        **** 
+ 863:main.c        **** uint8 readRegister8(uint8 reg){
+ 1088              		.loc 1 863 0
+ 1089              		.cfi_startproc
+ 1090              		@ args = 0, pretend = 0, frame = 16
+ 1091              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1092 0000 80B5     		push	{r7, lr}
+ 1093              		.cfi_def_cfa_offset 8
+ 1094              		.cfi_offset 7, -8
+ 1095              		.cfi_offset 14, -4
+ 1096 0002 84B0     		sub	sp, sp, #16
+ 1097              		.cfi_def_cfa_offset 24
+ 1098 0004 00AF     		add	r7, sp, #0
+ 1099              		.cfi_def_cfa_register 7
+ 1100 0006 0346     		mov	r3, r0
+ 1101 0008 FB71     		strb	r3, [r7, #7]
+ 864:main.c        ****     uint8 read;
+ 865:main.c        ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_WRITE_XFER_MODE);
+ 1102              		.loc 1 865 0
+ 1103 000a 0021     		movs	r1, #0
+ 1104 000c 1820     		movs	r0, #24
+ 1105 000e FFF7FEFF 		bl	I2C_1_MasterSendStart
+ 866:main.c        ****     I2C_1_MasterWriteByte(reg);
+ 1106              		.loc 1 866 0
+ 1107 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1108 0014 1846     		mov	r0, r3
+ 1109 0016 FFF7FEFF 		bl	I2C_1_MasterWriteByte
+ 867:main.c        ****     I2C_1_MasterSendStop();
+ 1110              		.loc 1 867 0
+ 1111 001a FFF7FEFF 		bl	I2C_1_MasterSendStop
+ 868:main.c        ****     
+ 869:main.c        ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_READ_XFER_MODE);
+ 1112              		.loc 1 869 0
+ 1113 001e 0121     		movs	r1, #1
+ 1114 0020 1820     		movs	r0, #24
+ 1115 0022 FFF7FEFF 		bl	I2C_1_MasterSendStart
+ 870:main.c        ****     read = I2C_1_MasterReadByte(I2C_1_NAK_DATA);
+ 1116              		.loc 1 870 0
+ 1117 0026 0020     		movs	r0, #0
+ 1118 0028 FFF7FEFF 		bl	I2C_1_MasterReadByte
+ 1119 002c 0346     		mov	r3, r0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 36
+
+
+ 1120 002e FB73     		strb	r3, [r7, #15]
+ 871:main.c        ****     I2C_1_MasterSendStop();
+ 1121              		.loc 1 871 0
+ 1122 0030 FFF7FEFF 		bl	I2C_1_MasterSendStop
+ 872:main.c        ****     return read;
+ 1123              		.loc 1 872 0
+ 1124 0034 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 873:main.c        **** }
+ 1125              		.loc 1 873 0
+ 1126 0036 1846     		mov	r0, r3
+ 1127 0038 1037     		adds	r7, r7, #16
+ 1128              		.cfi_def_cfa_offset 8
+ 1129 003a BD46     		mov	sp, r7
+ 1130              		.cfi_def_cfa_register 13
+ 1131              		@ sp needed
+ 1132 003c 80BD     		pop	{r7, pc}
+ 1133              		.cfi_endproc
+ 1134              	.LFE67:
+ 1135              		.size	readRegister8, .-readRegister8
+ 1136 003e 00BF     		.section	.text.axis_update,"ax",%progbits
+ 1137              		.align	2
+ 1138              		.global	axis_update
+ 1139              		.thumb
+ 1140              		.thumb_func
+ 1141              		.type	axis_update, %function
+ 1142              	axis_update:
+ 1143              	.LFB68:
+ 874:main.c        **** 
+ 875:main.c        **** int32 axis_update(int32 axis, int32 angle){
+ 1144              		.loc 1 875 0
+ 1145              		.cfi_startproc
+ 1146              		@ args = 0, pretend = 0, frame = 16
+ 1147              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1148              		@ link register save eliminated.
+ 1149 0000 80B4     		push	{r7}
+ 1150              		.cfi_def_cfa_offset 4
+ 1151              		.cfi_offset 7, -4
+ 1152 0002 85B0     		sub	sp, sp, #20
+ 1153              		.cfi_def_cfa_offset 24
+ 1154 0004 00AF     		add	r7, sp, #0
+ 1155              		.cfi_def_cfa_register 7
+ 1156 0006 7860     		str	r0, [r7, #4]
+ 1157 0008 3960     		str	r1, [r7]
+ 876:main.c        ****     static int32 angle_old;
+ 877:main.c        ****     int32 axis_position;
+ 878:main.c        ****     if(angle - angle_old > 10000){
+ 1158              		.loc 1 878 0
+ 1159 000a 204B     		ldr	r3, .L24
+ 1160 000c 1B68     		ldr	r3, [r3]
+ 1161 000e 3A68     		ldr	r2, [r7]
+ 1162 0010 D31A     		subs	r3, r2, r3
+ 1163 0012 42F21072 		movw	r2, #10000
+ 1164 0016 9342     		cmp	r3, r2
+ 1165 0018 09DD     		ble	.L19
+ 879:main.c        ****         //angle decreasing, crossed over 0
+ 880:main.c        ****         axis_position = axis + (angle - (angle_old + 16384));
+ 1166              		.loc 1 880 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 37
+
+
+ 1167 001a 1C4B     		ldr	r3, .L24
+ 1168 001c 1B68     		ldr	r3, [r3]
+ 1169 001e 03F58043 		add	r3, r3, #16384
+ 1170 0022 3A68     		ldr	r2, [r7]
+ 1171 0024 D21A     		subs	r2, r2, r3
+ 1172 0026 7B68     		ldr	r3, [r7, #4]
+ 1173 0028 1344     		add	r3, r3, r2
+ 1174 002a FB60     		str	r3, [r7, #12]
+ 1175 002c 22E0     		b	.L20
+ 1176              	.L19:
+ 881:main.c        ****     }
+ 882:main.c        ****     else if(angle - angle_old < -10000){
+ 1177              		.loc 1 882 0
+ 1178 002e 174B     		ldr	r3, .L24
+ 1179 0030 1B68     		ldr	r3, [r3]
+ 1180 0032 3A68     		ldr	r2, [r7]
+ 1181 0034 D31A     		subs	r3, r2, r3
+ 1182 0036 164A     		ldr	r2, .L24+4
+ 1183 0038 9342     		cmp	r3, r2
+ 1184 003a 14DA     		bge	.L21
+ 883:main.c        ****         //angle increasing, crossed over 0
+ 884:main.c        ****         axis_position = axis + ((angle - angle_old) + 16384) % 16384;
+ 1185              		.loc 1 884 0
+ 1186 003c 134B     		ldr	r3, .L24
+ 1187 003e 1B68     		ldr	r3, [r3]
+ 1188 0040 3A68     		ldr	r2, [r7]
+ 1189 0042 D31A     		subs	r3, r2, r3
+ 1190 0044 03F58042 		add	r2, r3, #16384
+ 1191 0048 124B     		ldr	r3, .L24+8
+ 1192 004a 1340     		ands	r3, r3, r2
+ 1193 004c 002B     		cmp	r3, #0
+ 1194 004e 05DA     		bge	.L22
+ 1195 0050 013B     		subs	r3, r3, #1
+ 1196 0052 6FEA8343 		mvn	r3, r3, lsl #18
+ 1197 0056 6FEA9343 		mvn	r3, r3, lsr #18
+ 1198 005a 0133     		adds	r3, r3, #1
+ 1199              	.L22:
+ 1200 005c 1A46     		mov	r2, r3
+ 1201 005e 7B68     		ldr	r3, [r7, #4]
+ 1202 0060 1344     		add	r3, r3, r2
+ 1203 0062 FB60     		str	r3, [r7, #12]
+ 1204 0064 06E0     		b	.L20
+ 1205              	.L21:
+ 885:main.c        ****     }
+ 886:main.c        ****     else{
+ 887:main.c        ****         axis_position = axis + angle - angle_old;
+ 1206              		.loc 1 887 0
+ 1207 0066 7A68     		ldr	r2, [r7, #4]
+ 1208 0068 3B68     		ldr	r3, [r7]
+ 1209 006a 1A44     		add	r2, r2, r3
+ 1210 006c 074B     		ldr	r3, .L24
+ 1211 006e 1B68     		ldr	r3, [r3]
+ 1212 0070 D31A     		subs	r3, r2, r3
+ 1213 0072 FB60     		str	r3, [r7, #12]
+ 1214              	.L20:
+ 888:main.c        ****     }
+ 889:main.c        ****     angle_old = angle;
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 38
+
+
+ 1215              		.loc 1 889 0
+ 1216 0074 054A     		ldr	r2, .L24
+ 1217 0076 3B68     		ldr	r3, [r7]
+ 1218 0078 1360     		str	r3, [r2]
+ 890:main.c        ****     angle_old = angle;
+ 1219              		.loc 1 890 0
+ 1220 007a 044A     		ldr	r2, .L24
+ 1221 007c 3B68     		ldr	r3, [r7]
+ 1222 007e 1360     		str	r3, [r2]
+ 891:main.c        ****     return axis;
+ 1223              		.loc 1 891 0
+ 1224 0080 7B68     		ldr	r3, [r7, #4]
+ 892:main.c        **** }
+ 1225              		.loc 1 892 0
+ 1226 0082 1846     		mov	r0, r3
+ 1227 0084 1437     		adds	r7, r7, #20
+ 1228              		.cfi_def_cfa_offset 4
+ 1229 0086 BD46     		mov	sp, r7
+ 1230              		.cfi_def_cfa_register 13
+ 1231              		@ sp needed
+ 1232 0088 80BC     		pop	{r7}
+ 1233              		.cfi_restore 7
+ 1234              		.cfi_def_cfa_offset 0
+ 1235 008a 7047     		bx	lr
+ 1236              	.L25:
+ 1237              		.align	2
+ 1238              	.L24:
+ 1239 008c 20000000 		.word	angle_old.7324
+ 1240 0090 F0D8FFFF 		.word	-10000
+ 1241 0094 FF3F0080 		.word	-2147467265
+ 1242              		.cfi_endproc
+ 1243              	.LFE68:
+ 1244              		.size	axis_update, .-axis_update
+ 1245              		.section	.text.accel_update,"ax",%progbits
+ 1246              		.align	2
+ 1247              		.global	accel_update
+ 1248              		.thumb
+ 1249              		.thumb_func
+ 1250              		.type	accel_update, %function
+ 1251              	accel_update:
+ 1252              	.LFB69:
+ 893:main.c        **** 
+ 894:main.c        **** void accel_update(struct accel * acc_struct){
+ 1253              		.loc 1 894 0
+ 1254              		.cfi_startproc
+ 1255              		@ args = 0, pretend = 0, frame = 8
+ 1256              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1257 0000 80B5     		push	{r7, lr}
+ 1258              		.cfi_def_cfa_offset 8
+ 1259              		.cfi_offset 7, -8
+ 1260              		.cfi_offset 14, -4
+ 1261 0002 82B0     		sub	sp, sp, #8
+ 1262              		.cfi_def_cfa_offset 16
+ 1263 0004 00AF     		add	r7, sp, #0
+ 1264              		.cfi_def_cfa_register 7
+ 1265 0006 7860     		str	r0, [r7, #4]
+ 895:main.c        ****     //acc_struct->accel_x = readRegister8(0x28);
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 39
+
+
+ 896:main.c        ****     //acc_struct->accel_x |= (readRegister8(0x29) << 8);
+ 897:main.c        ****     acc_struct->accel_y = readRegister8(0x2A);
+ 1266              		.loc 1 897 0
+ 1267 0008 2A20     		movs	r0, #42
+ 1268 000a FFF7FEFF 		bl	readRegister8
+ 1269 000e 0346     		mov	r3, r0
+ 1270 0010 1AB2     		sxth	r2, r3
+ 1271 0012 7B68     		ldr	r3, [r7, #4]
+ 1272 0014 5A80     		strh	r2, [r3, #2]	@ movhi
+ 898:main.c        ****     acc_struct->accel_y |= (readRegister8(0x2B) << 8);
+ 1273              		.loc 1 898 0
+ 1274 0016 2B20     		movs	r0, #43
+ 1275 0018 FFF7FEFF 		bl	readRegister8
+ 1276 001c 0346     		mov	r3, r0
+ 1277 001e 1902     		lsls	r1, r3, #8
+ 1278 0020 7B68     		ldr	r3, [r7, #4]
+ 1279 0022 B3F90220 		ldrsh	r2, [r3, #2]
+ 1280 0026 0BB2     		sxth	r3, r1
+ 1281 0028 1343     		orrs	r3, r3, r2
+ 1282 002a 1AB2     		sxth	r2, r3
+ 1283 002c 7B68     		ldr	r3, [r7, #4]
+ 1284 002e 5A80     		strh	r2, [r3, #2]	@ movhi
+ 899:main.c        ****     //acc_struct->accel_z = readRegister8(0x2C);
+ 900:main.c        ****     //acc_struct->accel_z |= (readRegister8(0x2D) << 8);  
+ 901:main.c        ****     return;
+ 1285              		.loc 1 901 0
+ 1286 0030 00BF     		nop
+ 902:main.c        **** }
+ 1287              		.loc 1 902 0
+ 1288 0032 0837     		adds	r7, r7, #8
+ 1289              		.cfi_def_cfa_offset 8
+ 1290 0034 BD46     		mov	sp, r7
+ 1291              		.cfi_def_cfa_register 13
+ 1292              		@ sp needed
+ 1293 0036 80BD     		pop	{r7, pc}
+ 1294              		.cfi_endproc
+ 1295              	.LFE69:
+ 1296              		.size	accel_update, .-accel_update
+ 1297              		.section	.text.angle_update,"ax",%progbits
+ 1298              		.align	2
+ 1299              		.global	angle_update
+ 1300              		.thumb
+ 1301              		.thumb_func
+ 1302              		.type	angle_update, %function
+ 1303              	angle_update:
+ 1304              	.LFB70:
+ 903:main.c        **** 
+ 904:main.c        **** uint32 angle_update(void){
+ 1305              		.loc 1 904 0
+ 1306              		.cfi_startproc
+ 1307              		@ args = 0, pretend = 0, frame = 0
+ 1308              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1309              		@ link register save eliminated.
+ 1310 0000 80B4     		push	{r7}
+ 1311              		.cfi_def_cfa_offset 4
+ 1312              		.cfi_offset 7, -4
+ 1313 0002 00AF     		add	r7, sp, #0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 40
+
+
+ 1314              		.cfi_def_cfa_register 7
+ 905:main.c        ****     //int32 angle;
+ 906:main.c        ****     //SPIM_WriteTxData(read_angle_command);
+ 907:main.c        ****     //if(SPIM_GetRxBufferSize() != 0){
+ 908:main.c        ****     //    angle = SPIM_ReadRxData() & 0x3FFF; //((SPIM_ReadRxData() & 0x3FFF) * 3600)/16384;
+ 909:main.c        ****     //}
+ 910:main.c        ****     return angle;
+ 1315              		.loc 1 910 0
+ 1316 0004 024B     		ldr	r3, .L30
+ 1317 0006 1B68     		ldr	r3, [r3]
+ 911:main.c        **** }
+ 1318              		.loc 1 911 0
+ 1319 0008 1846     		mov	r0, r3
+ 1320 000a BD46     		mov	sp, r7
+ 1321              		.cfi_def_cfa_register 13
+ 1322              		@ sp needed
+ 1323 000c 80BC     		pop	{r7}
+ 1324              		.cfi_restore 7
+ 1325              		.cfi_def_cfa_offset 0
+ 1326 000e 7047     		bx	lr
+ 1327              	.L31:
+ 1328              		.align	2
+ 1329              	.L30:
+ 1330 0010 00000000 		.word	angle
+ 1331              		.cfi_endproc
+ 1332              	.LFE70:
+ 1333              		.size	angle_update, .-angle_update
+ 1334              		.section	.text.accel_offset_update,"ax",%progbits
+ 1335              		.align	2
+ 1336              		.global	accel_offset_update
+ 1337              		.thumb
+ 1338              		.thumb_func
+ 1339              		.type	accel_offset_update, %function
+ 1340              	accel_offset_update:
+ 1341              	.LFB71:
+ 912:main.c        **** 
+ 913:main.c        **** void accel_offset_update(struct accel * acc_struct){
+ 1342              		.loc 1 913 0
+ 1343              		.cfi_startproc
+ 1344              		@ args = 0, pretend = 0, frame = 8
+ 1345              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1346              		@ link register save eliminated.
+ 1347 0000 80B4     		push	{r7}
+ 1348              		.cfi_def_cfa_offset 4
+ 1349              		.cfi_offset 7, -4
+ 1350 0002 83B0     		sub	sp, sp, #12
+ 1351              		.cfi_def_cfa_offset 16
+ 1352 0004 00AF     		add	r7, sp, #0
+ 1353              		.cfi_def_cfa_register 7
+ 1354 0006 7860     		str	r0, [r7, #4]
+ 914:main.c        ****     
+ 915:main.c        **** //    acc_struct->x_sum -= acc_struct->x_buffer[acc_struct->x_index];
+ 916:main.c        **** //    acc_struct->x_buffer[acc_struct->x_index] = acc_struct->accel_x;
+ 917:main.c        **** //    acc_struct->x_sum += acc_struct->x_buffer[acc_struct->x_index];
+ 918:main.c        **** //    acc_struct->x_index = (acc_struct->x_index + 1) % 128;
+ 919:main.c        **** //    acc_struct->x_offset = acc_struct->x_sum / 128;
+ 920:main.c        **** //    
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 41
+
+
+ 921:main.c        **** //    acc_struct->y_sum -= acc_struct->y_buffer[acc_struct->y_index];
+ 922:main.c        **** //    acc_struct->y_buffer[acc_struct->y_index] = acc_struct->accel_y;
+ 923:main.c        **** //    acc_struct->y_sum += acc_struct->y_buffer[acc_struct->y_index];
+ 924:main.c        **** //    acc_struct->y_index = (acc_struct->y_index + 1) % 128;
+ 925:main.c        **** //    acc_struct->y_offset = acc_struct->y_sum / 128;
+ 926:main.c        **** //    
+ 927:main.c        **** //    acc_struct->z_sum -= acc_struct->z_buffer[acc_struct->z_index];
+ 928:main.c        **** //    acc_struct->z_buffer[acc_struct->z_index] = acc_struct->accel_z;
+ 929:main.c        **** //    acc_struct->z_sum += acc_struct->z_buffer[acc_struct->z_index];
+ 930:main.c        **** //    acc_struct->z_index = (acc_struct->z_index + 1) % 128;
+ 931:main.c        **** //    acc_struct->z_offset = acc_struct->z_sum / 128;
+ 932:main.c        ****     acc_struct->y_offset = (acc_struct->y_offset * 120 + acc_struct->accel_y * 8)/128;
+ 1355              		.loc 1 932 0
+ 1356 0008 7B68     		ldr	r3, [r7, #4]
+ 1357 000a B3F90830 		ldrsh	r3, [r3, #8]
+ 1358 000e 1A46     		mov	r2, r3
+ 1359 0010 1346     		mov	r3, r2
+ 1360 0012 1B01     		lsls	r3, r3, #4
+ 1361 0014 9B1A     		subs	r3, r3, r2
+ 1362 0016 7A68     		ldr	r2, [r7, #4]
+ 1363 0018 B2F90220 		ldrsh	r2, [r2, #2]
+ 1364 001c 1344     		add	r3, r3, r2
+ 1365 001e DB00     		lsls	r3, r3, #3
+ 1366 0020 002B     		cmp	r3, #0
+ 1367 0022 00DA     		bge	.L33
+ 1368 0024 7F33     		adds	r3, r3, #127
+ 1369              	.L33:
+ 1370 0026 DB11     		asrs	r3, r3, #7
+ 1371 0028 1AB2     		sxth	r2, r3
+ 1372 002a 7B68     		ldr	r3, [r7, #4]
+ 1373 002c 1A81     		strh	r2, [r3, #8]	@ movhi
+ 933:main.c        **** }
+ 1374              		.loc 1 933 0
+ 1375 002e 00BF     		nop
+ 1376 0030 0C37     		adds	r7, r7, #12
+ 1377              		.cfi_def_cfa_offset 4
+ 1378 0032 BD46     		mov	sp, r7
+ 1379              		.cfi_def_cfa_register 13
+ 1380              		@ sp needed
+ 1381 0034 80BC     		pop	{r7}
+ 1382              		.cfi_restore 7
+ 1383              		.cfi_def_cfa_offset 0
+ 1384 0036 7047     		bx	lr
+ 1385              		.cfi_endproc
+ 1386              	.LFE71:
+ 1387              		.size	accel_offset_update, .-accel_offset_update
+ 1388              		.bss
+ 1389 001f 00       		.align	2
+ 1390              	angle_old.7324:
+ 1391 0020 00000000 		.space	4
+ 1392              		.text
+ 1393              	.Letext0:
+ 1394              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1395              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 1396              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 1397              		.file 5 "pid.h"
+ 1398              		.file 6 "Generated_Source\\PSoC5/core_cm3.h"
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 42
+
+
+ 1399              		.section	.debug_info,"",%progbits
+ 1400              	.Ldebug_info0:
+ 1401 0000 E5060000 		.4byte	0x6e5
+ 1402 0004 0400     		.2byte	0x4
+ 1403 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 1404 000a 04       		.byte	0x4
+ 1405 000b 01       		.uleb128 0x1
+ 1406 000c 8C000000 		.4byte	.LASF93
+ 1407 0010 0C       		.byte	0xc
+ 1408 0011 05040000 		.4byte	.LASF94
+ 1409 0015 6F030000 		.4byte	.LASF95
+ 1410 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 1411 001d 00000000 		.4byte	0
+ 1412 0021 00000000 		.4byte	.Ldebug_line0
+ 1413 0025 02       		.uleb128 0x2
+ 1414 0026 01       		.byte	0x1
+ 1415 0027 06       		.byte	0x6
+ 1416 0028 4D020000 		.4byte	.LASF0
+ 1417 002c 02       		.uleb128 0x2
+ 1418 002d 01       		.byte	0x1
+ 1419 002e 08       		.byte	0x8
+ 1420 002f 1A020000 		.4byte	.LASF1
+ 1421 0033 02       		.uleb128 0x2
+ 1422 0034 02       		.byte	0x2
+ 1423 0035 05       		.byte	0x5
+ 1424 0036 73000000 		.4byte	.LASF2
+ 1425 003a 02       		.uleb128 0x2
+ 1426 003b 02       		.byte	0x2
+ 1427 003c 07       		.byte	0x7
+ 1428 003d DF020000 		.4byte	.LASF3
+ 1429 0041 03       		.uleb128 0x3
+ 1430 0042 56040000 		.4byte	.LASF9
+ 1431 0046 02       		.byte	0x2
+ 1432 0047 3F       		.byte	0x3f
+ 1433 0048 4C000000 		.4byte	0x4c
+ 1434 004c 02       		.uleb128 0x2
+ 1435 004d 04       		.byte	0x4
+ 1436 004e 05       		.byte	0x5
+ 1437 004f C6010000 		.4byte	.LASF4
+ 1438 0053 02       		.uleb128 0x2
+ 1439 0054 04       		.byte	0x4
+ 1440 0055 07       		.byte	0x7
+ 1441 0056 0C040000 		.4byte	.LASF5
+ 1442 005a 02       		.uleb128 0x2
+ 1443 005b 08       		.byte	0x8
+ 1444 005c 05       		.byte	0x5
+ 1445 005d 9C010000 		.4byte	.LASF6
+ 1446 0061 02       		.uleb128 0x2
+ 1447 0062 08       		.byte	0x8
+ 1448 0063 07       		.byte	0x7
+ 1449 0064 61020000 		.4byte	.LASF7
+ 1450 0068 04       		.uleb128 0x4
+ 1451 0069 04       		.byte	0x4
+ 1452 006a 05       		.byte	0x5
+ 1453 006b 696E7400 		.ascii	"int\000"
+ 1454 006f 02       		.uleb128 0x2
+ 1455 0070 04       		.byte	0x4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 43
+
+
+ 1456 0071 07       		.byte	0x7
+ 1457 0072 AE020000 		.4byte	.LASF8
+ 1458 0076 03       		.uleb128 0x3
+ 1459 0077 59020000 		.4byte	.LASF10
+ 1460 007b 03       		.byte	0x3
+ 1461 007c 2C       		.byte	0x2c
+ 1462 007d 41000000 		.4byte	0x41
+ 1463 0081 05       		.uleb128 0x5
+ 1464 0082 66010000 		.4byte	.LASF11
+ 1465 0086 04       		.byte	0x4
+ 1466 0087 9201     		.2byte	0x192
+ 1467 0089 2C000000 		.4byte	0x2c
+ 1468 008d 05       		.uleb128 0x5
+ 1469 008e D7030000 		.4byte	.LASF12
+ 1470 0092 04       		.byte	0x4
+ 1471 0093 9301     		.2byte	0x193
+ 1472 0095 3A000000 		.4byte	0x3a
+ 1473 0099 05       		.uleb128 0x5
+ 1474 009a 24040000 		.4byte	.LASF13
+ 1475 009e 04       		.byte	0x4
+ 1476 009f 9401     		.2byte	0x194
+ 1477 00a1 53000000 		.4byte	0x53
+ 1478 00a5 05       		.uleb128 0x5
+ 1479 00a6 60010000 		.4byte	.LASF14
+ 1480 00aa 04       		.byte	0x4
+ 1481 00ab 9601     		.2byte	0x196
+ 1482 00ad 33000000 		.4byte	0x33
+ 1483 00b1 05       		.uleb128 0x5
+ 1484 00b2 1E040000 		.4byte	.LASF15
+ 1485 00b6 04       		.byte	0x4
+ 1486 00b7 9701     		.2byte	0x197
+ 1487 00b9 4C000000 		.4byte	0x4c
+ 1488 00bd 02       		.uleb128 0x2
+ 1489 00be 04       		.byte	0x4
+ 1490 00bf 04       		.byte	0x4
+ 1491 00c0 8B010000 		.4byte	.LASF16
+ 1492 00c4 02       		.uleb128 0x2
+ 1493 00c5 08       		.byte	0x8
+ 1494 00c6 04       		.byte	0x4
+ 1495 00c7 40000000 		.4byte	.LASF17
+ 1496 00cb 05       		.uleb128 0x5
+ 1497 00cc BB020000 		.4byte	.LASF18
+ 1498 00d0 04       		.byte	0x4
+ 1499 00d1 9D01     		.2byte	0x19d
+ 1500 00d3 5A000000 		.4byte	0x5a
+ 1501 00d7 02       		.uleb128 0x2
+ 1502 00d8 01       		.byte	0x1
+ 1503 00d9 08       		.byte	0x8
+ 1504 00da 10030000 		.4byte	.LASF19
+ 1505 00de 06       		.uleb128 0x6
+ 1506 00df 81000000 		.4byte	0x81
+ 1507 00e3 06       		.uleb128 0x6
+ 1508 00e4 8D000000 		.4byte	0x8d
+ 1509 00e8 06       		.uleb128 0x6
+ 1510 00e9 99000000 		.4byte	0x99
+ 1511 00ed 02       		.uleb128 0x2
+ 1512 00ee 08       		.byte	0x8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 44
+
+
+ 1513 00ef 04       		.byte	0x4
+ 1514 00f0 00020000 		.4byte	.LASF20
+ 1515 00f4 02       		.uleb128 0x2
+ 1516 00f5 04       		.byte	0x4
+ 1517 00f6 07       		.byte	0x7
+ 1518 00f7 83000000 		.4byte	.LASF21
+ 1519 00fb 07       		.uleb128 0x7
+ 1520 00fc D0030000 		.4byte	.LASF33
+ 1521 0100 58       		.byte	0x58
+ 1522 0101 05       		.byte	0x5
+ 1523 0102 13       		.byte	0x13
+ 1524 0103 B8010000 		.4byte	0x1b8
+ 1525 0107 08       		.uleb128 0x8
+ 1526 0108 7D000000 		.4byte	.LASF22
+ 1527 010c 05       		.byte	0x5
+ 1528 010d 14       		.byte	0x14
+ 1529 010e B1000000 		.4byte	0xb1
+ 1530 0112 00       		.byte	0
+ 1531 0113 08       		.uleb128 0x8
+ 1532 0114 B0040000 		.4byte	.LASF23
+ 1533 0118 05       		.byte	0x5
+ 1534 0119 15       		.byte	0x15
+ 1535 011a B1000000 		.4byte	0xb1
+ 1536 011e 04       		.byte	0x4
+ 1537 011f 08       		.uleb128 0x8
+ 1538 0120 94040000 		.4byte	.LASF24
+ 1539 0124 05       		.byte	0x5
+ 1540 0125 16       		.byte	0x16
+ 1541 0126 B1000000 		.4byte	0xb1
+ 1542 012a 08       		.byte	0x8
+ 1543 012b 08       		.uleb128 0x8
+ 1544 012c B2010000 		.4byte	.LASF25
+ 1545 0130 05       		.byte	0x5
+ 1546 0131 17       		.byte	0x17
+ 1547 0132 B1000000 		.4byte	0xb1
+ 1548 0136 0C       		.byte	0xc
+ 1549 0137 09       		.uleb128 0x9
+ 1550 0138 6B7000   		.ascii	"kp\000"
+ 1551 013b 05       		.byte	0x5
+ 1552 013c 18       		.byte	0x18
+ 1553 013d B1000000 		.4byte	0xb1
+ 1554 0141 10       		.byte	0x10
+ 1555 0142 09       		.uleb128 0x9
+ 1556 0143 6B6900   		.ascii	"ki\000"
+ 1557 0146 05       		.byte	0x5
+ 1558 0147 19       		.byte	0x19
+ 1559 0148 B1000000 		.4byte	0xb1
+ 1560 014c 14       		.byte	0x14
+ 1561 014d 09       		.uleb128 0x9
+ 1562 014e 6B6400   		.ascii	"kd\000"
+ 1563 0151 05       		.byte	0x5
+ 1564 0152 1A       		.byte	0x1a
+ 1565 0153 B1000000 		.4byte	0xb1
+ 1566 0157 18       		.byte	0x18
+ 1567 0158 08       		.uleb128 0x8
+ 1568 0159 5C000000 		.4byte	.LASF26
+ 1569 015d 05       		.byte	0x5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 45
+
+
+ 1570 015e 1B       		.byte	0x1b
+ 1571 015f B1000000 		.4byte	0xb1
+ 1572 0163 1C       		.byte	0x1c
+ 1573 0164 08       		.uleb128 0x8
+ 1574 0165 28020000 		.4byte	.LASF27
+ 1575 0169 05       		.byte	0x5
+ 1576 016a 1C       		.byte	0x1c
+ 1577 016b B1000000 		.4byte	0xb1
+ 1578 016f 20       		.byte	0x20
+ 1579 0170 08       		.uleb128 0x8
+ 1580 0171 D8010000 		.4byte	.LASF28
+ 1581 0175 05       		.byte	0x5
+ 1582 0176 1D       		.byte	0x1d
+ 1583 0177 CB000000 		.4byte	0xcb
+ 1584 017b 28       		.byte	0x28
+ 1585 017c 08       		.uleb128 0x8
+ 1586 017d BE010000 		.4byte	.LASF29
+ 1587 0181 05       		.byte	0x5
+ 1588 0182 1E       		.byte	0x1e
+ 1589 0183 CB000000 		.4byte	0xcb
+ 1590 0187 30       		.byte	0x30
+ 1591 0188 08       		.uleb128 0x8
+ 1592 0189 AA010000 		.4byte	.LASF30
+ 1593 018d 05       		.byte	0x5
+ 1594 018e 1F       		.byte	0x1f
+ 1595 018f CB000000 		.4byte	0xcb
+ 1596 0193 38       		.byte	0x38
+ 1597 0194 09       		.uleb128 0x9
+ 1598 0195 667300   		.ascii	"fs\000"
+ 1599 0198 05       		.byte	0x5
+ 1600 0199 20       		.byte	0x20
+ 1601 019a B1000000 		.4byte	0xb1
+ 1602 019e 40       		.byte	0x40
+ 1603 019f 08       		.uleb128 0x8
+ 1604 01a0 6C010000 		.4byte	.LASF31
+ 1605 01a4 05       		.byte	0x5
+ 1606 01a5 21       		.byte	0x21
+ 1607 01a6 CB000000 		.4byte	0xcb
+ 1608 01aa 48       		.byte	0x48
+ 1609 01ab 08       		.uleb128 0x8
+ 1610 01ac FC020000 		.4byte	.LASF32
+ 1611 01b0 05       		.byte	0x5
+ 1612 01b1 22       		.byte	0x22
+ 1613 01b2 99000000 		.4byte	0x99
+ 1614 01b6 50       		.byte	0x50
+ 1615 01b7 00       		.byte	0
+ 1616 01b8 03       		.uleb128 0x3
+ 1617 01b9 D0030000 		.4byte	.LASF33
+ 1618 01bd 05       		.byte	0x5
+ 1619 01be 23       		.byte	0x23
+ 1620 01bf FB000000 		.4byte	0xfb
+ 1621 01c3 0A       		.uleb128 0xa
+ 1622 01c4 15030000 		.4byte	.LASF34
+ 1623 01c8 2003     		.2byte	0x320
+ 1624 01ca 01       		.byte	0x1
+ 1625 01cb 2F       		.byte	0x2f
+ 1626 01cc 8A020000 		.4byte	0x28a
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 46
+
+
+ 1627 01d0 08       		.uleb128 0x8
+ 1628 01d1 60040000 		.4byte	.LASF35
+ 1629 01d5 01       		.byte	0x1
+ 1630 01d6 30       		.byte	0x30
+ 1631 01d7 A5000000 		.4byte	0xa5
+ 1632 01db 00       		.byte	0
+ 1633 01dc 08       		.uleb128 0x8
+ 1634 01dd 39010000 		.4byte	.LASF36
+ 1635 01e1 01       		.byte	0x1
+ 1636 01e2 31       		.byte	0x31
+ 1637 01e3 A5000000 		.4byte	0xa5
+ 1638 01e7 02       		.byte	0x2
+ 1639 01e8 08       		.uleb128 0x8
+ 1640 01e9 38000000 		.4byte	.LASF37
+ 1641 01ed 01       		.byte	0x1
+ 1642 01ee 32       		.byte	0x32
+ 1643 01ef A5000000 		.4byte	0xa5
+ 1644 01f3 04       		.byte	0x4
+ 1645 01f4 08       		.uleb128 0x8
+ 1646 01f5 E5010000 		.4byte	.LASF38
+ 1647 01f9 01       		.byte	0x1
+ 1648 01fa 33       		.byte	0x33
+ 1649 01fb A5000000 		.4byte	0xa5
+ 1650 01ff 06       		.byte	0x6
+ 1651 0200 08       		.uleb128 0x8
+ 1652 0201 CF010000 		.4byte	.LASF39
+ 1653 0205 01       		.byte	0x1
+ 1654 0206 34       		.byte	0x34
+ 1655 0207 A5000000 		.4byte	0xa5
+ 1656 020b 08       		.byte	0x8
+ 1657 020c 08       		.uleb128 0x8
+ 1658 020d C7030000 		.4byte	.LASF40
+ 1659 0211 01       		.byte	0x1
+ 1660 0212 35       		.byte	0x35
+ 1661 0213 A5000000 		.4byte	0xa5
+ 1662 0217 0A       		.byte	0xa
+ 1663 0218 08       		.uleb128 0x8
+ 1664 0219 41010000 		.4byte	.LASF41
+ 1665 021d 01       		.byte	0x1
+ 1666 021e 36       		.byte	0x36
+ 1667 021f B1000000 		.4byte	0xb1
+ 1668 0223 0C       		.byte	0xc
+ 1669 0224 08       		.uleb128 0x8
+ 1670 0225 DC040000 		.4byte	.LASF42
+ 1671 0229 01       		.byte	0x1
+ 1672 022a 37       		.byte	0x37
+ 1673 022b B1000000 		.4byte	0xb1
+ 1674 022f 10       		.byte	0x10
+ 1675 0230 08       		.uleb128 0x8
+ 1676 0231 91010000 		.4byte	.LASF43
+ 1677 0235 01       		.byte	0x1
+ 1678 0236 38       		.byte	0x38
+ 1679 0237 B1000000 		.4byte	0xb1
+ 1680 023b 14       		.byte	0x14
+ 1681 023c 08       		.uleb128 0x8
+ 1682 023d 77010000 		.4byte	.LASF44
+ 1683 0241 01       		.byte	0x1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 47
+
+
+ 1684 0242 39       		.byte	0x39
+ 1685 0243 8A020000 		.4byte	0x28a
+ 1686 0247 18       		.byte	0x18
+ 1687 0248 0B       		.uleb128 0xb
+ 1688 0249 9B040000 		.4byte	.LASF45
+ 1689 024d 01       		.byte	0x1
+ 1690 024e 3A       		.byte	0x3a
+ 1691 024f 8A020000 		.4byte	0x28a
+ 1692 0253 1801     		.2byte	0x118
+ 1693 0255 0B       		.uleb128 0xb
+ 1694 0256 47000000 		.4byte	.LASF46
+ 1695 025a 01       		.byte	0x1
+ 1696 025b 3B       		.byte	0x3b
+ 1697 025c 8A020000 		.4byte	0x28a
+ 1698 0260 1802     		.2byte	0x218
+ 1699 0262 0B       		.uleb128 0xb
+ 1700 0263 26030000 		.4byte	.LASF47
+ 1701 0267 01       		.byte	0x1
+ 1702 0268 3C       		.byte	0x3c
+ 1703 0269 8D000000 		.4byte	0x8d
+ 1704 026d 1803     		.2byte	0x318
+ 1705 026f 0B       		.uleb128 0xb
+ 1706 0270 4E040000 		.4byte	.LASF48
+ 1707 0274 01       		.byte	0x1
+ 1708 0275 3D       		.byte	0x3d
+ 1709 0276 8D000000 		.4byte	0x8d
+ 1710 027a 1A03     		.2byte	0x31a
+ 1711 027c 0B       		.uleb128 0xb
+ 1712 027d FD030000 		.4byte	.LASF49
+ 1713 0281 01       		.byte	0x1
+ 1714 0282 3E       		.byte	0x3e
+ 1715 0283 8D000000 		.4byte	0x8d
+ 1716 0287 1C03     		.2byte	0x31c
+ 1717 0289 00       		.byte	0
+ 1718 028a 0C       		.uleb128 0xc
+ 1719 028b A5000000 		.4byte	0xa5
+ 1720 028f 9A020000 		.4byte	0x29a
+ 1721 0293 0D       		.uleb128 0xd
+ 1722 0294 F4000000 		.4byte	0xf4
+ 1723 0298 7F       		.byte	0x7f
+ 1724 0299 00       		.byte	0
+ 1725 029a 0E       		.uleb128 0xe
+ 1726 029b 1A010000 		.4byte	.LASF52
+ 1727 029f 01       		.byte	0x1
+ 1728 02a0 8602     		.2byte	0x286
+ 1729 02a2 68000000 		.4byte	0x68
+ 1730 02a6 00000000 		.4byte	.LFB64
+ 1731 02aa 54020000 		.4byte	.LFE64-.LFB64
+ 1732 02ae 01       		.uleb128 0x1
+ 1733 02af 9C       		.byte	0x9c
+ 1734 02b0 EF020000 		.4byte	0x2ef
+ 1735 02b4 0F       		.uleb128 0xf
+ 1736 02b5 6900     		.ascii	"i\000"
+ 1737 02b7 01       		.byte	0x1
+ 1738 02b8 8802     		.2byte	0x288
+ 1739 02ba 81000000 		.4byte	0x81
+ 1740 02be 02       		.uleb128 0x2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 48
+
+
+ 1741 02bf 91       		.byte	0x91
+ 1742 02c0 67       		.sleb128 -25
+ 1743 02c1 0F       		.uleb128 0xf
+ 1744 02c2 6A00     		.ascii	"j\000"
+ 1745 02c4 01       		.byte	0x1
+ 1746 02c5 8902     		.2byte	0x289
+ 1747 02c7 8D000000 		.4byte	0x8d
+ 1748 02cb 02       		.uleb128 0x2
+ 1749 02cc 91       		.byte	0x91
+ 1750 02cd 64       		.sleb128 -28
+ 1751 02ce 10       		.uleb128 0x10
+ 1752 02cf A4040000 		.4byte	.LASF50
+ 1753 02d3 01       		.byte	0x1
+ 1754 02d4 8A02     		.2byte	0x28a
+ 1755 02d6 C3010000 		.4byte	0x1c3
+ 1756 02da 03       		.uleb128 0x3
+ 1757 02db 91       		.byte	0x91
+ 1758 02dc C479     		.sleb128 -828
+ 1759 02de 10       		.uleb128 0x10
+ 1760 02df D2020000 		.4byte	.LASF51
+ 1761 02e3 01       		.byte	0x1
+ 1762 02e4 8B02     		.2byte	0x28b
+ 1763 02e6 B8010000 		.4byte	0x1b8
+ 1764 02ea 03       		.uleb128 0x3
+ 1765 02eb 91       		.byte	0x91
+ 1766 02ec E878     		.sleb128 -920
+ 1767 02ee 00       		.byte	0
+ 1768 02ef 11       		.uleb128 0x11
+ 1769 02f0 EE010000 		.4byte	.LASF55
+ 1770 02f4 01       		.byte	0x1
+ 1771 02f5 4903     		.2byte	0x349
+ 1772 02f7 81000000 		.4byte	0x81
+ 1773 02fb 00000000 		.4byte	.LFB65
+ 1774 02ff 48000000 		.4byte	.LFE65-.LFB65
+ 1775 0303 01       		.uleb128 0x1
+ 1776 0304 9C       		.byte	0x9c
+ 1777 0305 35030000 		.4byte	0x335
+ 1778 0309 12       		.uleb128 0x12
+ 1779 030a 47010000 		.4byte	.LASF54
+ 1780 030e 01       		.byte	0x1
+ 1781 030f 4903     		.2byte	0x349
+ 1782 0311 8D000000 		.4byte	0x8d
+ 1783 0315 02       		.uleb128 0x2
+ 1784 0316 91       		.byte	0x91
+ 1785 0317 6E       		.sleb128 -18
+ 1786 0318 0F       		.uleb128 0xf
+ 1787 0319 636E7400 		.ascii	"cnt\000"
+ 1788 031d 01       		.byte	0x1
+ 1789 031e 4B03     		.2byte	0x34b
+ 1790 0320 81000000 		.4byte	0x81
+ 1791 0324 02       		.uleb128 0x2
+ 1792 0325 91       		.byte	0x91
+ 1793 0326 77       		.sleb128 -9
+ 1794 0327 0F       		.uleb128 0xf
+ 1795 0328 6900     		.ascii	"i\000"
+ 1796 032a 01       		.byte	0x1
+ 1797 032b 4C03     		.2byte	0x34c
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 49
+
+
+ 1798 032d 81000000 		.4byte	0x81
+ 1799 0331 02       		.uleb128 0x2
+ 1800 0332 91       		.byte	0x91
+ 1801 0333 76       		.sleb128 -10
+ 1802 0334 00       		.byte	0
+ 1803 0335 13       		.uleb128 0x13
+ 1804 0336 EC040000 		.4byte	.LASF53
+ 1805 033a 01       		.byte	0x1
+ 1806 033b 5803     		.2byte	0x358
+ 1807 033d 00000000 		.4byte	.LFB66
+ 1808 0341 34000000 		.4byte	.LFE66-.LFB66
+ 1809 0345 01       		.uleb128 0x1
+ 1810 0346 9C       		.byte	0x9c
+ 1811 0347 6A030000 		.4byte	0x36a
+ 1812 034b 14       		.uleb128 0x14
+ 1813 034c 72656700 		.ascii	"reg\000"
+ 1814 0350 01       		.byte	0x1
+ 1815 0351 5803     		.2byte	0x358
+ 1816 0353 81000000 		.4byte	0x81
+ 1817 0357 02       		.uleb128 0x2
+ 1818 0358 91       		.byte	0x91
+ 1819 0359 77       		.sleb128 -9
+ 1820 035a 14       		.uleb128 0x14
+ 1821 035b 76616C00 		.ascii	"val\000"
+ 1822 035f 01       		.byte	0x1
+ 1823 0360 5803     		.2byte	0x358
+ 1824 0362 81000000 		.4byte	0x81
+ 1825 0366 02       		.uleb128 0x2
+ 1826 0367 91       		.byte	0x91
+ 1827 0368 76       		.sleb128 -10
+ 1828 0369 00       		.byte	0
+ 1829 036a 15       		.uleb128 0x15
+ 1830 036b 0C020000 		.4byte	.LASF56
+ 1831 036f 01       		.byte	0x1
+ 1832 0370 5F03     		.2byte	0x35f
+ 1833 0372 81000000 		.4byte	0x81
+ 1834 0376 00000000 		.4byte	.LFB67
+ 1835 037a 3E000000 		.4byte	.LFE67-.LFB67
+ 1836 037e 01       		.uleb128 0x1
+ 1837 037f 9C       		.byte	0x9c
+ 1838 0380 A3030000 		.4byte	0x3a3
+ 1839 0384 14       		.uleb128 0x14
+ 1840 0385 72656700 		.ascii	"reg\000"
+ 1841 0389 01       		.byte	0x1
+ 1842 038a 5F03     		.2byte	0x35f
+ 1843 038c 81000000 		.4byte	0x81
+ 1844 0390 02       		.uleb128 0x2
+ 1845 0391 91       		.byte	0x91
+ 1846 0392 6F       		.sleb128 -17
+ 1847 0393 10       		.uleb128 0x10
+ 1848 0394 97010000 		.4byte	.LASF57
+ 1849 0398 01       		.byte	0x1
+ 1850 0399 6003     		.2byte	0x360
+ 1851 039b 81000000 		.4byte	0x81
+ 1852 039f 02       		.uleb128 0x2
+ 1853 03a0 91       		.byte	0x91
+ 1854 03a1 77       		.sleb128 -9
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 50
+
+
+ 1855 03a2 00       		.byte	0
+ 1856 03a3 11       		.uleb128 0x11
+ 1857 03a4 78040000 		.4byte	.LASF58
+ 1858 03a8 01       		.byte	0x1
+ 1859 03a9 6B03     		.2byte	0x36b
+ 1860 03ab B1000000 		.4byte	0xb1
+ 1861 03af 00000000 		.4byte	.LFB68
+ 1862 03b3 98000000 		.4byte	.LFE68-.LFB68
+ 1863 03b7 01       		.uleb128 0x1
+ 1864 03b8 9C       		.byte	0x9c
+ 1865 03b9 FD030000 		.4byte	0x3fd
+ 1866 03bd 12       		.uleb128 0x12
+ 1867 03be E0010000 		.4byte	.LASF59
+ 1868 03c2 01       		.byte	0x1
+ 1869 03c3 6B03     		.2byte	0x36b
+ 1870 03c5 B1000000 		.4byte	0xb1
+ 1871 03c9 02       		.uleb128 0x2
+ 1872 03ca 91       		.byte	0x91
+ 1873 03cb 6C       		.sleb128 -20
+ 1874 03cc 12       		.uleb128 0x12
+ 1875 03cd 8E040000 		.4byte	.LASF60
+ 1876 03d1 01       		.byte	0x1
+ 1877 03d2 6B03     		.2byte	0x36b
+ 1878 03d4 B1000000 		.4byte	0xb1
+ 1879 03d8 02       		.uleb128 0x2
+ 1880 03d9 91       		.byte	0x91
+ 1881 03da 68       		.sleb128 -24
+ 1882 03db 10       		.uleb128 0x10
+ 1883 03dc E2040000 		.4byte	.LASF61
+ 1884 03e0 01       		.byte	0x1
+ 1885 03e1 6C03     		.2byte	0x36c
+ 1886 03e3 B1000000 		.4byte	0xb1
+ 1887 03e7 05       		.uleb128 0x5
+ 1888 03e8 03       		.byte	0x3
+ 1889 03e9 20000000 		.4byte	angle_old.7324
+ 1890 03ed 10       		.uleb128 0x10
+ 1891 03ee 40040000 		.4byte	.LASF62
+ 1892 03f2 01       		.byte	0x1
+ 1893 03f3 6D03     		.2byte	0x36d
+ 1894 03f5 B1000000 		.4byte	0xb1
+ 1895 03f9 02       		.uleb128 0x2
+ 1896 03fa 91       		.byte	0x91
+ 1897 03fb 74       		.sleb128 -12
+ 1898 03fc 00       		.byte	0
+ 1899 03fd 13       		.uleb128 0x13
+ 1900 03fe 03030000 		.4byte	.LASF63
+ 1901 0402 01       		.byte	0x1
+ 1902 0403 7E03     		.2byte	0x37e
+ 1903 0405 00000000 		.4byte	.LFB69
+ 1904 0409 38000000 		.4byte	.LFE69-.LFB69
+ 1905 040d 01       		.uleb128 0x1
+ 1906 040e 9C       		.byte	0x9c
+ 1907 040f 23040000 		.4byte	0x423
+ 1908 0413 12       		.uleb128 0x12
+ 1909 0414 68000000 		.4byte	.LASF64
+ 1910 0418 01       		.byte	0x1
+ 1911 0419 7E03     		.2byte	0x37e
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 51
+
+
+ 1912 041b 23040000 		.4byte	0x423
+ 1913 041f 02       		.uleb128 0x2
+ 1914 0420 91       		.byte	0x91
+ 1915 0421 74       		.sleb128 -12
+ 1916 0422 00       		.byte	0
+ 1917 0423 16       		.uleb128 0x16
+ 1918 0424 04       		.byte	0x4
+ 1919 0425 C3010000 		.4byte	0x1c3
+ 1920 0429 17       		.uleb128 0x17
+ 1921 042a 2E030000 		.4byte	.LASF96
+ 1922 042e 01       		.byte	0x1
+ 1923 042f 8803     		.2byte	0x388
+ 1924 0431 99000000 		.4byte	0x99
+ 1925 0435 00000000 		.4byte	.LFB70
+ 1926 0439 14000000 		.4byte	.LFE70-.LFB70
+ 1927 043d 01       		.uleb128 0x1
+ 1928 043e 9C       		.byte	0x9c
+ 1929 043f 18       		.uleb128 0x18
+ 1930 0440 DE030000 		.4byte	.LASF65
+ 1931 0444 01       		.byte	0x1
+ 1932 0445 9103     		.2byte	0x391
+ 1933 0447 00000000 		.4byte	.LFB71
+ 1934 044b 38000000 		.4byte	.LFE71-.LFB71
+ 1935 044f 01       		.uleb128 0x1
+ 1936 0450 9C       		.byte	0x9c
+ 1937 0451 65040000 		.4byte	0x465
+ 1938 0455 12       		.uleb128 0x12
+ 1939 0456 68000000 		.4byte	.LASF64
+ 1940 045a 01       		.byte	0x1
+ 1941 045b 9103     		.2byte	0x391
+ 1942 045d 23040000 		.4byte	0x423
+ 1943 0461 02       		.uleb128 0x2
+ 1944 0462 91       		.byte	0x91
+ 1945 0463 74       		.sleb128 -12
+ 1946 0464 00       		.byte	0
+ 1947 0465 19       		.uleb128 0x19
+ 1948 0466 B9040000 		.4byte	.LASF66
+ 1949 046a 06       		.byte	0x6
+ 1950 046b 1207     		.2byte	0x712
+ 1951 046d 71040000 		.4byte	0x471
+ 1952 0471 06       		.uleb128 0x6
+ 1953 0472 76000000 		.4byte	0x76
+ 1954 0476 0C       		.uleb128 0xc
+ 1955 0477 81000000 		.4byte	0x81
+ 1956 047b 86040000 		.4byte	0x486
+ 1957 047f 0D       		.uleb128 0xd
+ 1958 0480 F4000000 		.4byte	0xf4
+ 1959 0484 09       		.byte	0x9
+ 1960 0485 00       		.byte	0
+ 1961 0486 1A       		.uleb128 0x1a
+ 1962 0487 46030000 		.4byte	.LASF67
+ 1963 048b 01       		.byte	0x1
+ 1964 048c 23       		.byte	0x23
+ 1965 048d 76040000 		.4byte	0x476
+ 1966 0491 05       		.uleb128 0x5
+ 1967 0492 03       		.byte	0x3
+ 1968 0493 00000000 		.4byte	ACC_Read_buffer
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 52
+
+
+ 1969 0497 0C       		.uleb128 0xc
+ 1970 0498 81000000 		.4byte	0x81
+ 1971 049c A7040000 		.4byte	0x4a7
+ 1972 04a0 0D       		.uleb128 0xd
+ 1973 04a1 F4000000 		.4byte	0xf4
+ 1974 04a5 07       		.byte	0x7
+ 1975 04a6 00       		.byte	0
+ 1976 04a7 1A       		.uleb128 0x1a
+ 1977 04a8 C1020000 		.4byte	.LASF68
+ 1978 04ac 01       		.byte	0x1
+ 1979 04ad 24       		.byte	0x24
+ 1980 04ae 97040000 		.4byte	0x497
+ 1981 04b2 05       		.uleb128 0x5
+ 1982 04b3 03       		.byte	0x3
+ 1983 04b4 00000000 		.4byte	ACC_Write_buffer
+ 1984 04b8 1A       		.uleb128 0x1a
+ 1985 04b9 4D010000 		.4byte	.LASF69
+ 1986 04bd 01       		.byte	0x1
+ 1987 04be 27       		.byte	0x27
+ 1988 04bf E3000000 		.4byte	0xe3
+ 1989 04c3 05       		.uleb128 0x5
+ 1990 04c4 03       		.byte	0x3
+ 1991 04c5 00000000 		.4byte	read_angle_command
+ 1992 04c9 1A       		.uleb128 0x1a
+ 1993 04ca 8E040000 		.4byte	.LASF60
+ 1994 04ce 01       		.byte	0x1
+ 1995 04cf 29       		.byte	0x29
+ 1996 04d0 DA040000 		.4byte	0x4da
+ 1997 04d4 05       		.uleb128 0x5
+ 1998 04d5 03       		.byte	0x3
+ 1999 04d6 00000000 		.4byte	angle
+ 2000 04da 06       		.uleb128 0x6
+ 2001 04db B1000000 		.4byte	0xb1
+ 2002 04df 1A       		.uleb128 0x1a
+ 2003 04e0 1A000000 		.4byte	.LASF70
+ 2004 04e4 01       		.byte	0x1
+ 2005 04e5 2A       		.byte	0x2a
+ 2006 04e6 DA040000 		.4byte	0x4da
+ 2007 04ea 05       		.uleb128 0x5
+ 2008 04eb 03       		.byte	0x3
+ 2009 04ec 00000000 		.4byte	angle_electric
+ 2010 04f0 1A       		.uleb128 0x1a
+ 2011 04f1 3B030000 		.4byte	.LASF71
+ 2012 04f5 01       		.byte	0x1
+ 2013 04f6 2B       		.byte	0x2b
+ 2014 04f7 DA040000 		.4byte	0x4da
+ 2015 04fb 05       		.uleb128 0x5
+ 2016 04fc 03       		.byte	0x3
+ 2017 04fd 00000000 		.4byte	angle_diff
+ 2018 0501 1A       		.uleb128 0x1a
+ 2019 0502 29000000 		.4byte	.LASF72
+ 2020 0506 01       		.byte	0x1
+ 2021 0507 2C       		.byte	0x2c
+ 2022 0508 DA040000 		.4byte	0x4da
+ 2023 050c 05       		.uleb128 0x5
+ 2024 050d 03       		.byte	0x3
+ 2025 050e 00000000 		.4byte	torque_command
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 53
+
+
+ 2026 0512 1A       		.uleb128 0x1a
+ 2027 0513 E2040000 		.4byte	.LASF61
+ 2028 0517 01       		.byte	0x1
+ 2029 0518 2E       		.byte	0x2e
+ 2030 0519 B1000000 		.4byte	0xb1
+ 2031 051d 05       		.uleb128 0x5
+ 2032 051e 03       		.byte	0x3
+ 2033 051f 00000000 		.4byte	angle_old
+ 2034 0523 1A       		.uleb128 0x1a
+ 2035 0524 C6040000 		.4byte	.LASF73
+ 2036 0528 01       		.byte	0x1
+ 2037 0529 42       		.byte	0x42
+ 2038 052a E8000000 		.4byte	0xe8
+ 2039 052e 05       		.uleb128 0x5
+ 2040 052f 03       		.byte	0x3
+ 2041 0530 00000000 		.4byte	angle_sum
+ 2042 0534 0C       		.uleb128 0xc
+ 2043 0535 D7000000 		.4byte	0xd7
+ 2044 0539 44050000 		.4byte	0x544
+ 2045 053d 0D       		.uleb128 0xd
+ 2046 053e F4000000 		.4byte	0xf4
+ 2047 0542 4F       		.byte	0x4f
+ 2048 0543 00       		.byte	0
+ 2049 0544 1A       		.uleb128 0x1a
+ 2050 0545 61030000 		.4byte	.LASF74
+ 2051 0549 01       		.byte	0x1
+ 2052 054a 43       		.byte	0x43
+ 2053 054b 34050000 		.4byte	0x534
+ 2054 054f 05       		.uleb128 0x5
+ 2055 0550 03       		.byte	0x3
+ 2056 0551 00000000 		.4byte	transmit_buff
+ 2057 0555 1A       		.uleb128 0x1a
+ 2058 0556 68040000 		.4byte	.LASF75
+ 2059 055a 01       		.byte	0x1
+ 2060 055b 44       		.byte	0x44
+ 2061 055c DE000000 		.4byte	0xde
+ 2062 0560 05       		.uleb128 0x5
+ 2063 0561 03       		.byte	0x3
+ 2064 0562 00000000 		.4byte	controller_tick
+ 2065 0566 1A       		.uleb128 0x1a
+ 2066 0567 78020000 		.4byte	.LASF76
+ 2067 056b 01       		.byte	0x1
+ 2068 056c 45       		.byte	0x45
+ 2069 056d DA040000 		.4byte	0x4da
+ 2070 0571 05       		.uleb128 0x5
+ 2071 0572 03       		.byte	0x3
+ 2072 0573 00000000 		.4byte	axis_position_filtered
+ 2073 0577 1A       		.uleb128 0x1a
+ 2074 0578 34020000 		.4byte	.LASF77
+ 2075 057c 01       		.byte	0x1
+ 2076 057d 46       		.byte	0x46
+ 2077 057e DA040000 		.4byte	0x4da
+ 2078 0582 05       		.uleb128 0x5
+ 2079 0583 03       		.byte	0x3
+ 2080 0584 00000000 		.4byte	axis_position_filtered_2
+ 2081 0588 1A       		.uleb128 0x1a
+ 2082 0589 1F010000 		.4byte	.LASF78
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 54
+
+
+ 2083 058d 01       		.byte	0x1
+ 2084 058e 47       		.byte	0x47
+ 2085 058f A5000000 		.4byte	0xa5
+ 2086 0593 05       		.uleb128 0x5
+ 2087 0594 03       		.byte	0x3
+ 2088 0595 00000000 		.4byte	position
+ 2089 0599 1A       		.uleb128 0x1a
+ 2090 059a 8F020000 		.4byte	.LASF79
+ 2091 059e 01       		.byte	0x1
+ 2092 059f 48       		.byte	0x48
+ 2093 05a0 B1000000 		.4byte	0xb1
+ 2094 05a4 05       		.uleb128 0x5
+ 2095 05a5 03       		.byte	0x3
+ 2096 05a6 00000000 		.4byte	position_ref
+ 2097 05aa 1A       		.uleb128 0x1a
+ 2098 05ab 2B040000 		.4byte	.LASF80
+ 2099 05af 01       		.byte	0x1
+ 2100 05b0 49       		.byte	0x49
+ 2101 05b1 B1000000 		.4byte	0xb1
+ 2102 05b5 05       		.uleb128 0x5
+ 2103 05b6 03       		.byte	0x3
+ 2104 05b7 00000000 		.4byte	position_ref_initial
+ 2105 05bb 1A       		.uleb128 0x1a
+ 2106 05bc 28010000 		.4byte	.LASF81
+ 2107 05c0 01       		.byte	0x1
+ 2108 05c1 4A       		.byte	0x4a
+ 2109 05c2 B1000000 		.4byte	0xb1
+ 2110 05c6 05       		.uleb128 0x5
+ 2111 05c7 03       		.byte	0x3
+ 2112 05c8 00000000 		.4byte	position_ref_old
+ 2113 05cc 1A       		.uleb128 0x1a
+ 2114 05cd 40040000 		.4byte	.LASF62
+ 2115 05d1 01       		.byte	0x1
+ 2116 05d2 4B       		.byte	0x4b
+ 2117 05d3 DA040000 		.4byte	0x4da
+ 2118 05d7 05       		.uleb128 0x5
+ 2119 05d8 03       		.byte	0x3
+ 2120 05d9 00000000 		.4byte	axis_position
+ 2121 05dd 1A       		.uleb128 0x1a
+ 2122 05de 0F000000 		.4byte	.LASF82
+ 2123 05e2 01       		.byte	0x1
+ 2124 05e3 4C       		.byte	0x4c
+ 2125 05e4 DA040000 		.4byte	0x4da
+ 2126 05e8 05       		.uleb128 0x5
+ 2127 05e9 03       		.byte	0x3
+ 2128 05ea 00000000 		.4byte	lead_angle
+ 2129 05ee 0C       		.uleb128 0xc
+ 2130 05ef E8000000 		.4byte	0xe8
+ 2131 05f3 FE050000 		.4byte	0x5fe
+ 2132 05f7 0D       		.uleb128 0xd
+ 2133 05f8 F4000000 		.4byte	0xf4
+ 2134 05fc 10       		.byte	0x10
+ 2135 05fd 00       		.byte	0
+ 2136 05fe 1A       		.uleb128 0x1a
+ 2137 05ff 1B030000 		.4byte	.LASF83
+ 2138 0603 01       		.byte	0x1
+ 2139 0604 56       		.byte	0x56
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 55
+
+
+ 2140 0605 0F060000 		.4byte	0x60f
+ 2141 0609 05       		.uleb128 0x5
+ 2142 060a 03       		.byte	0x3
+ 2143 060b 00000000 		.4byte	step_array
+ 2144 060f 06       		.uleb128 0x6
+ 2145 0610 EE050000 		.4byte	0x5ee
+ 2146 0614 1A       		.uleb128 0x1a
+ 2147 0615 80010000 		.4byte	.LASF84
+ 2148 0619 01       		.byte	0x1
+ 2149 061a 68       		.byte	0x68
+ 2150 061b 81000000 		.4byte	0x81
+ 2151 061f 05       		.uleb128 0x5
+ 2152 0620 03       		.byte	0x3
+ 2153 0621 00000000 		.4byte	switch_val
+ 2154 0625 1A       		.uleb128 0x1a
+ 2155 0626 F2030000 		.4byte	.LASF85
+ 2156 062a 01       		.byte	0x1
+ 2157 062b 69       		.byte	0x69
+ 2158 062c 81000000 		.4byte	0x81
+ 2159 0630 05       		.uleb128 0x5
+ 2160 0631 03       		.byte	0x3
+ 2161 0632 00000000 		.4byte	switch_old
+ 2162 0636 1A       		.uleb128 0x1a
+ 2163 0637 56030000 		.4byte	.LASF86
+ 2164 063b 01       		.byte	0x1
+ 2165 063c 6A       		.byte	0x6a
+ 2166 063d 81000000 		.4byte	0x81
+ 2167 0641 05       		.uleb128 0x5
+ 2168 0642 03       		.byte	0x3
+ 2169 0643 00000000 		.4byte	step_count
+ 2170 0647 0C       		.uleb128 0xc
+ 2171 0648 B1000000 		.4byte	0xb1
+ 2172 064c 57060000 		.4byte	0x657
+ 2173 0650 0D       		.uleb128 0xd
+ 2174 0651 F4000000 		.4byte	0xf4
+ 2175 0655 C7       		.byte	0xc7
+ 2176 0656 00       		.byte	0
+ 2177 0657 1A       		.uleb128 0x1a
+ 2178 0658 50000000 		.4byte	.LASF87
+ 2179 065c 01       		.byte	0x1
+ 2180 065d 6C       		.byte	0x6c
+ 2181 065e 47060000 		.4byte	0x647
+ 2182 0662 05       		.uleb128 0x5
+ 2183 0663 03       		.byte	0x3
+ 2184 0664 00000000 		.4byte	fullstepMap
+ 2185 0668 1A       		.uleb128 0x1a
+ 2186 0669 9C020000 		.4byte	.LASF88
+ 2187 066d 01       		.byte	0x1
+ 2188 066e 6D       		.byte	0x6d
+ 2189 066f 47060000 		.4byte	0x647
+ 2190 0673 05       		.uleb128 0x5
+ 2191 0674 03       		.byte	0x3
+ 2192 0675 00000000 		.4byte	fullstepMapSorted
+ 2193 0679 0C       		.uleb128 0xc
+ 2194 067a DA040000 		.4byte	0x4da
+ 2195 067e 8A060000 		.4byte	0x68a
+ 2196 0682 1B       		.uleb128 0x1b
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 56
+
+
+ 2197 0683 F4000000 		.4byte	0xf4
+ 2198 0687 FF01     		.2byte	0x1ff
+ 2199 0689 00       		.byte	0
+ 2200 068a 1A       		.uleb128 0x1a
+ 2201 068b F2020000 		.4byte	.LASF89
+ 2202 068f 01       		.byte	0x1
+ 2203 0690 6E       		.byte	0x6e
+ 2204 0691 9B060000 		.4byte	0x69b
+ 2205 0695 05       		.uleb128 0x5
+ 2206 0696 03       		.byte	0x3
+ 2207 0697 00000000 		.4byte	offsetMap
+ 2208 069b 06       		.uleb128 0x6
+ 2209 069c 79060000 		.4byte	0x679
+ 2210 06a0 1C       		.uleb128 0x1c
+ 2211 06a1 6D696E00 		.ascii	"min\000"
+ 2212 06a5 01       		.byte	0x1
+ 2213 06a6 6F02     		.2byte	0x26f
+ 2214 06a8 B1000000 		.4byte	0xb1
+ 2215 06ac 05       		.uleb128 0x5
+ 2216 06ad 03       		.byte	0x3
+ 2217 06ae 00000000 		.4byte	min
+ 2218 06b2 1D       		.uleb128 0x1d
+ 2219 06b3 84040000 		.4byte	.LASF90
+ 2220 06b7 01       		.byte	0x1
+ 2221 06b8 7002     		.2byte	0x270
+ 2222 06ba B1000000 		.4byte	0xb1
+ 2223 06be 05       		.uleb128 0x5
+ 2224 06bf 03       		.byte	0x3
+ 2225 06c0 00000000 		.4byte	min_index
+ 2226 06c4 1D       		.uleb128 0x1d
+ 2227 06c5 00000000 		.4byte	.LASF91
+ 2228 06c9 01       		.byte	0x1
+ 2229 06ca 7102     		.2byte	0x271
+ 2230 06cc BD000000 		.4byte	0xbd
+ 2231 06d0 05       		.uleb128 0x5
+ 2232 06d1 03       		.byte	0x3
+ 2233 06d2 00000000 		.4byte	split_position
+ 2234 06d6 1D       		.uleb128 0x1d
+ 2235 06d7 D0040000 		.4byte	.LASF92
+ 2236 06db 01       		.byte	0x1
+ 2237 06dc 7202     		.2byte	0x272
+ 2238 06de B1000000 		.4byte	0xb1
+ 2239 06e2 05       		.uleb128 0x5
+ 2240 06e3 03       		.byte	0x3
+ 2241 06e4 00000000 		.4byte	closest_int
+ 2242 06e8 00       		.byte	0
+ 2243              		.section	.debug_abbrev,"",%progbits
+ 2244              	.Ldebug_abbrev0:
+ 2245 0000 01       		.uleb128 0x1
+ 2246 0001 11       		.uleb128 0x11
+ 2247 0002 01       		.byte	0x1
+ 2248 0003 25       		.uleb128 0x25
+ 2249 0004 0E       		.uleb128 0xe
+ 2250 0005 13       		.uleb128 0x13
+ 2251 0006 0B       		.uleb128 0xb
+ 2252 0007 03       		.uleb128 0x3
+ 2253 0008 0E       		.uleb128 0xe
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 57
+
+
+ 2254 0009 1B       		.uleb128 0x1b
+ 2255 000a 0E       		.uleb128 0xe
+ 2256 000b 55       		.uleb128 0x55
+ 2257 000c 17       		.uleb128 0x17
+ 2258 000d 11       		.uleb128 0x11
+ 2259 000e 01       		.uleb128 0x1
+ 2260 000f 10       		.uleb128 0x10
+ 2261 0010 17       		.uleb128 0x17
+ 2262 0011 00       		.byte	0
+ 2263 0012 00       		.byte	0
+ 2264 0013 02       		.uleb128 0x2
+ 2265 0014 24       		.uleb128 0x24
+ 2266 0015 00       		.byte	0
+ 2267 0016 0B       		.uleb128 0xb
+ 2268 0017 0B       		.uleb128 0xb
+ 2269 0018 3E       		.uleb128 0x3e
+ 2270 0019 0B       		.uleb128 0xb
+ 2271 001a 03       		.uleb128 0x3
+ 2272 001b 0E       		.uleb128 0xe
+ 2273 001c 00       		.byte	0
+ 2274 001d 00       		.byte	0
+ 2275 001e 03       		.uleb128 0x3
+ 2276 001f 16       		.uleb128 0x16
+ 2277 0020 00       		.byte	0
+ 2278 0021 03       		.uleb128 0x3
+ 2279 0022 0E       		.uleb128 0xe
+ 2280 0023 3A       		.uleb128 0x3a
+ 2281 0024 0B       		.uleb128 0xb
+ 2282 0025 3B       		.uleb128 0x3b
+ 2283 0026 0B       		.uleb128 0xb
+ 2284 0027 49       		.uleb128 0x49
+ 2285 0028 13       		.uleb128 0x13
+ 2286 0029 00       		.byte	0
+ 2287 002a 00       		.byte	0
+ 2288 002b 04       		.uleb128 0x4
+ 2289 002c 24       		.uleb128 0x24
+ 2290 002d 00       		.byte	0
+ 2291 002e 0B       		.uleb128 0xb
+ 2292 002f 0B       		.uleb128 0xb
+ 2293 0030 3E       		.uleb128 0x3e
+ 2294 0031 0B       		.uleb128 0xb
+ 2295 0032 03       		.uleb128 0x3
+ 2296 0033 08       		.uleb128 0x8
+ 2297 0034 00       		.byte	0
+ 2298 0035 00       		.byte	0
+ 2299 0036 05       		.uleb128 0x5
+ 2300 0037 16       		.uleb128 0x16
+ 2301 0038 00       		.byte	0
+ 2302 0039 03       		.uleb128 0x3
+ 2303 003a 0E       		.uleb128 0xe
+ 2304 003b 3A       		.uleb128 0x3a
+ 2305 003c 0B       		.uleb128 0xb
+ 2306 003d 3B       		.uleb128 0x3b
+ 2307 003e 05       		.uleb128 0x5
+ 2308 003f 49       		.uleb128 0x49
+ 2309 0040 13       		.uleb128 0x13
+ 2310 0041 00       		.byte	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 58
+
+
+ 2311 0042 00       		.byte	0
+ 2312 0043 06       		.uleb128 0x6
+ 2313 0044 35       		.uleb128 0x35
+ 2314 0045 00       		.byte	0
+ 2315 0046 49       		.uleb128 0x49
+ 2316 0047 13       		.uleb128 0x13
+ 2317 0048 00       		.byte	0
+ 2318 0049 00       		.byte	0
+ 2319 004a 07       		.uleb128 0x7
+ 2320 004b 13       		.uleb128 0x13
+ 2321 004c 01       		.byte	0x1
+ 2322 004d 03       		.uleb128 0x3
+ 2323 004e 0E       		.uleb128 0xe
+ 2324 004f 0B       		.uleb128 0xb
+ 2325 0050 0B       		.uleb128 0xb
+ 2326 0051 3A       		.uleb128 0x3a
+ 2327 0052 0B       		.uleb128 0xb
+ 2328 0053 3B       		.uleb128 0x3b
+ 2329 0054 0B       		.uleb128 0xb
+ 2330 0055 01       		.uleb128 0x1
+ 2331 0056 13       		.uleb128 0x13
+ 2332 0057 00       		.byte	0
+ 2333 0058 00       		.byte	0
+ 2334 0059 08       		.uleb128 0x8
+ 2335 005a 0D       		.uleb128 0xd
+ 2336 005b 00       		.byte	0
+ 2337 005c 03       		.uleb128 0x3
+ 2338 005d 0E       		.uleb128 0xe
+ 2339 005e 3A       		.uleb128 0x3a
+ 2340 005f 0B       		.uleb128 0xb
+ 2341 0060 3B       		.uleb128 0x3b
+ 2342 0061 0B       		.uleb128 0xb
+ 2343 0062 49       		.uleb128 0x49
+ 2344 0063 13       		.uleb128 0x13
+ 2345 0064 38       		.uleb128 0x38
+ 2346 0065 0B       		.uleb128 0xb
+ 2347 0066 00       		.byte	0
+ 2348 0067 00       		.byte	0
+ 2349 0068 09       		.uleb128 0x9
+ 2350 0069 0D       		.uleb128 0xd
+ 2351 006a 00       		.byte	0
+ 2352 006b 03       		.uleb128 0x3
+ 2353 006c 08       		.uleb128 0x8
+ 2354 006d 3A       		.uleb128 0x3a
+ 2355 006e 0B       		.uleb128 0xb
+ 2356 006f 3B       		.uleb128 0x3b
+ 2357 0070 0B       		.uleb128 0xb
+ 2358 0071 49       		.uleb128 0x49
+ 2359 0072 13       		.uleb128 0x13
+ 2360 0073 38       		.uleb128 0x38
+ 2361 0074 0B       		.uleb128 0xb
+ 2362 0075 00       		.byte	0
+ 2363 0076 00       		.byte	0
+ 2364 0077 0A       		.uleb128 0xa
+ 2365 0078 13       		.uleb128 0x13
+ 2366 0079 01       		.byte	0x1
+ 2367 007a 03       		.uleb128 0x3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 59
+
+
+ 2368 007b 0E       		.uleb128 0xe
+ 2369 007c 0B       		.uleb128 0xb
+ 2370 007d 05       		.uleb128 0x5
+ 2371 007e 3A       		.uleb128 0x3a
+ 2372 007f 0B       		.uleb128 0xb
+ 2373 0080 3B       		.uleb128 0x3b
+ 2374 0081 0B       		.uleb128 0xb
+ 2375 0082 01       		.uleb128 0x1
+ 2376 0083 13       		.uleb128 0x13
+ 2377 0084 00       		.byte	0
+ 2378 0085 00       		.byte	0
+ 2379 0086 0B       		.uleb128 0xb
+ 2380 0087 0D       		.uleb128 0xd
+ 2381 0088 00       		.byte	0
+ 2382 0089 03       		.uleb128 0x3
+ 2383 008a 0E       		.uleb128 0xe
+ 2384 008b 3A       		.uleb128 0x3a
+ 2385 008c 0B       		.uleb128 0xb
+ 2386 008d 3B       		.uleb128 0x3b
+ 2387 008e 0B       		.uleb128 0xb
+ 2388 008f 49       		.uleb128 0x49
+ 2389 0090 13       		.uleb128 0x13
+ 2390 0091 38       		.uleb128 0x38
+ 2391 0092 05       		.uleb128 0x5
+ 2392 0093 00       		.byte	0
+ 2393 0094 00       		.byte	0
+ 2394 0095 0C       		.uleb128 0xc
+ 2395 0096 01       		.uleb128 0x1
+ 2396 0097 01       		.byte	0x1
+ 2397 0098 49       		.uleb128 0x49
+ 2398 0099 13       		.uleb128 0x13
+ 2399 009a 01       		.uleb128 0x1
+ 2400 009b 13       		.uleb128 0x13
+ 2401 009c 00       		.byte	0
+ 2402 009d 00       		.byte	0
+ 2403 009e 0D       		.uleb128 0xd
+ 2404 009f 21       		.uleb128 0x21
+ 2405 00a0 00       		.byte	0
+ 2406 00a1 49       		.uleb128 0x49
+ 2407 00a2 13       		.uleb128 0x13
+ 2408 00a3 2F       		.uleb128 0x2f
+ 2409 00a4 0B       		.uleb128 0xb
+ 2410 00a5 00       		.byte	0
+ 2411 00a6 00       		.byte	0
+ 2412 00a7 0E       		.uleb128 0xe
+ 2413 00a8 2E       		.uleb128 0x2e
+ 2414 00a9 01       		.byte	0x1
+ 2415 00aa 3F       		.uleb128 0x3f
+ 2416 00ab 19       		.uleb128 0x19
+ 2417 00ac 03       		.uleb128 0x3
+ 2418 00ad 0E       		.uleb128 0xe
+ 2419 00ae 3A       		.uleb128 0x3a
+ 2420 00af 0B       		.uleb128 0xb
+ 2421 00b0 3B       		.uleb128 0x3b
+ 2422 00b1 05       		.uleb128 0x5
+ 2423 00b2 49       		.uleb128 0x49
+ 2424 00b3 13       		.uleb128 0x13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 60
+
+
+ 2425 00b4 11       		.uleb128 0x11
+ 2426 00b5 01       		.uleb128 0x1
+ 2427 00b6 12       		.uleb128 0x12
+ 2428 00b7 06       		.uleb128 0x6
+ 2429 00b8 40       		.uleb128 0x40
+ 2430 00b9 18       		.uleb128 0x18
+ 2431 00ba 9642     		.uleb128 0x2116
+ 2432 00bc 19       		.uleb128 0x19
+ 2433 00bd 01       		.uleb128 0x1
+ 2434 00be 13       		.uleb128 0x13
+ 2435 00bf 00       		.byte	0
+ 2436 00c0 00       		.byte	0
+ 2437 00c1 0F       		.uleb128 0xf
+ 2438 00c2 34       		.uleb128 0x34
+ 2439 00c3 00       		.byte	0
+ 2440 00c4 03       		.uleb128 0x3
+ 2441 00c5 08       		.uleb128 0x8
+ 2442 00c6 3A       		.uleb128 0x3a
+ 2443 00c7 0B       		.uleb128 0xb
+ 2444 00c8 3B       		.uleb128 0x3b
+ 2445 00c9 05       		.uleb128 0x5
+ 2446 00ca 49       		.uleb128 0x49
+ 2447 00cb 13       		.uleb128 0x13
+ 2448 00cc 02       		.uleb128 0x2
+ 2449 00cd 18       		.uleb128 0x18
+ 2450 00ce 00       		.byte	0
+ 2451 00cf 00       		.byte	0
+ 2452 00d0 10       		.uleb128 0x10
+ 2453 00d1 34       		.uleb128 0x34
+ 2454 00d2 00       		.byte	0
+ 2455 00d3 03       		.uleb128 0x3
+ 2456 00d4 0E       		.uleb128 0xe
+ 2457 00d5 3A       		.uleb128 0x3a
+ 2458 00d6 0B       		.uleb128 0xb
+ 2459 00d7 3B       		.uleb128 0x3b
+ 2460 00d8 05       		.uleb128 0x5
+ 2461 00d9 49       		.uleb128 0x49
+ 2462 00da 13       		.uleb128 0x13
+ 2463 00db 02       		.uleb128 0x2
+ 2464 00dc 18       		.uleb128 0x18
+ 2465 00dd 00       		.byte	0
+ 2466 00de 00       		.byte	0
+ 2467 00df 11       		.uleb128 0x11
+ 2468 00e0 2E       		.uleb128 0x2e
+ 2469 00e1 01       		.byte	0x1
+ 2470 00e2 3F       		.uleb128 0x3f
+ 2471 00e3 19       		.uleb128 0x19
+ 2472 00e4 03       		.uleb128 0x3
+ 2473 00e5 0E       		.uleb128 0xe
+ 2474 00e6 3A       		.uleb128 0x3a
+ 2475 00e7 0B       		.uleb128 0xb
+ 2476 00e8 3B       		.uleb128 0x3b
+ 2477 00e9 05       		.uleb128 0x5
+ 2478 00ea 27       		.uleb128 0x27
+ 2479 00eb 19       		.uleb128 0x19
+ 2480 00ec 49       		.uleb128 0x49
+ 2481 00ed 13       		.uleb128 0x13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 61
+
+
+ 2482 00ee 11       		.uleb128 0x11
+ 2483 00ef 01       		.uleb128 0x1
+ 2484 00f0 12       		.uleb128 0x12
+ 2485 00f1 06       		.uleb128 0x6
+ 2486 00f2 40       		.uleb128 0x40
+ 2487 00f3 18       		.uleb128 0x18
+ 2488 00f4 9742     		.uleb128 0x2117
+ 2489 00f6 19       		.uleb128 0x19
+ 2490 00f7 01       		.uleb128 0x1
+ 2491 00f8 13       		.uleb128 0x13
+ 2492 00f9 00       		.byte	0
+ 2493 00fa 00       		.byte	0
+ 2494 00fb 12       		.uleb128 0x12
+ 2495 00fc 05       		.uleb128 0x5
+ 2496 00fd 00       		.byte	0
+ 2497 00fe 03       		.uleb128 0x3
+ 2498 00ff 0E       		.uleb128 0xe
+ 2499 0100 3A       		.uleb128 0x3a
+ 2500 0101 0B       		.uleb128 0xb
+ 2501 0102 3B       		.uleb128 0x3b
+ 2502 0103 05       		.uleb128 0x5
+ 2503 0104 49       		.uleb128 0x49
+ 2504 0105 13       		.uleb128 0x13
+ 2505 0106 02       		.uleb128 0x2
+ 2506 0107 18       		.uleb128 0x18
+ 2507 0108 00       		.byte	0
+ 2508 0109 00       		.byte	0
+ 2509 010a 13       		.uleb128 0x13
+ 2510 010b 2E       		.uleb128 0x2e
+ 2511 010c 01       		.byte	0x1
+ 2512 010d 3F       		.uleb128 0x3f
+ 2513 010e 19       		.uleb128 0x19
+ 2514 010f 03       		.uleb128 0x3
+ 2515 0110 0E       		.uleb128 0xe
+ 2516 0111 3A       		.uleb128 0x3a
+ 2517 0112 0B       		.uleb128 0xb
+ 2518 0113 3B       		.uleb128 0x3b
+ 2519 0114 05       		.uleb128 0x5
+ 2520 0115 27       		.uleb128 0x27
+ 2521 0116 19       		.uleb128 0x19
+ 2522 0117 11       		.uleb128 0x11
+ 2523 0118 01       		.uleb128 0x1
+ 2524 0119 12       		.uleb128 0x12
+ 2525 011a 06       		.uleb128 0x6
+ 2526 011b 40       		.uleb128 0x40
+ 2527 011c 18       		.uleb128 0x18
+ 2528 011d 9642     		.uleb128 0x2116
+ 2529 011f 19       		.uleb128 0x19
+ 2530 0120 01       		.uleb128 0x1
+ 2531 0121 13       		.uleb128 0x13
+ 2532 0122 00       		.byte	0
+ 2533 0123 00       		.byte	0
+ 2534 0124 14       		.uleb128 0x14
+ 2535 0125 05       		.uleb128 0x5
+ 2536 0126 00       		.byte	0
+ 2537 0127 03       		.uleb128 0x3
+ 2538 0128 08       		.uleb128 0x8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 62
+
+
+ 2539 0129 3A       		.uleb128 0x3a
+ 2540 012a 0B       		.uleb128 0xb
+ 2541 012b 3B       		.uleb128 0x3b
+ 2542 012c 05       		.uleb128 0x5
+ 2543 012d 49       		.uleb128 0x49
+ 2544 012e 13       		.uleb128 0x13
+ 2545 012f 02       		.uleb128 0x2
+ 2546 0130 18       		.uleb128 0x18
+ 2547 0131 00       		.byte	0
+ 2548 0132 00       		.byte	0
+ 2549 0133 15       		.uleb128 0x15
+ 2550 0134 2E       		.uleb128 0x2e
+ 2551 0135 01       		.byte	0x1
+ 2552 0136 3F       		.uleb128 0x3f
+ 2553 0137 19       		.uleb128 0x19
+ 2554 0138 03       		.uleb128 0x3
+ 2555 0139 0E       		.uleb128 0xe
+ 2556 013a 3A       		.uleb128 0x3a
+ 2557 013b 0B       		.uleb128 0xb
+ 2558 013c 3B       		.uleb128 0x3b
+ 2559 013d 05       		.uleb128 0x5
+ 2560 013e 27       		.uleb128 0x27
+ 2561 013f 19       		.uleb128 0x19
+ 2562 0140 49       		.uleb128 0x49
+ 2563 0141 13       		.uleb128 0x13
+ 2564 0142 11       		.uleb128 0x11
+ 2565 0143 01       		.uleb128 0x1
+ 2566 0144 12       		.uleb128 0x12
+ 2567 0145 06       		.uleb128 0x6
+ 2568 0146 40       		.uleb128 0x40
+ 2569 0147 18       		.uleb128 0x18
+ 2570 0148 9642     		.uleb128 0x2116
+ 2571 014a 19       		.uleb128 0x19
+ 2572 014b 01       		.uleb128 0x1
+ 2573 014c 13       		.uleb128 0x13
+ 2574 014d 00       		.byte	0
+ 2575 014e 00       		.byte	0
+ 2576 014f 16       		.uleb128 0x16
+ 2577 0150 0F       		.uleb128 0xf
+ 2578 0151 00       		.byte	0
+ 2579 0152 0B       		.uleb128 0xb
+ 2580 0153 0B       		.uleb128 0xb
+ 2581 0154 49       		.uleb128 0x49
+ 2582 0155 13       		.uleb128 0x13
+ 2583 0156 00       		.byte	0
+ 2584 0157 00       		.byte	0
+ 2585 0158 17       		.uleb128 0x17
+ 2586 0159 2E       		.uleb128 0x2e
+ 2587 015a 00       		.byte	0
+ 2588 015b 3F       		.uleb128 0x3f
+ 2589 015c 19       		.uleb128 0x19
+ 2590 015d 03       		.uleb128 0x3
+ 2591 015e 0E       		.uleb128 0xe
+ 2592 015f 3A       		.uleb128 0x3a
+ 2593 0160 0B       		.uleb128 0xb
+ 2594 0161 3B       		.uleb128 0x3b
+ 2595 0162 05       		.uleb128 0x5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 63
+
+
+ 2596 0163 27       		.uleb128 0x27
+ 2597 0164 19       		.uleb128 0x19
+ 2598 0165 49       		.uleb128 0x49
+ 2599 0166 13       		.uleb128 0x13
+ 2600 0167 11       		.uleb128 0x11
+ 2601 0168 01       		.uleb128 0x1
+ 2602 0169 12       		.uleb128 0x12
+ 2603 016a 06       		.uleb128 0x6
+ 2604 016b 40       		.uleb128 0x40
+ 2605 016c 18       		.uleb128 0x18
+ 2606 016d 9742     		.uleb128 0x2117
+ 2607 016f 19       		.uleb128 0x19
+ 2608 0170 00       		.byte	0
+ 2609 0171 00       		.byte	0
+ 2610 0172 18       		.uleb128 0x18
+ 2611 0173 2E       		.uleb128 0x2e
+ 2612 0174 01       		.byte	0x1
+ 2613 0175 3F       		.uleb128 0x3f
+ 2614 0176 19       		.uleb128 0x19
+ 2615 0177 03       		.uleb128 0x3
+ 2616 0178 0E       		.uleb128 0xe
+ 2617 0179 3A       		.uleb128 0x3a
+ 2618 017a 0B       		.uleb128 0xb
+ 2619 017b 3B       		.uleb128 0x3b
+ 2620 017c 05       		.uleb128 0x5
+ 2621 017d 27       		.uleb128 0x27
+ 2622 017e 19       		.uleb128 0x19
+ 2623 017f 11       		.uleb128 0x11
+ 2624 0180 01       		.uleb128 0x1
+ 2625 0181 12       		.uleb128 0x12
+ 2626 0182 06       		.uleb128 0x6
+ 2627 0183 40       		.uleb128 0x40
+ 2628 0184 18       		.uleb128 0x18
+ 2629 0185 9742     		.uleb128 0x2117
+ 2630 0187 19       		.uleb128 0x19
+ 2631 0188 01       		.uleb128 0x1
+ 2632 0189 13       		.uleb128 0x13
+ 2633 018a 00       		.byte	0
+ 2634 018b 00       		.byte	0
+ 2635 018c 19       		.uleb128 0x19
+ 2636 018d 34       		.uleb128 0x34
+ 2637 018e 00       		.byte	0
+ 2638 018f 03       		.uleb128 0x3
+ 2639 0190 0E       		.uleb128 0xe
+ 2640 0191 3A       		.uleb128 0x3a
+ 2641 0192 0B       		.uleb128 0xb
+ 2642 0193 3B       		.uleb128 0x3b
+ 2643 0194 05       		.uleb128 0x5
+ 2644 0195 49       		.uleb128 0x49
+ 2645 0196 13       		.uleb128 0x13
+ 2646 0197 3F       		.uleb128 0x3f
+ 2647 0198 19       		.uleb128 0x19
+ 2648 0199 3C       		.uleb128 0x3c
+ 2649 019a 19       		.uleb128 0x19
+ 2650 019b 00       		.byte	0
+ 2651 019c 00       		.byte	0
+ 2652 019d 1A       		.uleb128 0x1a
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 64
+
+
+ 2653 019e 34       		.uleb128 0x34
+ 2654 019f 00       		.byte	0
+ 2655 01a0 03       		.uleb128 0x3
+ 2656 01a1 0E       		.uleb128 0xe
+ 2657 01a2 3A       		.uleb128 0x3a
+ 2658 01a3 0B       		.uleb128 0xb
+ 2659 01a4 3B       		.uleb128 0x3b
+ 2660 01a5 0B       		.uleb128 0xb
+ 2661 01a6 49       		.uleb128 0x49
+ 2662 01a7 13       		.uleb128 0x13
+ 2663 01a8 3F       		.uleb128 0x3f
+ 2664 01a9 19       		.uleb128 0x19
+ 2665 01aa 02       		.uleb128 0x2
+ 2666 01ab 18       		.uleb128 0x18
+ 2667 01ac 00       		.byte	0
+ 2668 01ad 00       		.byte	0
+ 2669 01ae 1B       		.uleb128 0x1b
+ 2670 01af 21       		.uleb128 0x21
+ 2671 01b0 00       		.byte	0
+ 2672 01b1 49       		.uleb128 0x49
+ 2673 01b2 13       		.uleb128 0x13
+ 2674 01b3 2F       		.uleb128 0x2f
+ 2675 01b4 05       		.uleb128 0x5
+ 2676 01b5 00       		.byte	0
+ 2677 01b6 00       		.byte	0
+ 2678 01b7 1C       		.uleb128 0x1c
+ 2679 01b8 34       		.uleb128 0x34
+ 2680 01b9 00       		.byte	0
+ 2681 01ba 03       		.uleb128 0x3
+ 2682 01bb 08       		.uleb128 0x8
+ 2683 01bc 3A       		.uleb128 0x3a
+ 2684 01bd 0B       		.uleb128 0xb
+ 2685 01be 3B       		.uleb128 0x3b
+ 2686 01bf 05       		.uleb128 0x5
+ 2687 01c0 49       		.uleb128 0x49
+ 2688 01c1 13       		.uleb128 0x13
+ 2689 01c2 3F       		.uleb128 0x3f
+ 2690 01c3 19       		.uleb128 0x19
+ 2691 01c4 02       		.uleb128 0x2
+ 2692 01c5 18       		.uleb128 0x18
+ 2693 01c6 00       		.byte	0
+ 2694 01c7 00       		.byte	0
+ 2695 01c8 1D       		.uleb128 0x1d
+ 2696 01c9 34       		.uleb128 0x34
+ 2697 01ca 00       		.byte	0
+ 2698 01cb 03       		.uleb128 0x3
+ 2699 01cc 0E       		.uleb128 0xe
+ 2700 01cd 3A       		.uleb128 0x3a
+ 2701 01ce 0B       		.uleb128 0xb
+ 2702 01cf 3B       		.uleb128 0x3b
+ 2703 01d0 05       		.uleb128 0x5
+ 2704 01d1 49       		.uleb128 0x49
+ 2705 01d2 13       		.uleb128 0x13
+ 2706 01d3 3F       		.uleb128 0x3f
+ 2707 01d4 19       		.uleb128 0x19
+ 2708 01d5 02       		.uleb128 0x2
+ 2709 01d6 18       		.uleb128 0x18
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 65
+
+
+ 2710 01d7 00       		.byte	0
+ 2711 01d8 00       		.byte	0
+ 2712 01d9 00       		.byte	0
+ 2713              		.section	.debug_aranges,"",%progbits
+ 2714 0000 54000000 		.4byte	0x54
+ 2715 0004 0200     		.2byte	0x2
+ 2716 0006 00000000 		.4byte	.Ldebug_info0
+ 2717 000a 04       		.byte	0x4
+ 2718 000b 00       		.byte	0
+ 2719 000c 0000     		.2byte	0
+ 2720 000e 0000     		.2byte	0
+ 2721 0010 00000000 		.4byte	.LFB64
+ 2722 0014 54020000 		.4byte	.LFE64-.LFB64
+ 2723 0018 00000000 		.4byte	.LFB65
+ 2724 001c 48000000 		.4byte	.LFE65-.LFB65
+ 2725 0020 00000000 		.4byte	.LFB66
+ 2726 0024 34000000 		.4byte	.LFE66-.LFB66
+ 2727 0028 00000000 		.4byte	.LFB67
+ 2728 002c 3E000000 		.4byte	.LFE67-.LFB67
+ 2729 0030 00000000 		.4byte	.LFB68
+ 2730 0034 98000000 		.4byte	.LFE68-.LFB68
+ 2731 0038 00000000 		.4byte	.LFB69
+ 2732 003c 38000000 		.4byte	.LFE69-.LFB69
+ 2733 0040 00000000 		.4byte	.LFB70
+ 2734 0044 14000000 		.4byte	.LFE70-.LFB70
+ 2735 0048 00000000 		.4byte	.LFB71
+ 2736 004c 38000000 		.4byte	.LFE71-.LFB71
+ 2737 0050 00000000 		.4byte	0
+ 2738 0054 00000000 		.4byte	0
+ 2739              		.section	.debug_ranges,"",%progbits
+ 2740              	.Ldebug_ranges0:
+ 2741 0000 00000000 		.4byte	.LFB64
+ 2742 0004 54020000 		.4byte	.LFE64
+ 2743 0008 00000000 		.4byte	.LFB65
+ 2744 000c 48000000 		.4byte	.LFE65
+ 2745 0010 00000000 		.4byte	.LFB66
+ 2746 0014 34000000 		.4byte	.LFE66
+ 2747 0018 00000000 		.4byte	.LFB67
+ 2748 001c 3E000000 		.4byte	.LFE67
+ 2749 0020 00000000 		.4byte	.LFB68
+ 2750 0024 98000000 		.4byte	.LFE68
+ 2751 0028 00000000 		.4byte	.LFB69
+ 2752 002c 38000000 		.4byte	.LFE69
+ 2753 0030 00000000 		.4byte	.LFB70
+ 2754 0034 14000000 		.4byte	.LFE70
+ 2755 0038 00000000 		.4byte	.LFB71
+ 2756 003c 38000000 		.4byte	.LFE71
+ 2757 0040 00000000 		.4byte	0
+ 2758 0044 00000000 		.4byte	0
+ 2759              		.section	.debug_line,"",%progbits
+ 2760              	.Ldebug_line0:
+ 2761 0000 50020000 		.section	.debug_str,"MS",%progbits,1
+ 2761      02005501 
+ 2761      00000201 
+ 2761      FB0E0D00 
+ 2761      01010101 
+ 2762              	.LASF91:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 66
+
+
+ 2763 0000 73706C69 		.ascii	"split_position\000"
+ 2763      745F706F 
+ 2763      73697469 
+ 2763      6F6E00
+ 2764              	.LASF82:
+ 2765 000f 6C656164 		.ascii	"lead_angle\000"
+ 2765      5F616E67 
+ 2765      6C6500
+ 2766              	.LASF70:
+ 2767 001a 616E676C 		.ascii	"angle_electric\000"
+ 2767      655F656C 
+ 2767      65637472 
+ 2767      696300
+ 2768              	.LASF72:
+ 2769 0029 746F7271 		.ascii	"torque_command\000"
+ 2769      75655F63 
+ 2769      6F6D6D61 
+ 2769      6E6400
+ 2770              	.LASF37:
+ 2771 0038 61636365 		.ascii	"accel_z\000"
+ 2771      6C5F7A00 
+ 2772              	.LASF17:
+ 2773 0040 646F7562 		.ascii	"double\000"
+ 2773      6C6500
+ 2774              	.LASF46:
+ 2775 0047 7A5F6275 		.ascii	"z_buffer\000"
+ 2775      66666572 
+ 2775      00
+ 2776              	.LASF87:
+ 2777 0050 66756C6C 		.ascii	"fullstepMap\000"
+ 2777      73746570 
+ 2777      4D617000 
+ 2778              	.LASF26:
+ 2779 005c 695F6C69 		.ascii	"i_limit_pos\000"
+ 2779      6D69745F 
+ 2779      706F7300 
+ 2780              	.LASF64:
+ 2781 0068 6163635F 		.ascii	"acc_struct\000"
+ 2781      73747275 
+ 2781      637400
+ 2782              	.LASF2:
+ 2783 0073 73686F72 		.ascii	"short int\000"
+ 2783      7420696E 
+ 2783      7400
+ 2784              	.LASF22:
+ 2785 007d 696E7075 		.ascii	"input\000"
+ 2785      7400
+ 2786              	.LASF21:
+ 2787 0083 73697A65 		.ascii	"sizetype\000"
+ 2787      74797065 
+ 2787      00
+ 2788              	.LASF93:
+ 2789 008c 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 2789      43313120 
+ 2789      352E342E 
+ 2789      31203230 
+ 2789      31363036 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 67
+
+
+ 2790 00bf 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 2790      20726576 
+ 2790      6973696F 
+ 2790      6E203233 
+ 2790      37373135 
+ 2791 00f2 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 2791      66756E63 
+ 2791      74696F6E 
+ 2791      2D736563 
+ 2791      74696F6E 
+ 2792              	.LASF52:
+ 2793 011a 6D61696E 		.ascii	"main\000"
+ 2793      00
+ 2794              	.LASF78:
+ 2795 011f 706F7369 		.ascii	"position\000"
+ 2795      74696F6E 
+ 2795      00
+ 2796              	.LASF81:
+ 2797 0128 706F7369 		.ascii	"position_ref_old\000"
+ 2797      74696F6E 
+ 2797      5F726566 
+ 2797      5F6F6C64 
+ 2797      00
+ 2798              	.LASF36:
+ 2799 0139 61636365 		.ascii	"accel_y\000"
+ 2799      6C5F7900 
+ 2800              	.LASF41:
+ 2801 0141 785F7375 		.ascii	"x_sum\000"
+ 2801      6D00
+ 2802              	.LASF54:
+ 2803 0147 76616C75 		.ascii	"value\000"
+ 2803      6500
+ 2804              	.LASF69:
+ 2805 014d 72656164 		.ascii	"read_angle_command\000"
+ 2805      5F616E67 
+ 2805      6C655F63 
+ 2805      6F6D6D61 
+ 2805      6E6400
+ 2806              	.LASF14:
+ 2807 0160 696E7431 		.ascii	"int16\000"
+ 2807      3600
+ 2808              	.LASF11:
+ 2809 0166 75696E74 		.ascii	"uint8\000"
+ 2809      3800
+ 2810              	.LASF31:
+ 2811 016c 6572726F 		.ascii	"error_last\000"
+ 2811      725F6C61 
+ 2811      737400
+ 2812              	.LASF44:
+ 2813 0177 785F6275 		.ascii	"x_buffer\000"
+ 2813      66666572 
+ 2813      00
+ 2814              	.LASF84:
+ 2815 0180 73776974 		.ascii	"switch_val\000"
+ 2815      63685F76 
+ 2815      616C00
+ 2816              	.LASF16:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 68
+
+
+ 2817 018b 666C6F61 		.ascii	"float\000"
+ 2817      7400
+ 2818              	.LASF43:
+ 2819 0191 7A5F7375 		.ascii	"z_sum\000"
+ 2819      6D00
+ 2820              	.LASF57:
+ 2821 0197 72656164 		.ascii	"read\000"
+ 2821      00
+ 2822              	.LASF6:
+ 2823 019c 6C6F6E67 		.ascii	"long long int\000"
+ 2823      206C6F6E 
+ 2823      6720696E 
+ 2823      7400
+ 2824              	.LASF30:
+ 2825 01aa 6572726F 		.ascii	"error_d\000"
+ 2825      725F6400 
+ 2826              	.LASF25:
+ 2827 01b2 66656564 		.ascii	"feedforward\000"
+ 2827      666F7277 
+ 2827      61726400 
+ 2828              	.LASF29:
+ 2829 01be 6572726F 		.ascii	"error_i\000"
+ 2829      725F6900 
+ 2830              	.LASF4:
+ 2831 01c6 6C6F6E67 		.ascii	"long int\000"
+ 2831      20696E74 
+ 2831      00
+ 2832              	.LASF39:
+ 2833 01cf 795F6F66 		.ascii	"y_offset\000"
+ 2833      66736574 
+ 2833      00
+ 2834              	.LASF28:
+ 2835 01d8 6572726F 		.ascii	"error_p\000"
+ 2835      725F7000 
+ 2836              	.LASF59:
+ 2837 01e0 61786973 		.ascii	"axis\000"
+ 2837      00
+ 2838              	.LASF38:
+ 2839 01e5 785F6F66 		.ascii	"x_offset\000"
+ 2839      66736574 
+ 2839      00
+ 2840              	.LASF55:
+ 2841 01ee 73706943 		.ascii	"spiCalcEvenParity\000"
+ 2841      616C6345 
+ 2841      76656E50 
+ 2841      61726974 
+ 2841      7900
+ 2842              	.LASF20:
+ 2843 0200 6C6F6E67 		.ascii	"long double\000"
+ 2843      20646F75 
+ 2843      626C6500 
+ 2844              	.LASF56:
+ 2845 020c 72656164 		.ascii	"readRegister8\000"
+ 2845      52656769 
+ 2845      73746572 
+ 2845      3800
+ 2846              	.LASF1:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 69
+
+
+ 2847 021a 756E7369 		.ascii	"unsigned char\000"
+ 2847      676E6564 
+ 2847      20636861 
+ 2847      7200
+ 2848              	.LASF27:
+ 2849 0228 695F6C69 		.ascii	"i_limit_neg\000"
+ 2849      6D69745F 
+ 2849      6E656700 
+ 2850              	.LASF77:
+ 2851 0234 61786973 		.ascii	"axis_position_filtered_2\000"
+ 2851      5F706F73 
+ 2851      6974696F 
+ 2851      6E5F6669 
+ 2851      6C746572 
+ 2852              	.LASF0:
+ 2853 024d 7369676E 		.ascii	"signed char\000"
+ 2853      65642063 
+ 2853      68617200 
+ 2854              	.LASF10:
+ 2855 0259 696E7433 		.ascii	"int32_t\000"
+ 2855      325F7400 
+ 2856              	.LASF7:
+ 2857 0261 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2857      206C6F6E 
+ 2857      6720756E 
+ 2857      7369676E 
+ 2857      65642069 
+ 2858              	.LASF76:
+ 2859 0278 61786973 		.ascii	"axis_position_filtered\000"
+ 2859      5F706F73 
+ 2859      6974696F 
+ 2859      6E5F6669 
+ 2859      6C746572 
+ 2860              	.LASF79:
+ 2861 028f 706F7369 		.ascii	"position_ref\000"
+ 2861      74696F6E 
+ 2861      5F726566 
+ 2861      00
+ 2862              	.LASF88:
+ 2863 029c 66756C6C 		.ascii	"fullstepMapSorted\000"
+ 2863      73746570 
+ 2863      4D617053 
+ 2863      6F727465 
+ 2863      6400
+ 2864              	.LASF8:
+ 2865 02ae 756E7369 		.ascii	"unsigned int\000"
+ 2865      676E6564 
+ 2865      20696E74 
+ 2865      00
+ 2866              	.LASF18:
+ 2867 02bb 696E7436 		.ascii	"int64\000"
+ 2867      3400
+ 2868              	.LASF68:
+ 2869 02c1 4143435F 		.ascii	"ACC_Write_buffer\000"
+ 2869      57726974 
+ 2869      655F6275 
+ 2869      66666572 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 70
+
+
+ 2869      00
+ 2870              	.LASF51:
+ 2871 02d2 706F7369 		.ascii	"position_pid\000"
+ 2871      74696F6E 
+ 2871      5F706964 
+ 2871      00
+ 2872              	.LASF3:
+ 2873 02df 73686F72 		.ascii	"short unsigned int\000"
+ 2873      7420756E 
+ 2873      7369676E 
+ 2873      65642069 
+ 2873      6E7400
+ 2874              	.LASF89:
+ 2875 02f2 6F666673 		.ascii	"offsetMap\000"
+ 2875      65744D61 
+ 2875      7000
+ 2876              	.LASF32:
+ 2877 02fc 73746174 		.ascii	"status\000"
+ 2877      757300
+ 2878              	.LASF63:
+ 2879 0303 61636365 		.ascii	"accel_update\000"
+ 2879      6C5F7570 
+ 2879      64617465 
+ 2879      00
+ 2880              	.LASF19:
+ 2881 0310 63686172 		.ascii	"char\000"
+ 2881      00
+ 2882              	.LASF34:
+ 2883 0315 61636365 		.ascii	"accel\000"
+ 2883      6C00
+ 2884              	.LASF83:
+ 2885 031b 73746570 		.ascii	"step_array\000"
+ 2885      5F617272 
+ 2885      617900
+ 2886              	.LASF47:
+ 2887 0326 785F696E 		.ascii	"x_index\000"
+ 2887      64657800 
+ 2888              	.LASF96:
+ 2889 032e 616E676C 		.ascii	"angle_update\000"
+ 2889      655F7570 
+ 2889      64617465 
+ 2889      00
+ 2890              	.LASF71:
+ 2891 033b 616E676C 		.ascii	"angle_diff\000"
+ 2891      655F6469 
+ 2891      666600
+ 2892              	.LASF67:
+ 2893 0346 4143435F 		.ascii	"ACC_Read_buffer\000"
+ 2893      52656164 
+ 2893      5F627566 
+ 2893      66657200 
+ 2894              	.LASF86:
+ 2895 0356 73746570 		.ascii	"step_count\000"
+ 2895      5F636F75 
+ 2895      6E7400
+ 2896              	.LASF74:
+ 2897 0361 7472616E 		.ascii	"transmit_buff\000"
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 71
+
+
+ 2897      736D6974 
+ 2897      5F627566 
+ 2897      6600
+ 2898              	.LASF95:
+ 2899 036f 433A5C55 		.ascii	"C:\\Users\\pajoh\\Desktop\\closed_loop_printer\\cod"
+ 2899      73657273 
+ 2899      5C70616A 
+ 2899      6F685C44 
+ 2899      65736B74 
+ 2900 039d 655C416E 		.ascii	"e\\Angle_Sensor\\StepperTorqueControl.cydsn\000"
+ 2900      676C655F 
+ 2900      53656E73 
+ 2900      6F725C53 
+ 2900      74657070 
+ 2901              	.LASF40:
+ 2902 03c7 7A5F6F66 		.ascii	"z_offset\000"
+ 2902      66736574 
+ 2902      00
+ 2903              	.LASF33:
+ 2904 03d0 7069645F 		.ascii	"pid_ts\000"
+ 2904      747300
+ 2905              	.LASF12:
+ 2906 03d7 75696E74 		.ascii	"uint16\000"
+ 2906      313600
+ 2907              	.LASF65:
+ 2908 03de 61636365 		.ascii	"accel_offset_update\000"
+ 2908      6C5F6F66 
+ 2908      66736574 
+ 2908      5F757064 
+ 2908      61746500 
+ 2909              	.LASF85:
+ 2910 03f2 73776974 		.ascii	"switch_old\000"
+ 2910      63685F6F 
+ 2910      6C6400
+ 2911              	.LASF49:
+ 2912 03fd 7A5F696E 		.ascii	"z_index\000"
+ 2912      64657800 
+ 2913              	.LASF94:
+ 2914 0405 6D61696E 		.ascii	"main.c\000"
+ 2914      2E6300
+ 2915              	.LASF5:
+ 2916 040c 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2916      20756E73 
+ 2916      69676E65 
+ 2916      6420696E 
+ 2916      7400
+ 2917              	.LASF15:
+ 2918 041e 696E7433 		.ascii	"int32\000"
+ 2918      3200
+ 2919              	.LASF13:
+ 2920 0424 75696E74 		.ascii	"uint32\000"
+ 2920      333200
+ 2921              	.LASF80:
+ 2922 042b 706F7369 		.ascii	"position_ref_initial\000"
+ 2922      74696F6E 
+ 2922      5F726566 
+ 2922      5F696E69 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 72
+
+
+ 2922      7469616C 
+ 2923              	.LASF62:
+ 2924 0440 61786973 		.ascii	"axis_position\000"
+ 2924      5F706F73 
+ 2924      6974696F 
+ 2924      6E00
+ 2925              	.LASF48:
+ 2926 044e 795F696E 		.ascii	"y_index\000"
+ 2926      64657800 
+ 2927              	.LASF9:
+ 2928 0456 5F5F696E 		.ascii	"__int32_t\000"
+ 2928      7433325F 
+ 2928      7400
+ 2929              	.LASF35:
+ 2930 0460 61636365 		.ascii	"accel_x\000"
+ 2930      6C5F7800 
+ 2931              	.LASF75:
+ 2932 0468 636F6E74 		.ascii	"controller_tick\000"
+ 2932      726F6C6C 
+ 2932      65725F74 
+ 2932      69636B00 
+ 2933              	.LASF58:
+ 2934 0478 61786973 		.ascii	"axis_update\000"
+ 2934      5F757064 
+ 2934      61746500 
+ 2935              	.LASF90:
+ 2936 0484 6D696E5F 		.ascii	"min_index\000"
+ 2936      696E6465 
+ 2936      7800
+ 2937              	.LASF60:
+ 2938 048e 616E676C 		.ascii	"angle\000"
+ 2938      6500
+ 2939              	.LASF24:
+ 2940 0494 6F757470 		.ascii	"output\000"
+ 2940      757400
+ 2941              	.LASF45:
+ 2942 049b 795F6275 		.ascii	"y_buffer\000"
+ 2942      66666572 
+ 2942      00
+ 2943              	.LASF50:
+ 2944 04a4 61636365 		.ascii	"accel_value\000"
+ 2944      6C5F7661 
+ 2944      6C756500 
+ 2945              	.LASF23:
+ 2946 04b0 73657470 		.ascii	"setpoint\000"
+ 2946      6F696E74 
+ 2946      00
+ 2947              	.LASF66:
+ 2948 04b9 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2948      52784275 
+ 2948      66666572 
+ 2948      00
+ 2949              	.LASF73:
+ 2950 04c6 616E676C 		.ascii	"angle_sum\000"
+ 2950      655F7375 
+ 2950      6D00
+ 2951              	.LASF92:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc4PzEGZ.s 			page 73
+
+
+ 2952 04d0 636C6F73 		.ascii	"closest_int\000"
+ 2952      6573745F 
+ 2952      696E7400 
+ 2953              	.LASF42:
+ 2954 04dc 795F7375 		.ascii	"y_sum\000"
+ 2954      6D00
+ 2955              	.LASF61:
+ 2956 04e2 616E676C 		.ascii	"angle_old\000"
+ 2956      655F6F6C 
+ 2956      6400
+ 2957              	.LASF53:
+ 2958 04ec 77726974 		.ascii	"writeRegister8\000"
+ 2958      65526567 
+ 2958      69737465 
+ 2958      723800
+ 2959              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

@@ -1,0 +1,2611 @@
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"tick.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	angle_old
+  20              		.bss
+  21              		.align	2
+  22              		.type	angle_old, %object
+  23              		.size	angle_old, 4
+  24              	angle_old:
+  25 0000 00000000 		.space	4
+  26              		.global	axis_position_old
+  27              		.align	2
+  28              		.type	axis_position_old, %object
+  29              		.size	axis_position_old, 4
+  30              	axis_position_old:
+  31 0004 00000000 		.space	4
+  32              		.comm	start_count,4,4
+  33              		.comm	count,4,4
+  34              		.section	.text.tick_Start,"ax",%progbits
+  35              		.align	2
+  36              		.global	tick_Start
+  37              		.thumb
+  38              		.thumb_func
+  39              		.type	tick_Start, %function
+  40              	tick_Start:
+  41              	.LFB0:
+  42              		.file 1 "Generated_Source\\PSoC5\\tick.c"
+   1:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+   2:Generated_Source\PSoC5/tick.c **** * File Name: tick.c  
+   3:Generated_Source\PSoC5/tick.c **** * Version 1.70
+   4:Generated_Source\PSoC5/tick.c **** *
+   5:Generated_Source\PSoC5/tick.c **** *  Description:
+   6:Generated_Source\PSoC5/tick.c **** *   API for controlling the state of an interrupt.
+   7:Generated_Source\PSoC5/tick.c **** *
+   8:Generated_Source\PSoC5/tick.c **** *
+   9:Generated_Source\PSoC5/tick.c **** *  Note:
+  10:Generated_Source\PSoC5/tick.c **** *
+  11:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+  12:Generated_Source\PSoC5/tick.c **** * Copyright 2008-2015, Cypress Semiconductor Corporation.  All rights reserved.
+  13:Generated_Source\PSoC5/tick.c **** * You may use this file only in accordance with the license, terms, conditions, 
+  14:Generated_Source\PSoC5/tick.c **** * disclaimers, and limitations in the end user license agreement accompanying 
+  15:Generated_Source\PSoC5/tick.c **** * the software package with which this file was provided.
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 2
+
+
+  16:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+  17:Generated_Source\PSoC5/tick.c **** 
+  18:Generated_Source\PSoC5/tick.c **** 
+  19:Generated_Source\PSoC5/tick.c **** #include <cydevice_trm.h>
+  20:Generated_Source\PSoC5/tick.c **** #include <CyLib.h>
+  21:Generated_Source\PSoC5/tick.c **** #include <tick.h>
+  22:Generated_Source\PSoC5/tick.c **** #include "cyapicallbacks.h"
+  23:Generated_Source\PSoC5/tick.c **** 
+  24:Generated_Source\PSoC5/tick.c **** #if !defined(tick__REMOVED) /* Check for removal by optimization */
+  25:Generated_Source\PSoC5/tick.c **** 
+  26:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+  27:Generated_Source\PSoC5/tick.c **** *  Place your includes, defines and code here 
+  28:Generated_Source\PSoC5/tick.c **** ********************************************************************************/
+  29:Generated_Source\PSoC5/tick.c **** /* `#START tick_intc` */
+  30:Generated_Source\PSoC5/tick.c ****     #include "SPIM.h"
+  31:Generated_Source\PSoC5/tick.c ****     #include "ShiftReg_1.h"
+  32:Generated_Source\PSoC5/tick.c ****     #include "Direction.h"
+  33:Generated_Source\PSoC5/tick.c ****     #include "Interrupt_t.h"
+  34:Generated_Source\PSoC5/tick.c ****     #define TORQUE_CTRL
+  35:Generated_Source\PSoC5/tick.c ****     extern volatile uint8 controller_tick;
+  36:Generated_Source\PSoC5/tick.c ****     extern volatile int32 angle;
+  37:Generated_Source\PSoC5/tick.c ****     extern volatile uint16 read_angle_command;
+  38:Generated_Source\PSoC5/tick.c ****     extern volatile int32 lead_angle;
+  39:Generated_Source\PSoC5/tick.c ****     extern volatile uint32 step_array[17];
+  40:Generated_Source\PSoC5/tick.c ****     extern volatile int32 angle_electric;
+  41:Generated_Source\PSoC5/tick.c ****     extern volatile int32 angle_diff;
+  42:Generated_Source\PSoC5/tick.c ****     extern volatile int32 torque_command;
+  43:Generated_Source\PSoC5/tick.c ****     extern volatile int32 axis_position;
+  44:Generated_Source\PSoC5/tick.c ****     extern volatile int32 offsetMap[512];
+  45:Generated_Source\PSoC5/tick.c ****     volatile int32 angle_old = 0;
+  46:Generated_Source\PSoC5/tick.c ****     volatile int32 axis_position_old = 0;
+  47:Generated_Source\PSoC5/tick.c ****     extern volatile int32 axis_position_filtered;
+  48:Generated_Source\PSoC5/tick.c ****     extern volatile int32 axis_position_filtered_2;
+  49:Generated_Source\PSoC5/tick.c ****     int start_count;
+  50:Generated_Source\PSoC5/tick.c ****     int count;
+  51:Generated_Source\PSoC5/tick.c **** /* `#END` */
+  52:Generated_Source\PSoC5/tick.c **** 
+  53:Generated_Source\PSoC5/tick.c **** #ifndef CYINT_IRQ_BASE
+  54:Generated_Source\PSoC5/tick.c **** #define CYINT_IRQ_BASE      16
+  55:Generated_Source\PSoC5/tick.c **** #endif /* CYINT_IRQ_BASE */
+  56:Generated_Source\PSoC5/tick.c **** #ifndef CYINT_VECT_TABLE
+  57:Generated_Source\PSoC5/tick.c **** #define CYINT_VECT_TABLE    ((cyisraddress **) CYREG_NVIC_VECT_OFFSET)
+  58:Generated_Source\PSoC5/tick.c **** #endif /* CYINT_VECT_TABLE */
+  59:Generated_Source\PSoC5/tick.c **** 
+  60:Generated_Source\PSoC5/tick.c **** /* Declared in startup, used to set unused interrupts to. */
+  61:Generated_Source\PSoC5/tick.c **** CY_ISR_PROTO(IntDefaultHandler);
+  62:Generated_Source\PSoC5/tick.c **** 
+  63:Generated_Source\PSoC5/tick.c **** 
+  64:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+  65:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Start
+  66:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+  67:Generated_Source\PSoC5/tick.c **** *
+  68:Generated_Source\PSoC5/tick.c **** * Summary:
+  69:Generated_Source\PSoC5/tick.c **** *  Set up the interrupt and enable it. This function disables the interrupt, 
+  70:Generated_Source\PSoC5/tick.c **** *  sets the default interrupt vector, sets the priority from the value in the
+  71:Generated_Source\PSoC5/tick.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
+  72:Generated_Source\PSoC5/tick.c **** *  interrupt controller.
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 3
+
+
+  73:Generated_Source\PSoC5/tick.c **** *
+  74:Generated_Source\PSoC5/tick.c **** * Parameters:  
+  75:Generated_Source\PSoC5/tick.c **** *   None
+  76:Generated_Source\PSoC5/tick.c **** *
+  77:Generated_Source\PSoC5/tick.c **** * Return:
+  78:Generated_Source\PSoC5/tick.c **** *   None
+  79:Generated_Source\PSoC5/tick.c **** *
+  80:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+  81:Generated_Source\PSoC5/tick.c **** void tick_Start(void)
+  82:Generated_Source\PSoC5/tick.c **** {
+  43              		.loc 1 82 0
+  44              		.cfi_startproc
+  45              		@ args = 0, pretend = 0, frame = 0
+  46              		@ frame_needed = 1, uses_anonymous_args = 0
+  47 0000 80B5     		push	{r7, lr}
+  48              		.cfi_def_cfa_offset 8
+  49              		.cfi_offset 7, -8
+  50              		.cfi_offset 14, -4
+  51 0002 00AF     		add	r7, sp, #0
+  52              		.cfi_def_cfa_register 7
+  83:Generated_Source\PSoC5/tick.c ****     /* For all we know the interrupt is active. */
+  84:Generated_Source\PSoC5/tick.c ****     tick_Disable();
+  53              		.loc 1 84 0
+  54 0004 FFF7FEFF 		bl	tick_Disable
+  85:Generated_Source\PSoC5/tick.c **** 
+  86:Generated_Source\PSoC5/tick.c ****     /* Set the ISR to point to the tick Interrupt. */
+  87:Generated_Source\PSoC5/tick.c ****     tick_SetVector(&tick_Interrupt);
+  55              		.loc 1 87 0
+  56 0008 0448     		ldr	r0, .L2
+  57 000a FFF7FEFF 		bl	tick_SetVector
+  88:Generated_Source\PSoC5/tick.c **** 
+  89:Generated_Source\PSoC5/tick.c ****     /* Set the priority. */
+  90:Generated_Source\PSoC5/tick.c ****     tick_SetPriority((uint8)tick_INTC_PRIOR_NUMBER);
+  58              		.loc 1 90 0
+  59 000e 0720     		movs	r0, #7
+  60 0010 FFF7FEFF 		bl	tick_SetPriority
+  91:Generated_Source\PSoC5/tick.c **** 
+  92:Generated_Source\PSoC5/tick.c ****     /* Enable it. */
+  93:Generated_Source\PSoC5/tick.c ****     tick_Enable();
+  61              		.loc 1 93 0
+  62 0014 FFF7FEFF 		bl	tick_Enable
+  94:Generated_Source\PSoC5/tick.c **** }
+  63              		.loc 1 94 0
+  64 0018 00BF     		nop
+  65 001a 80BD     		pop	{r7, pc}
+  66              	.L3:
+  67              		.align	2
+  68              	.L2:
+  69 001c 00000000 		.word	tick_Interrupt
+  70              		.cfi_endproc
+  71              	.LFE0:
+  72              		.size	tick_Start, .-tick_Start
+  73              		.section	.text.tick_StartEx,"ax",%progbits
+  74              		.align	2
+  75              		.global	tick_StartEx
+  76              		.thumb
+  77              		.thumb_func
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 4
+
+
+  78              		.type	tick_StartEx, %function
+  79              	tick_StartEx:
+  80              	.LFB1:
+  95:Generated_Source\PSoC5/tick.c **** 
+  96:Generated_Source\PSoC5/tick.c **** 
+  97:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+  98:Generated_Source\PSoC5/tick.c **** * Function Name: tick_StartEx
+  99:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 100:Generated_Source\PSoC5/tick.c **** *
+ 101:Generated_Source\PSoC5/tick.c **** * Summary:
+ 102:Generated_Source\PSoC5/tick.c **** *  Sets up the interrupt and enables it. This function disables the interrupt,
+ 103:Generated_Source\PSoC5/tick.c **** *  sets the interrupt vector based on the address passed in, sets the priority 
+ 104:Generated_Source\PSoC5/tick.c **** *  from the value in the Design Wide Resources Interrupt Editor, then enables 
+ 105:Generated_Source\PSoC5/tick.c **** *  the interrupt to the interrupt controller.
+ 106:Generated_Source\PSoC5/tick.c **** *  
+ 107:Generated_Source\PSoC5/tick.c **** *  When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 108:Generated_Source\PSoC5/tick.c **** *  used to provide consistent definition across compilers:
+ 109:Generated_Source\PSoC5/tick.c **** *  
+ 110:Generated_Source\PSoC5/tick.c **** *  Function definition example:
+ 111:Generated_Source\PSoC5/tick.c **** *   CY_ISR(MyISR)
+ 112:Generated_Source\PSoC5/tick.c **** *   {
+ 113:Generated_Source\PSoC5/tick.c **** *   }
+ 114:Generated_Source\PSoC5/tick.c **** *   Function prototype example:
+ 115:Generated_Source\PSoC5/tick.c **** *   CY_ISR_PROTO(MyISR);
+ 116:Generated_Source\PSoC5/tick.c **** *
+ 117:Generated_Source\PSoC5/tick.c **** * Parameters:  
+ 118:Generated_Source\PSoC5/tick.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 119:Generated_Source\PSoC5/tick.c **** *
+ 120:Generated_Source\PSoC5/tick.c **** * Return:
+ 121:Generated_Source\PSoC5/tick.c **** *   None
+ 122:Generated_Source\PSoC5/tick.c **** *
+ 123:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 124:Generated_Source\PSoC5/tick.c **** void tick_StartEx(cyisraddress address)
+ 125:Generated_Source\PSoC5/tick.c **** {
+  81              		.loc 1 125 0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 8
+  84              		@ frame_needed = 1, uses_anonymous_args = 0
+  85 0000 80B5     		push	{r7, lr}
+  86              		.cfi_def_cfa_offset 8
+  87              		.cfi_offset 7, -8
+  88              		.cfi_offset 14, -4
+  89 0002 82B0     		sub	sp, sp, #8
+  90              		.cfi_def_cfa_offset 16
+  91 0004 00AF     		add	r7, sp, #0
+  92              		.cfi_def_cfa_register 7
+  93 0006 7860     		str	r0, [r7, #4]
+ 126:Generated_Source\PSoC5/tick.c ****     /* For all we know the interrupt is active. */
+ 127:Generated_Source\PSoC5/tick.c ****     tick_Disable();
+  94              		.loc 1 127 0
+  95 0008 FFF7FEFF 		bl	tick_Disable
+ 128:Generated_Source\PSoC5/tick.c **** 
+ 129:Generated_Source\PSoC5/tick.c ****     /* Set the ISR to point to the tick Interrupt. */
+ 130:Generated_Source\PSoC5/tick.c ****     tick_SetVector(address);
+  96              		.loc 1 130 0
+  97 000c 7868     		ldr	r0, [r7, #4]
+  98 000e FFF7FEFF 		bl	tick_SetVector
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 5
+
+
+ 131:Generated_Source\PSoC5/tick.c **** 
+ 132:Generated_Source\PSoC5/tick.c ****     /* Set the priority. */
+ 133:Generated_Source\PSoC5/tick.c ****     tick_SetPriority((uint8)tick_INTC_PRIOR_NUMBER);
+  99              		.loc 1 133 0
+ 100 0012 0720     		movs	r0, #7
+ 101 0014 FFF7FEFF 		bl	tick_SetPriority
+ 134:Generated_Source\PSoC5/tick.c **** 
+ 135:Generated_Source\PSoC5/tick.c ****     /* Enable it. */
+ 136:Generated_Source\PSoC5/tick.c ****     tick_Enable();
+ 102              		.loc 1 136 0
+ 103 0018 FFF7FEFF 		bl	tick_Enable
+ 137:Generated_Source\PSoC5/tick.c **** }
+ 104              		.loc 1 137 0
+ 105 001c 00BF     		nop
+ 106 001e 0837     		adds	r7, r7, #8
+ 107              		.cfi_def_cfa_offset 8
+ 108 0020 BD46     		mov	sp, r7
+ 109              		.cfi_def_cfa_register 13
+ 110              		@ sp needed
+ 111 0022 80BD     		pop	{r7, pc}
+ 112              		.cfi_endproc
+ 113              	.LFE1:
+ 114              		.size	tick_StartEx, .-tick_StartEx
+ 115              		.section	.text.tick_Stop,"ax",%progbits
+ 116              		.align	2
+ 117              		.global	tick_Stop
+ 118              		.thumb
+ 119              		.thumb_func
+ 120              		.type	tick_Stop, %function
+ 121              	tick_Stop:
+ 122              	.LFB2:
+ 138:Generated_Source\PSoC5/tick.c **** 
+ 139:Generated_Source\PSoC5/tick.c **** 
+ 140:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 141:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Stop
+ 142:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 143:Generated_Source\PSoC5/tick.c **** *
+ 144:Generated_Source\PSoC5/tick.c **** * Summary:
+ 145:Generated_Source\PSoC5/tick.c **** *   Disables and removes the interrupt.
+ 146:Generated_Source\PSoC5/tick.c **** *
+ 147:Generated_Source\PSoC5/tick.c **** * Parameters:  
+ 148:Generated_Source\PSoC5/tick.c **** *   None
+ 149:Generated_Source\PSoC5/tick.c **** *
+ 150:Generated_Source\PSoC5/tick.c **** * Return:
+ 151:Generated_Source\PSoC5/tick.c **** *   None
+ 152:Generated_Source\PSoC5/tick.c **** *
+ 153:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 154:Generated_Source\PSoC5/tick.c **** void tick_Stop(void)
+ 155:Generated_Source\PSoC5/tick.c **** {
+ 123              		.loc 1 155 0
+ 124              		.cfi_startproc
+ 125              		@ args = 0, pretend = 0, frame = 0
+ 126              		@ frame_needed = 1, uses_anonymous_args = 0
+ 127 0000 80B5     		push	{r7, lr}
+ 128              		.cfi_def_cfa_offset 8
+ 129              		.cfi_offset 7, -8
+ 130              		.cfi_offset 14, -4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 6
+
+
+ 131 0002 00AF     		add	r7, sp, #0
+ 132              		.cfi_def_cfa_register 7
+ 156:Generated_Source\PSoC5/tick.c ****     /* Disable this interrupt. */
+ 157:Generated_Source\PSoC5/tick.c ****     tick_Disable();
+ 133              		.loc 1 157 0
+ 134 0004 FFF7FEFF 		bl	tick_Disable
+ 158:Generated_Source\PSoC5/tick.c **** 
+ 159:Generated_Source\PSoC5/tick.c ****     /* Set the ISR to point to the passive one. */
+ 160:Generated_Source\PSoC5/tick.c ****     tick_SetVector(&IntDefaultHandler);
+ 135              		.loc 1 160 0
+ 136 0008 0248     		ldr	r0, .L6
+ 137 000a FFF7FEFF 		bl	tick_SetVector
+ 161:Generated_Source\PSoC5/tick.c **** }
+ 138              		.loc 1 161 0
+ 139 000e 00BF     		nop
+ 140 0010 80BD     		pop	{r7, pc}
+ 141              	.L7:
+ 142 0012 00BF     		.align	2
+ 143              	.L6:
+ 144 0014 00000000 		.word	IntDefaultHandler
+ 145              		.cfi_endproc
+ 146              	.LFE2:
+ 147              		.size	tick_Stop, .-tick_Stop
+ 148              		.section	.text.tick_Interrupt,"ax",%progbits
+ 149              		.align	2
+ 150              		.global	tick_Interrupt
+ 151              		.thumb
+ 152              		.thumb_func
+ 153              		.type	tick_Interrupt, %function
+ 154              	tick_Interrupt:
+ 155              	.LFB3:
+ 162:Generated_Source\PSoC5/tick.c **** 
+ 163:Generated_Source\PSoC5/tick.c **** 
+ 164:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 165:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Interrupt
+ 166:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 167:Generated_Source\PSoC5/tick.c **** *
+ 168:Generated_Source\PSoC5/tick.c **** * Summary:
+ 169:Generated_Source\PSoC5/tick.c **** *   The default Interrupt Service Routine for tick.
+ 170:Generated_Source\PSoC5/tick.c **** *
+ 171:Generated_Source\PSoC5/tick.c **** *   Add custom code between the coments to keep the next version of this file
+ 172:Generated_Source\PSoC5/tick.c **** *   from over writting your code.
+ 173:Generated_Source\PSoC5/tick.c **** *
+ 174:Generated_Source\PSoC5/tick.c **** * Parameters:  
+ 175:Generated_Source\PSoC5/tick.c **** *
+ 176:Generated_Source\PSoC5/tick.c **** * Return:
+ 177:Generated_Source\PSoC5/tick.c **** *   None
+ 178:Generated_Source\PSoC5/tick.c **** *
+ 179:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 180:Generated_Source\PSoC5/tick.c **** CY_ISR(tick_Interrupt)
+ 181:Generated_Source\PSoC5/tick.c **** {
+ 156              		.loc 1 181 0
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 0
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 7
+
+
+ 162              		.cfi_offset 7, -8
+ 163              		.cfi_offset 14, -4
+ 164 0002 00AF     		add	r7, sp, #0
+ 165              		.cfi_def_cfa_register 7
+ 182:Generated_Source\PSoC5/tick.c ****     #ifdef tick_INTERRUPT_INTERRUPT_CALLBACK
+ 183:Generated_Source\PSoC5/tick.c ****         tick_Interrupt_InterruptCallback();
+ 184:Generated_Source\PSoC5/tick.c ****     #endif /* tick_INTERRUPT_INTERRUPT_CALLBACK */ 
+ 185:Generated_Source\PSoC5/tick.c **** 
+ 186:Generated_Source\PSoC5/tick.c ****     /*  Place your Interrupt code here. */
+ 187:Generated_Source\PSoC5/tick.c ****     /* `#START tick_Interrupt` */
+ 188:Generated_Source\PSoC5/tick.c ****         Interrupt_t_Write(1);
+ 166              		.loc 1 188 0
+ 167 0004 0120     		movs	r0, #1
+ 168 0006 FFF7FEFF 		bl	Interrupt_t_Write
+ 189:Generated_Source\PSoC5/tick.c ****         //sample the angle sensor
+ 190:Generated_Source\PSoC5/tick.c ****         //send read command after checking for data
+ 191:Generated_Source\PSoC5/tick.c ****         //interrupt takes less time this way (hopefully)
+ 192:Generated_Source\PSoC5/tick.c ****         if(SPIM_GetRxBufferSize() != 0){
+ 169              		.loc 1 192 0
+ 170 000a FFF7FEFF 		bl	SPIM_GetRxBufferSize
+ 171 000e 0346     		mov	r3, r0
+ 172 0010 002B     		cmp	r3, #0
+ 173 0012 15D0     		beq	.L9
+ 193:Generated_Source\PSoC5/tick.c ****             angle = SPIM_ReadRxData() & 0x3FFF; //((SPIM_ReadRxData() & 0x3FFF) * 3600)/16384;
+ 174              		.loc 1 193 0
+ 175 0014 FFF7FEFF 		bl	SPIM_ReadRxData
+ 176 0018 0346     		mov	r3, r0
+ 177 001a C3F30D03 		ubfx	r3, r3, #0, #14
+ 178 001e 934A     		ldr	r2, .L25
+ 179 0020 1360     		str	r3, [r2]
+ 194:Generated_Source\PSoC5/tick.c ****             angle = angle + offsetMap[angle/32];
+ 180              		.loc 1 194 0
+ 181 0022 924B     		ldr	r3, .L25
+ 182 0024 1B68     		ldr	r3, [r3]
+ 183 0026 002B     		cmp	r3, #0
+ 184 0028 00DA     		bge	.L10
+ 185 002a 1F33     		adds	r3, r3, #31
+ 186              	.L10:
+ 187 002c 5B11     		asrs	r3, r3, #5
+ 188 002e 1A46     		mov	r2, r3
+ 189 0030 8F4B     		ldr	r3, .L25+4
+ 190 0032 53F82220 		ldr	r2, [r3, r2, lsl #2]
+ 191 0036 8D4B     		ldr	r3, .L25
+ 192 0038 1B68     		ldr	r3, [r3]
+ 193 003a 1344     		add	r3, r3, r2
+ 194 003c 8B4A     		ldr	r2, .L25
+ 195 003e 1360     		str	r3, [r2]
+ 196              	.L9:
+ 195:Generated_Source\PSoC5/tick.c ****         }
+ 196:Generated_Source\PSoC5/tick.c ****         SPIM_WriteTxData(read_angle_command);
+ 197              		.loc 1 196 0
+ 198 0040 8C4B     		ldr	r3, .L25+8
+ 199 0042 1B88     		ldrh	r3, [r3]	@ movhi
+ 200 0044 9BB2     		uxth	r3, r3
+ 201 0046 1846     		mov	r0, r3
+ 202 0048 FFF7FEFF 		bl	SPIM_WriteTxData
+ 197:Generated_Source\PSoC5/tick.c ****         axis_position_old = axis_position;
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 8
+
+
+ 203              		.loc 1 197 0
+ 204 004c 8A4B     		ldr	r3, .L25+12
+ 205 004e 1B68     		ldr	r3, [r3]
+ 206 0050 8A4A     		ldr	r2, .L25+16
+ 207 0052 1360     		str	r3, [r2]
+ 198:Generated_Source\PSoC5/tick.c ****         if(angle - angle_old > 10000){
+ 208              		.loc 1 198 0
+ 209 0054 854B     		ldr	r3, .L25
+ 210 0056 1A68     		ldr	r2, [r3]
+ 211 0058 894B     		ldr	r3, .L25+20
+ 212 005a 1B68     		ldr	r3, [r3]
+ 213 005c D31A     		subs	r3, r2, r3
+ 214 005e 42F21072 		movw	r2, #10000
+ 215 0062 9342     		cmp	r3, r2
+ 216 0064 0CDD     		ble	.L11
+ 199:Generated_Source\PSoC5/tick.c ****             //angle decreasing, crossed over 0
+ 200:Generated_Source\PSoC5/tick.c ****             axis_position = axis_position + (angle - (angle_old + 16384));
+ 217              		.loc 1 200 0
+ 218 0066 814B     		ldr	r3, .L25
+ 219 0068 1A68     		ldr	r2, [r3]
+ 220 006a 854B     		ldr	r3, .L25+20
+ 221 006c 1B68     		ldr	r3, [r3]
+ 222 006e 03F58043 		add	r3, r3, #16384
+ 223 0072 D21A     		subs	r2, r2, r3
+ 224 0074 804B     		ldr	r3, .L25+12
+ 225 0076 1B68     		ldr	r3, [r3]
+ 226 0078 1344     		add	r3, r3, r2
+ 227 007a 7F4A     		ldr	r2, .L25+12
+ 228 007c 1360     		str	r3, [r2]
+ 229 007e 29E0     		b	.L12
+ 230              	.L11:
+ 201:Generated_Source\PSoC5/tick.c ****         }
+ 202:Generated_Source\PSoC5/tick.c ****         else if(angle - angle_old < -10000){
+ 231              		.loc 1 202 0
+ 232 0080 7A4B     		ldr	r3, .L25
+ 233 0082 1A68     		ldr	r2, [r3]
+ 234 0084 7E4B     		ldr	r3, .L25+20
+ 235 0086 1B68     		ldr	r3, [r3]
+ 236 0088 D31A     		subs	r3, r2, r3
+ 237 008a 7E4A     		ldr	r2, .L25+24
+ 238 008c 9342     		cmp	r3, r2
+ 239 008e 17DA     		bge	.L13
+ 203:Generated_Source\PSoC5/tick.c ****             //angle increasing, crossed over 0
+ 204:Generated_Source\PSoC5/tick.c ****             axis_position = axis_position + ((angle - angle_old) + 16384) % 16384;
+ 240              		.loc 1 204 0
+ 241 0090 764B     		ldr	r3, .L25
+ 242 0092 1A68     		ldr	r2, [r3]
+ 243 0094 7A4B     		ldr	r3, .L25+20
+ 244 0096 1B68     		ldr	r3, [r3]
+ 245 0098 D31A     		subs	r3, r2, r3
+ 246 009a 03F58042 		add	r2, r3, #16384
+ 247 009e 7A4B     		ldr	r3, .L25+28
+ 248 00a0 1340     		ands	r3, r3, r2
+ 249 00a2 002B     		cmp	r3, #0
+ 250 00a4 05DA     		bge	.L14
+ 251 00a6 013B     		subs	r3, r3, #1
+ 252 00a8 6FEA8343 		mvn	r3, r3, lsl #18
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 9
+
+
+ 253 00ac 6FEA9343 		mvn	r3, r3, lsr #18
+ 254 00b0 0133     		adds	r3, r3, #1
+ 255              	.L14:
+ 256 00b2 1A46     		mov	r2, r3
+ 257 00b4 704B     		ldr	r3, .L25+12
+ 258 00b6 1B68     		ldr	r3, [r3]
+ 259 00b8 1344     		add	r3, r3, r2
+ 260 00ba 6F4A     		ldr	r2, .L25+12
+ 261 00bc 1360     		str	r3, [r2]
+ 262 00be 09E0     		b	.L12
+ 263              	.L13:
+ 205:Generated_Source\PSoC5/tick.c ****         }
+ 206:Generated_Source\PSoC5/tick.c ****         else{
+ 207:Generated_Source\PSoC5/tick.c ****             axis_position = axis_position + angle - angle_old;
+ 264              		.loc 1 207 0
+ 265 00c0 6D4B     		ldr	r3, .L25+12
+ 266 00c2 1A68     		ldr	r2, [r3]
+ 267 00c4 694B     		ldr	r3, .L25
+ 268 00c6 1B68     		ldr	r3, [r3]
+ 269 00c8 1A44     		add	r2, r2, r3
+ 270 00ca 6D4B     		ldr	r3, .L25+20
+ 271 00cc 1B68     		ldr	r3, [r3]
+ 272 00ce D31A     		subs	r3, r2, r3
+ 273 00d0 694A     		ldr	r2, .L25+12
+ 274 00d2 1360     		str	r3, [r2]
+ 275              	.L12:
+ 208:Generated_Source\PSoC5/tick.c ****         }
+ 209:Generated_Source\PSoC5/tick.c ****         angle_old = angle;
+ 276              		.loc 1 209 0
+ 277 00d4 654B     		ldr	r3, .L25
+ 278 00d6 1B68     		ldr	r3, [r3]
+ 279 00d8 694A     		ldr	r2, .L25+20
+ 280 00da 1360     		str	r3, [r2]
+ 210:Generated_Source\PSoC5/tick.c ****         if(start_count < 100){
+ 281              		.loc 1 210 0
+ 282 00dc 6B4B     		ldr	r3, .L25+32
+ 283 00de 1B68     		ldr	r3, [r3]
+ 284 00e0 632B     		cmp	r3, #99
+ 285 00e2 04DC     		bgt	.L15
+ 211:Generated_Source\PSoC5/tick.c ****             start_count++;   
+ 286              		.loc 1 211 0
+ 287 00e4 694B     		ldr	r3, .L25+32
+ 288 00e6 1B68     		ldr	r3, [r3]
+ 289 00e8 0133     		adds	r3, r3, #1
+ 290 00ea 684A     		ldr	r2, .L25+32
+ 291 00ec 1360     		str	r3, [r2]
+ 292              	.L15:
+ 212:Generated_Source\PSoC5/tick.c ****         }
+ 213:Generated_Source\PSoC5/tick.c ****         axis_position_filtered = (axis_position_filtered*5 + axis_position*3)/8;
+ 293              		.loc 1 213 0
+ 294 00ee 684B     		ldr	r3, .L25+36
+ 295 00f0 1A68     		ldr	r2, [r3]
+ 296 00f2 1346     		mov	r3, r2
+ 297 00f4 9B00     		lsls	r3, r3, #2
+ 298 00f6 9918     		adds	r1, r3, r2
+ 299 00f8 5F4B     		ldr	r3, .L25+12
+ 300 00fa 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 10
+
+
+ 301 00fc 1346     		mov	r3, r2
+ 302 00fe 5B00     		lsls	r3, r3, #1
+ 303 0100 1344     		add	r3, r3, r2
+ 304 0102 0B44     		add	r3, r3, r1
+ 305 0104 002B     		cmp	r3, #0
+ 306 0106 00DA     		bge	.L16
+ 307 0108 0733     		adds	r3, r3, #7
+ 308              	.L16:
+ 309 010a DB10     		asrs	r3, r3, #3
+ 310 010c 1A46     		mov	r2, r3
+ 311 010e 604B     		ldr	r3, .L25+36
+ 312 0110 1A60     		str	r2, [r3]
+ 214:Generated_Source\PSoC5/tick.c ****         axis_position_filtered_2 = (axis_position_filtered_2 * 15 + axis_position) / 16;
+ 313              		.loc 1 214 0
+ 314 0112 604B     		ldr	r3, .L25+40
+ 315 0114 1A68     		ldr	r2, [r3]
+ 316 0116 1346     		mov	r3, r2
+ 317 0118 1B01     		lsls	r3, r3, #4
+ 318 011a 9A1A     		subs	r2, r3, r2
+ 319 011c 564B     		ldr	r3, .L25+12
+ 320 011e 1B68     		ldr	r3, [r3]
+ 321 0120 1344     		add	r3, r3, r2
+ 322 0122 002B     		cmp	r3, #0
+ 323 0124 00DA     		bge	.L17
+ 324 0126 0F33     		adds	r3, r3, #15
+ 325              	.L17:
+ 326 0128 1B11     		asrs	r3, r3, #4
+ 327 012a 1A46     		mov	r2, r3
+ 328 012c 594B     		ldr	r3, .L25+40
+ 329 012e 1A60     		str	r2, [r3]
+ 215:Generated_Source\PSoC5/tick.c ****         //axis_position = (axis_position_old + axis_position) / 2;
+ 216:Generated_Source\PSoC5/tick.c ****         
+ 217:Generated_Source\PSoC5/tick.c ****         #ifdef TORQUE_CTRL
+ 218:Generated_Source\PSoC5/tick.c ****         if(start_count == 100){
+ 330              		.loc 1 218 0
+ 331 0130 564B     		ldr	r3, .L25+32
+ 332 0132 1B68     		ldr	r3, [r3]
+ 333 0134 642B     		cmp	r3, #100
+ 334 0136 7CD1     		bne	.L18
+ 219:Generated_Source\PSoC5/tick.c ****         count = (count + 1)%10;
+ 335              		.loc 1 219 0
+ 336 0138 574B     		ldr	r3, .L25+44
+ 337 013a 1B68     		ldr	r3, [r3]
+ 338 013c 591C     		adds	r1, r3, #1
+ 339 013e 574B     		ldr	r3, .L25+48
+ 340 0140 83FB0123 		smull	r2, r3, r3, r1
+ 341 0144 9A10     		asrs	r2, r3, #2
+ 342 0146 CB17     		asrs	r3, r1, #31
+ 343 0148 D21A     		subs	r2, r2, r3
+ 344 014a 1346     		mov	r3, r2
+ 345 014c 9B00     		lsls	r3, r3, #2
+ 346 014e 1344     		add	r3, r3, r2
+ 347 0150 5B00     		lsls	r3, r3, #1
+ 348 0152 CA1A     		subs	r2, r1, r3
+ 349 0154 504B     		ldr	r3, .L25+44
+ 350 0156 1A60     		str	r2, [r3]
+ 220:Generated_Source\PSoC5/tick.c ****         //if(count == 0){
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 11
+
+
+ 221:Generated_Source\PSoC5/tick.c ****             controller_tick = 1;
+ 351              		.loc 1 221 0
+ 352 0158 514B     		ldr	r3, .L25+52
+ 353 015a 0122     		movs	r2, #1
+ 354 015c 1A70     		strb	r2, [r3]
+ 222:Generated_Source\PSoC5/tick.c ****        // }
+ 223:Generated_Source\PSoC5/tick.c ****         //angle_diff = (int32)angle_electric - (int32)((axis_position & 0xFFFFFFFC) + velocity) * 3
+ 224:Generated_Source\PSoC5/tick.c ****         angle_diff = angle_electric - (axis_position_filtered * 3200) / 16384;
+ 355              		.loc 1 224 0
+ 356 015e 514B     		ldr	r3, .L25+56
+ 357 0160 1A68     		ldr	r2, [r3]
+ 358 0162 4B4B     		ldr	r3, .L25+36
+ 359 0164 1B68     		ldr	r3, [r3]
+ 360 0166 4FF44861 		mov	r1, #3200
+ 361 016a 01FB03F3 		mul	r3, r1, r3
+ 362 016e 002B     		cmp	r3, #0
+ 363 0170 02DA     		bge	.L19
+ 364 0172 03F57F53 		add	r3, r3, #16320
+ 365 0176 3F33     		adds	r3, r3, #63
+ 366              	.L19:
+ 367 0178 9B13     		asrs	r3, r3, #14
+ 368 017a D31A     		subs	r3, r2, r3
+ 369 017c 4A4A     		ldr	r2, .L25+60
+ 370 017e 1360     		str	r3, [r2]
+ 225:Generated_Source\PSoC5/tick.c ****         
+ 226:Generated_Source\PSoC5/tick.c ****         lead_angle = torque_command - angle_diff;
+ 371              		.loc 1 226 0
+ 372 0180 4A4B     		ldr	r3, .L25+64
+ 373 0182 1A68     		ldr	r2, [r3]
+ 374 0184 484B     		ldr	r3, .L25+60
+ 375 0186 1B68     		ldr	r3, [r3]
+ 376 0188 D31A     		subs	r3, r2, r3
+ 377 018a 494A     		ldr	r2, .L25+68
+ 378 018c 1360     		str	r3, [r2]
+ 227:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 15){
+ 379              		.loc 1 227 0
+ 380 018e 484B     		ldr	r3, .L25+68
+ 381 0190 1B68     		ldr	r3, [r3]
+ 382 0192 0F2B     		cmp	r3, #15
+ 383 0194 03DD     		ble	.L20
+ 228:Generated_Source\PSoC5/tick.c ****                 lead_angle = 15;
+ 384              		.loc 1 228 0
+ 385 0196 464B     		ldr	r3, .L25+68
+ 386 0198 0F22     		movs	r2, #15
+ 387 019a 1A60     		str	r2, [r3]
+ 388 019c 08E0     		b	.L21
+ 389              	.L20:
+ 229:Generated_Source\PSoC5/tick.c ****             }
+ 230:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < -15){
+ 390              		.loc 1 230 0
+ 391 019e 444B     		ldr	r3, .L25+68
+ 392 01a0 1B68     		ldr	r3, [r3]
+ 393 01a2 13F10F0F 		cmn	r3, #15
+ 394 01a6 03DA     		bge	.L21
+ 231:Generated_Source\PSoC5/tick.c ****                 lead_angle = -15;
+ 395              		.loc 1 231 0
+ 396 01a8 414B     		ldr	r3, .L25+68
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 12
+
+
+ 397 01aa 6FF00E02 		mvn	r2, #14
+ 398 01ae 1A60     		str	r2, [r3]
+ 399              	.L21:
+ 232:Generated_Source\PSoC5/tick.c ****             }
+ 233:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 0){
+ 400              		.loc 1 233 0
+ 401 01b0 3F4B     		ldr	r3, .L25+68
+ 402 01b2 1B68     		ldr	r3, [r3]
+ 403 01b4 002B     		cmp	r3, #0
+ 404 01b6 19DD     		ble	.L22
+ 234:Generated_Source\PSoC5/tick.c ****                 Direction_Write(1);
+ 405              		.loc 1 234 0
+ 406 01b8 0120     		movs	r0, #1
+ 407 01ba FFF7FEFF 		bl	Direction_Write
+ 235:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
+ 408              		.loc 1 235 0
+ 409 01be 0120     		movs	r0, #1
+ 410 01c0 FFF7FEFF 		bl	CyDelayUs
+ 236:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
+ 411              		.loc 1 236 0
+ 412 01c4 FFF7FEFF 		bl	ShiftReg_1_Stop
+ 237:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
+ 413              		.loc 1 237 0
+ 414 01c8 394B     		ldr	r3, .L25+68
+ 415 01ca 1B68     		ldr	r3, [r3]
+ 416 01cc 394A     		ldr	r2, .L25+72
+ 417 01ce 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 418 01d2 1846     		mov	r0, r3
+ 419 01d4 FFF7FEFF 		bl	ShiftReg_1_WriteRegValue
+ 238:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
+ 420              		.loc 1 238 0
+ 421 01d8 FFF7FEFF 		bl	ShiftReg_1_Enable
+ 239:Generated_Source\PSoC5/tick.c ****                 angle_electric += lead_angle;
+ 422              		.loc 1 239 0
+ 423 01dc 344B     		ldr	r3, .L25+68
+ 424 01de 1A68     		ldr	r2, [r3]
+ 425 01e0 304B     		ldr	r3, .L25+56
+ 426 01e2 1B68     		ldr	r3, [r3]
+ 427 01e4 1344     		add	r3, r3, r2
+ 428 01e6 2F4A     		ldr	r2, .L25+56
+ 429 01e8 1360     		str	r3, [r2]
+ 430 01ea 39E0     		b	.L23
+ 431              	.L22:
+ 240:Generated_Source\PSoC5/tick.c ****             }
+ 241:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < 0){
+ 432              		.loc 1 241 0
+ 433 01ec 304B     		ldr	r3, .L25+68
+ 434 01ee 1B68     		ldr	r3, [r3]
+ 435 01f0 002B     		cmp	r3, #0
+ 436 01f2 35DA     		bge	.L23
+ 242:Generated_Source\PSoC5/tick.c ****                 Direction_Write(0);
+ 437              		.loc 1 242 0
+ 438 01f4 0020     		movs	r0, #0
+ 439 01f6 FFF7FEFF 		bl	Direction_Write
+ 243:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
+ 440              		.loc 1 243 0
+ 441 01fa 0120     		movs	r0, #1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 13
+
+
+ 442 01fc FFF7FEFF 		bl	CyDelayUs
+ 244:Generated_Source\PSoC5/tick.c ****                 lead_angle *= -1;
+ 443              		.loc 1 244 0
+ 444 0200 2B4B     		ldr	r3, .L25+68
+ 445 0202 1B68     		ldr	r3, [r3]
+ 446 0204 5B42     		negs	r3, r3
+ 447 0206 2A4A     		ldr	r2, .L25+68
+ 448 0208 1360     		str	r3, [r2]
+ 245:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
+ 449              		.loc 1 245 0
+ 450 020a FFF7FEFF 		bl	ShiftReg_1_Stop
+ 246:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
+ 451              		.loc 1 246 0
+ 452 020e 284B     		ldr	r3, .L25+68
+ 453 0210 1B68     		ldr	r3, [r3]
+ 454 0212 284A     		ldr	r2, .L25+72
+ 455 0214 52F82330 		ldr	r3, [r2, r3, lsl #2]
+ 456 0218 1846     		mov	r0, r3
+ 457 021a FFF7FEFF 		bl	ShiftReg_1_WriteRegValue
+ 247:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
+ 458              		.loc 1 247 0
+ 459 021e FFF7FEFF 		bl	ShiftReg_1_Enable
+ 248:Generated_Source\PSoC5/tick.c ****                 angle_electric -= lead_angle;
+ 460              		.loc 1 248 0
+ 461 0222 234B     		ldr	r3, .L25+68
+ 462 0224 1B68     		ldr	r3, [r3]
+ 463 0226 1F4A     		ldr	r2, .L25+56
+ 464 0228 1268     		ldr	r2, [r2]
+ 465 022a D31A     		subs	r3, r2, r3
+ 466 022c 1D4A     		ldr	r2, .L25+56
+ 467 022e 1360     		str	r3, [r2]
+ 468 0230 16E0     		b	.L23
+ 469              	.L18:
+ 249:Generated_Source\PSoC5/tick.c ****             }
+ 250:Generated_Source\PSoC5/tick.c ****             else{
+ 251:Generated_Source\PSoC5/tick.c ****                 
+ 252:Generated_Source\PSoC5/tick.c ****             }
+ 253:Generated_Source\PSoC5/tick.c ****         }
+ 254:Generated_Source\PSoC5/tick.c ****         else{
+ 255:Generated_Source\PSoC5/tick.c ****             angle_electric = axis_position * 3200 / 16384;   
+ 470              		.loc 1 255 0
+ 471 0232 114B     		ldr	r3, .L25+12
+ 472 0234 1B68     		ldr	r3, [r3]
+ 473 0236 4FF44862 		mov	r2, #3200
+ 474 023a 02FB03F3 		mul	r3, r2, r3
+ 475 023e 002B     		cmp	r3, #0
+ 476 0240 02DA     		bge	.L24
+ 477 0242 03F57F53 		add	r3, r3, #16320
+ 478 0246 3F33     		adds	r3, r3, #63
+ 479              	.L24:
+ 480 0248 9B13     		asrs	r3, r3, #14
+ 481 024a 1A46     		mov	r2, r3
+ 482 024c 154B     		ldr	r3, .L25+56
+ 483 024e 1A60     		str	r2, [r3]
+ 256:Generated_Source\PSoC5/tick.c ****             axis_position_filtered = axis_position;
+ 484              		.loc 1 256 0
+ 485 0250 094B     		ldr	r3, .L25+12
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 14
+
+
+ 486 0252 1B68     		ldr	r3, [r3]
+ 487 0254 0E4A     		ldr	r2, .L25+36
+ 488 0256 1360     		str	r3, [r2]
+ 257:Generated_Source\PSoC5/tick.c ****             axis_position_filtered_2 = axis_position;
+ 489              		.loc 1 257 0
+ 490 0258 074B     		ldr	r3, .L25+12
+ 491 025a 1B68     		ldr	r3, [r3]
+ 492 025c 0D4A     		ldr	r2, .L25+40
+ 493 025e 1360     		str	r3, [r2]
+ 494              	.L23:
+ 258:Generated_Source\PSoC5/tick.c ****         }
+ 259:Generated_Source\PSoC5/tick.c ****         #endif
+ 260:Generated_Source\PSoC5/tick.c ****         Interrupt_t_Write(0);
+ 495              		.loc 1 260 0
+ 496 0260 0020     		movs	r0, #0
+ 497 0262 FFF7FEFF 		bl	Interrupt_t_Write
+ 261:Generated_Source\PSoC5/tick.c ****         
+ 262:Generated_Source\PSoC5/tick.c ****     /* `#END` */
+ 263:Generated_Source\PSoC5/tick.c **** }
+ 498              		.loc 1 263 0
+ 499 0266 00BF     		nop
+ 500 0268 80BD     		pop	{r7, pc}
+ 501              	.L26:
+ 502 026a 00BF     		.align	2
+ 503              	.L25:
+ 504 026c 00000000 		.word	angle
+ 505 0270 00000000 		.word	offsetMap
+ 506 0274 00000000 		.word	read_angle_command
+ 507 0278 00000000 		.word	axis_position
+ 508 027c 00000000 		.word	axis_position_old
+ 509 0280 00000000 		.word	angle_old
+ 510 0284 F0D8FFFF 		.word	-10000
+ 511 0288 FF3F0080 		.word	-2147467265
+ 512 028c 00000000 		.word	start_count
+ 513 0290 00000000 		.word	axis_position_filtered
+ 514 0294 00000000 		.word	axis_position_filtered_2
+ 515 0298 00000000 		.word	count
+ 516 029c 67666666 		.word	1717986919
+ 517 02a0 00000000 		.word	controller_tick
+ 518 02a4 00000000 		.word	angle_electric
+ 519 02a8 00000000 		.word	angle_diff
+ 520 02ac 00000000 		.word	torque_command
+ 521 02b0 00000000 		.word	lead_angle
+ 522 02b4 00000000 		.word	step_array
+ 523              		.cfi_endproc
+ 524              	.LFE3:
+ 525              		.size	tick_Interrupt, .-tick_Interrupt
+ 526              		.section	.text.tick_SetVector,"ax",%progbits
+ 527              		.align	2
+ 528              		.global	tick_SetVector
+ 529              		.thumb
+ 530              		.thumb_func
+ 531              		.type	tick_SetVector, %function
+ 532              	tick_SetVector:
+ 533              	.LFB4:
+ 264:Generated_Source\PSoC5/tick.c **** 
+ 265:Generated_Source\PSoC5/tick.c **** 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 15
+
+
+ 266:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 267:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetVector
+ 268:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 269:Generated_Source\PSoC5/tick.c **** *
+ 270:Generated_Source\PSoC5/tick.c **** * Summary:
+ 271:Generated_Source\PSoC5/tick.c **** *   Change the ISR vector for the Interrupt. Note calling tick_Start
+ 272:Generated_Source\PSoC5/tick.c **** *   will override any effect this method would have had. To set the vector 
+ 273:Generated_Source\PSoC5/tick.c **** *   before the component has been started use tick_StartEx instead.
+ 274:Generated_Source\PSoC5/tick.c **** * 
+ 275:Generated_Source\PSoC5/tick.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ 276:Generated_Source\PSoC5/tick.c **** *   used to provide consistent definition across compilers:
+ 277:Generated_Source\PSoC5/tick.c **** *
+ 278:Generated_Source\PSoC5/tick.c **** *   Function definition example:
+ 279:Generated_Source\PSoC5/tick.c **** *   CY_ISR(MyISR)
+ 280:Generated_Source\PSoC5/tick.c **** *   {
+ 281:Generated_Source\PSoC5/tick.c **** *   }
+ 282:Generated_Source\PSoC5/tick.c **** *
+ 283:Generated_Source\PSoC5/tick.c **** *   Function prototype example:
+ 284:Generated_Source\PSoC5/tick.c **** *     CY_ISR_PROTO(MyISR);
+ 285:Generated_Source\PSoC5/tick.c **** *
+ 286:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 287:Generated_Source\PSoC5/tick.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 288:Generated_Source\PSoC5/tick.c **** *
+ 289:Generated_Source\PSoC5/tick.c **** * Return:
+ 290:Generated_Source\PSoC5/tick.c **** *   None
+ 291:Generated_Source\PSoC5/tick.c **** *
+ 292:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 293:Generated_Source\PSoC5/tick.c **** void tick_SetVector(cyisraddress address)
+ 294:Generated_Source\PSoC5/tick.c **** {
+ 534              		.loc 1 294 0
+ 535              		.cfi_startproc
+ 536              		@ args = 0, pretend = 0, frame = 16
+ 537              		@ frame_needed = 1, uses_anonymous_args = 0
+ 538              		@ link register save eliminated.
+ 539 0000 80B4     		push	{r7}
+ 540              		.cfi_def_cfa_offset 4
+ 541              		.cfi_offset 7, -4
+ 542 0002 85B0     		sub	sp, sp, #20
+ 543              		.cfi_def_cfa_offset 24
+ 544 0004 00AF     		add	r7, sp, #0
+ 545              		.cfi_def_cfa_register 7
+ 546 0006 7860     		str	r0, [r7, #4]
+ 295:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
+ 296:Generated_Source\PSoC5/tick.c **** 
+ 297:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 547              		.loc 1 297 0
+ 548 0008 054B     		ldr	r3, .L28
+ 549 000a 1B68     		ldr	r3, [r3]
+ 550 000c FB60     		str	r3, [r7, #12]
+ 298:Generated_Source\PSoC5/tick.c **** 
+ 299:Generated_Source\PSoC5/tick.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER] = address;
+ 551              		.loc 1 299 0
+ 552 000e FB68     		ldr	r3, [r7, #12]
+ 553 0010 4033     		adds	r3, r3, #64
+ 554 0012 7A68     		ldr	r2, [r7, #4]
+ 555 0014 1A60     		str	r2, [r3]
+ 300:Generated_Source\PSoC5/tick.c **** }
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 16
+
+
+ 556              		.loc 1 300 0
+ 557 0016 00BF     		nop
+ 558 0018 1437     		adds	r7, r7, #20
+ 559              		.cfi_def_cfa_offset 4
+ 560 001a BD46     		mov	sp, r7
+ 561              		.cfi_def_cfa_register 13
+ 562              		@ sp needed
+ 563 001c 80BC     		pop	{r7}
+ 564              		.cfi_restore 7
+ 565              		.cfi_def_cfa_offset 0
+ 566 001e 7047     		bx	lr
+ 567              	.L29:
+ 568              		.align	2
+ 569              	.L28:
+ 570 0020 08ED00E0 		.word	-536810232
+ 571              		.cfi_endproc
+ 572              	.LFE4:
+ 573              		.size	tick_SetVector, .-tick_SetVector
+ 574              		.section	.text.tick_GetVector,"ax",%progbits
+ 575              		.align	2
+ 576              		.global	tick_GetVector
+ 577              		.thumb
+ 578              		.thumb_func
+ 579              		.type	tick_GetVector, %function
+ 580              	tick_GetVector:
+ 581              	.LFB5:
+ 301:Generated_Source\PSoC5/tick.c **** 
+ 302:Generated_Source\PSoC5/tick.c **** 
+ 303:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 304:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetVector
+ 305:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 306:Generated_Source\PSoC5/tick.c **** *
+ 307:Generated_Source\PSoC5/tick.c **** * Summary:
+ 308:Generated_Source\PSoC5/tick.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 309:Generated_Source\PSoC5/tick.c **** *
+ 310:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 311:Generated_Source\PSoC5/tick.c **** *   None
+ 312:Generated_Source\PSoC5/tick.c **** *
+ 313:Generated_Source\PSoC5/tick.c **** * Return:
+ 314:Generated_Source\PSoC5/tick.c **** *   Address of the ISR in the interrupt vector table.
+ 315:Generated_Source\PSoC5/tick.c **** *
+ 316:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 317:Generated_Source\PSoC5/tick.c **** cyisraddress tick_GetVector(void)
+ 318:Generated_Source\PSoC5/tick.c **** {
+ 582              		.loc 1 318 0
+ 583              		.cfi_startproc
+ 584              		@ args = 0, pretend = 0, frame = 8
+ 585              		@ frame_needed = 1, uses_anonymous_args = 0
+ 586              		@ link register save eliminated.
+ 587 0000 80B4     		push	{r7}
+ 588              		.cfi_def_cfa_offset 4
+ 589              		.cfi_offset 7, -4
+ 590 0002 83B0     		sub	sp, sp, #12
+ 591              		.cfi_def_cfa_offset 16
+ 592 0004 00AF     		add	r7, sp, #0
+ 593              		.cfi_def_cfa_register 7
+ 319:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 17
+
+
+ 320:Generated_Source\PSoC5/tick.c **** 
+ 321:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 594              		.loc 1 321 0
+ 595 0006 054B     		ldr	r3, .L32
+ 596 0008 1B68     		ldr	r3, [r3]
+ 597 000a 7B60     		str	r3, [r7, #4]
+ 322:Generated_Source\PSoC5/tick.c **** 
+ 323:Generated_Source\PSoC5/tick.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER];
+ 598              		.loc 1 323 0
+ 599 000c 7B68     		ldr	r3, [r7, #4]
+ 600 000e 1B6C     		ldr	r3, [r3, #64]
+ 324:Generated_Source\PSoC5/tick.c **** }
+ 601              		.loc 1 324 0
+ 602 0010 1846     		mov	r0, r3
+ 603 0012 0C37     		adds	r7, r7, #12
+ 604              		.cfi_def_cfa_offset 4
+ 605 0014 BD46     		mov	sp, r7
+ 606              		.cfi_def_cfa_register 13
+ 607              		@ sp needed
+ 608 0016 80BC     		pop	{r7}
+ 609              		.cfi_restore 7
+ 610              		.cfi_def_cfa_offset 0
+ 611 0018 7047     		bx	lr
+ 612              	.L33:
+ 613 001a 00BF     		.align	2
+ 614              	.L32:
+ 615 001c 08ED00E0 		.word	-536810232
+ 616              		.cfi_endproc
+ 617              	.LFE5:
+ 618              		.size	tick_GetVector, .-tick_GetVector
+ 619              		.section	.text.tick_SetPriority,"ax",%progbits
+ 620              		.align	2
+ 621              		.global	tick_SetPriority
+ 622              		.thumb
+ 623              		.thumb_func
+ 624              		.type	tick_SetPriority, %function
+ 625              	tick_SetPriority:
+ 626              	.LFB6:
+ 325:Generated_Source\PSoC5/tick.c **** 
+ 326:Generated_Source\PSoC5/tick.c **** 
+ 327:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 328:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPriority
+ 329:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 330:Generated_Source\PSoC5/tick.c **** *
+ 331:Generated_Source\PSoC5/tick.c **** * Summary:
+ 332:Generated_Source\PSoC5/tick.c **** *   Sets the Priority of the Interrupt. 
+ 333:Generated_Source\PSoC5/tick.c **** *
+ 334:Generated_Source\PSoC5/tick.c **** *   Note calling tick_Start or tick_StartEx will 
+ 335:Generated_Source\PSoC5/tick.c **** *   override any effect this API would have had. This API should only be called
+ 336:Generated_Source\PSoC5/tick.c **** *   after tick_Start or tick_StartEx has been called. 
+ 337:Generated_Source\PSoC5/tick.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 338:Generated_Source\PSoC5/tick.c **** *   Interrupt Editor.
+ 339:Generated_Source\PSoC5/tick.c **** *
+ 340:Generated_Source\PSoC5/tick.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 341:Generated_Source\PSoC5/tick.c **** *
+ 342:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 343:Generated_Source\PSoC5/tick.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 18
+
+
+ 344:Generated_Source\PSoC5/tick.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 345:Generated_Source\PSoC5/tick.c **** *             PSoC 4: Priority is from 0 to 3.
+ 346:Generated_Source\PSoC5/tick.c **** *
+ 347:Generated_Source\PSoC5/tick.c **** * Return:
+ 348:Generated_Source\PSoC5/tick.c **** *   None
+ 349:Generated_Source\PSoC5/tick.c **** *
+ 350:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 351:Generated_Source\PSoC5/tick.c **** void tick_SetPriority(uint8 priority)
+ 352:Generated_Source\PSoC5/tick.c **** {
+ 627              		.loc 1 352 0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 8
+ 630              		@ frame_needed = 1, uses_anonymous_args = 0
+ 631              		@ link register save eliminated.
+ 632 0000 80B4     		push	{r7}
+ 633              		.cfi_def_cfa_offset 4
+ 634              		.cfi_offset 7, -4
+ 635 0002 83B0     		sub	sp, sp, #12
+ 636              		.cfi_def_cfa_offset 16
+ 637 0004 00AF     		add	r7, sp, #0
+ 638              		.cfi_def_cfa_register 7
+ 639 0006 0346     		mov	r3, r0
+ 640 0008 FB71     		strb	r3, [r7, #7]
+ 353:Generated_Source\PSoC5/tick.c ****     *tick_INTC_PRIOR = priority << 5;
+ 641              		.loc 1 353 0
+ 642 000a 054A     		ldr	r2, .L35
+ 643 000c FB79     		ldrb	r3, [r7, #7]
+ 644 000e 5B01     		lsls	r3, r3, #5
+ 645 0010 DBB2     		uxtb	r3, r3
+ 646 0012 1370     		strb	r3, [r2]
+ 354:Generated_Source\PSoC5/tick.c **** }
+ 647              		.loc 1 354 0
+ 648 0014 00BF     		nop
+ 649 0016 0C37     		adds	r7, r7, #12
+ 650              		.cfi_def_cfa_offset 4
+ 651 0018 BD46     		mov	sp, r7
+ 652              		.cfi_def_cfa_register 13
+ 653              		@ sp needed
+ 654 001a 80BC     		pop	{r7}
+ 655              		.cfi_restore 7
+ 656              		.cfi_def_cfa_offset 0
+ 657 001c 7047     		bx	lr
+ 658              	.L36:
+ 659 001e 00BF     		.align	2
+ 660              	.L35:
+ 661 0020 00E400E0 		.word	-536812544
+ 662              		.cfi_endproc
+ 663              	.LFE6:
+ 664              		.size	tick_SetPriority, .-tick_SetPriority
+ 665              		.section	.text.tick_GetPriority,"ax",%progbits
+ 666              		.align	2
+ 667              		.global	tick_GetPriority
+ 668              		.thumb
+ 669              		.thumb_func
+ 670              		.type	tick_GetPriority, %function
+ 671              	tick_GetPriority:
+ 672              	.LFB7:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 19
+
+
+ 355:Generated_Source\PSoC5/tick.c **** 
+ 356:Generated_Source\PSoC5/tick.c **** 
+ 357:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 358:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetPriority
+ 359:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 360:Generated_Source\PSoC5/tick.c **** *
+ 361:Generated_Source\PSoC5/tick.c **** * Summary:
+ 362:Generated_Source\PSoC5/tick.c **** *   Gets the Priority of the Interrupt.
+ 363:Generated_Source\PSoC5/tick.c **** *
+ 364:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 365:Generated_Source\PSoC5/tick.c **** *   None
+ 366:Generated_Source\PSoC5/tick.c **** *
+ 367:Generated_Source\PSoC5/tick.c **** * Return:
+ 368:Generated_Source\PSoC5/tick.c **** *   Priority of the interrupt, 0 being the highest priority
+ 369:Generated_Source\PSoC5/tick.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 370:Generated_Source\PSoC5/tick.c **** *    PSoC 4: Priority is from 0 to 3.
+ 371:Generated_Source\PSoC5/tick.c **** *
+ 372:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 373:Generated_Source\PSoC5/tick.c **** uint8 tick_GetPriority(void)
+ 374:Generated_Source\PSoC5/tick.c **** {
+ 673              		.loc 1 374 0
+ 674              		.cfi_startproc
+ 675              		@ args = 0, pretend = 0, frame = 8
+ 676              		@ frame_needed = 1, uses_anonymous_args = 0
+ 677              		@ link register save eliminated.
+ 678 0000 80B4     		push	{r7}
+ 679              		.cfi_def_cfa_offset 4
+ 680              		.cfi_offset 7, -4
+ 681 0002 83B0     		sub	sp, sp, #12
+ 682              		.cfi_def_cfa_offset 16
+ 683 0004 00AF     		add	r7, sp, #0
+ 684              		.cfi_def_cfa_register 7
+ 375:Generated_Source\PSoC5/tick.c ****     uint8 priority;
+ 376:Generated_Source\PSoC5/tick.c **** 
+ 377:Generated_Source\PSoC5/tick.c **** 
+ 378:Generated_Source\PSoC5/tick.c ****     priority = *tick_INTC_PRIOR >> 5;
+ 685              		.loc 1 378 0
+ 686 0006 054B     		ldr	r3, .L39
+ 687 0008 1B78     		ldrb	r3, [r3]
+ 688 000a DBB2     		uxtb	r3, r3
+ 689 000c 5B09     		lsrs	r3, r3, #5
+ 690 000e FB71     		strb	r3, [r7, #7]
+ 379:Generated_Source\PSoC5/tick.c **** 
+ 380:Generated_Source\PSoC5/tick.c ****     return priority;
+ 691              		.loc 1 380 0
+ 692 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 381:Generated_Source\PSoC5/tick.c **** }
+ 693              		.loc 1 381 0
+ 694 0012 1846     		mov	r0, r3
+ 695 0014 0C37     		adds	r7, r7, #12
+ 696              		.cfi_def_cfa_offset 4
+ 697 0016 BD46     		mov	sp, r7
+ 698              		.cfi_def_cfa_register 13
+ 699              		@ sp needed
+ 700 0018 80BC     		pop	{r7}
+ 701              		.cfi_restore 7
+ 702              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 20
+
+
+ 703 001a 7047     		bx	lr
+ 704              	.L40:
+ 705              		.align	2
+ 706              	.L39:
+ 707 001c 00E400E0 		.word	-536812544
+ 708              		.cfi_endproc
+ 709              	.LFE7:
+ 710              		.size	tick_GetPriority, .-tick_GetPriority
+ 711              		.section	.text.tick_Enable,"ax",%progbits
+ 712              		.align	2
+ 713              		.global	tick_Enable
+ 714              		.thumb
+ 715              		.thumb_func
+ 716              		.type	tick_Enable, %function
+ 717              	tick_Enable:
+ 718              	.LFB8:
+ 382:Generated_Source\PSoC5/tick.c **** 
+ 383:Generated_Source\PSoC5/tick.c **** 
+ 384:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 385:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Enable
+ 386:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 387:Generated_Source\PSoC5/tick.c **** *
+ 388:Generated_Source\PSoC5/tick.c **** * Summary:
+ 389:Generated_Source\PSoC5/tick.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 390:Generated_Source\PSoC5/tick.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 391:Generated_Source\PSoC5/tick.c **** *   function, which sets the vector and the priority, has been called.
+ 392:Generated_Source\PSoC5/tick.c **** *
+ 393:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 394:Generated_Source\PSoC5/tick.c **** *   None
+ 395:Generated_Source\PSoC5/tick.c **** *
+ 396:Generated_Source\PSoC5/tick.c **** * Return:
+ 397:Generated_Source\PSoC5/tick.c **** *   None
+ 398:Generated_Source\PSoC5/tick.c **** *
+ 399:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 400:Generated_Source\PSoC5/tick.c **** void tick_Enable(void)
+ 401:Generated_Source\PSoC5/tick.c **** {
+ 719              		.loc 1 401 0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 0
+ 722              		@ frame_needed = 1, uses_anonymous_args = 0
+ 723              		@ link register save eliminated.
+ 724 0000 80B4     		push	{r7}
+ 725              		.cfi_def_cfa_offset 4
+ 726              		.cfi_offset 7, -4
+ 727 0002 00AF     		add	r7, sp, #0
+ 728              		.cfi_def_cfa_register 7
+ 402:Generated_Source\PSoC5/tick.c ****     /* Enable the general interrupt. */
+ 403:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_EN = tick__INTC_MASK;
+ 729              		.loc 1 403 0
+ 730 0004 034B     		ldr	r3, .L42
+ 731 0006 0122     		movs	r2, #1
+ 732 0008 1A60     		str	r2, [r3]
+ 404:Generated_Source\PSoC5/tick.c **** }
+ 733              		.loc 1 404 0
+ 734 000a 00BF     		nop
+ 735 000c BD46     		mov	sp, r7
+ 736              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 21
+
+
+ 737              		@ sp needed
+ 738 000e 80BC     		pop	{r7}
+ 739              		.cfi_restore 7
+ 740              		.cfi_def_cfa_offset 0
+ 741 0010 7047     		bx	lr
+ 742              	.L43:
+ 743 0012 00BF     		.align	2
+ 744              	.L42:
+ 745 0014 00E100E0 		.word	-536813312
+ 746              		.cfi_endproc
+ 747              	.LFE8:
+ 748              		.size	tick_Enable, .-tick_Enable
+ 749              		.section	.text.tick_GetState,"ax",%progbits
+ 750              		.align	2
+ 751              		.global	tick_GetState
+ 752              		.thumb
+ 753              		.thumb_func
+ 754              		.type	tick_GetState, %function
+ 755              	tick_GetState:
+ 756              	.LFB9:
+ 405:Generated_Source\PSoC5/tick.c **** 
+ 406:Generated_Source\PSoC5/tick.c **** 
+ 407:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 408:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetState
+ 409:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 410:Generated_Source\PSoC5/tick.c **** *
+ 411:Generated_Source\PSoC5/tick.c **** * Summary:
+ 412:Generated_Source\PSoC5/tick.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 413:Generated_Source\PSoC5/tick.c **** *
+ 414:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 415:Generated_Source\PSoC5/tick.c **** *   None
+ 416:Generated_Source\PSoC5/tick.c **** *
+ 417:Generated_Source\PSoC5/tick.c **** * Return:
+ 418:Generated_Source\PSoC5/tick.c **** *   1 if enabled, 0 if disabled.
+ 419:Generated_Source\PSoC5/tick.c **** *
+ 420:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 421:Generated_Source\PSoC5/tick.c **** uint8 tick_GetState(void)
+ 422:Generated_Source\PSoC5/tick.c **** {
+ 757              		.loc 1 422 0
+ 758              		.cfi_startproc
+ 759              		@ args = 0, pretend = 0, frame = 0
+ 760              		@ frame_needed = 1, uses_anonymous_args = 0
+ 761              		@ link register save eliminated.
+ 762 0000 80B4     		push	{r7}
+ 763              		.cfi_def_cfa_offset 4
+ 764              		.cfi_offset 7, -4
+ 765 0002 00AF     		add	r7, sp, #0
+ 766              		.cfi_def_cfa_register 7
+ 423:Generated_Source\PSoC5/tick.c ****     /* Get the state of the general interrupt. */
+ 424:Generated_Source\PSoC5/tick.c ****     return ((*tick_INTC_SET_EN & (uint32)tick__INTC_MASK) != 0u) ? 1u:0u;
+ 767              		.loc 1 424 0
+ 768 0004 044B     		ldr	r3, .L46
+ 769 0006 1B68     		ldr	r3, [r3]
+ 770 0008 DBB2     		uxtb	r3, r3
+ 771 000a 03F00103 		and	r3, r3, #1
+ 772 000e DBB2     		uxtb	r3, r3
+ 425:Generated_Source\PSoC5/tick.c **** }
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 22
+
+
+ 773              		.loc 1 425 0
+ 774 0010 1846     		mov	r0, r3
+ 775 0012 BD46     		mov	sp, r7
+ 776              		.cfi_def_cfa_register 13
+ 777              		@ sp needed
+ 778 0014 80BC     		pop	{r7}
+ 779              		.cfi_restore 7
+ 780              		.cfi_def_cfa_offset 0
+ 781 0016 7047     		bx	lr
+ 782              	.L47:
+ 783              		.align	2
+ 784              	.L46:
+ 785 0018 00E100E0 		.word	-536813312
+ 786              		.cfi_endproc
+ 787              	.LFE9:
+ 788              		.size	tick_GetState, .-tick_GetState
+ 789              		.section	.text.tick_Disable,"ax",%progbits
+ 790              		.align	2
+ 791              		.global	tick_Disable
+ 792              		.thumb
+ 793              		.thumb_func
+ 794              		.type	tick_Disable, %function
+ 795              	tick_Disable:
+ 796              	.LFB10:
+ 426:Generated_Source\PSoC5/tick.c **** 
+ 427:Generated_Source\PSoC5/tick.c **** 
+ 428:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 429:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Disable
+ 430:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 431:Generated_Source\PSoC5/tick.c **** *
+ 432:Generated_Source\PSoC5/tick.c **** * Summary:
+ 433:Generated_Source\PSoC5/tick.c **** *   Disables the Interrupt in the interrupt controller.
+ 434:Generated_Source\PSoC5/tick.c **** *
+ 435:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 436:Generated_Source\PSoC5/tick.c **** *   None
+ 437:Generated_Source\PSoC5/tick.c **** *
+ 438:Generated_Source\PSoC5/tick.c **** * Return:
+ 439:Generated_Source\PSoC5/tick.c **** *   None
+ 440:Generated_Source\PSoC5/tick.c **** *
+ 441:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 442:Generated_Source\PSoC5/tick.c **** void tick_Disable(void)
+ 443:Generated_Source\PSoC5/tick.c **** {
+ 797              		.loc 1 443 0
+ 798              		.cfi_startproc
+ 799              		@ args = 0, pretend = 0, frame = 0
+ 800              		@ frame_needed = 1, uses_anonymous_args = 0
+ 801              		@ link register save eliminated.
+ 802 0000 80B4     		push	{r7}
+ 803              		.cfi_def_cfa_offset 4
+ 804              		.cfi_offset 7, -4
+ 805 0002 00AF     		add	r7, sp, #0
+ 806              		.cfi_def_cfa_register 7
+ 444:Generated_Source\PSoC5/tick.c ****     /* Disable the general interrupt. */
+ 445:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_EN = tick__INTC_MASK;
+ 807              		.loc 1 445 0
+ 808 0004 034B     		ldr	r3, .L49
+ 809 0006 0122     		movs	r2, #1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 23
+
+
+ 810 0008 1A60     		str	r2, [r3]
+ 446:Generated_Source\PSoC5/tick.c **** }
+ 811              		.loc 1 446 0
+ 812 000a 00BF     		nop
+ 813 000c BD46     		mov	sp, r7
+ 814              		.cfi_def_cfa_register 13
+ 815              		@ sp needed
+ 816 000e 80BC     		pop	{r7}
+ 817              		.cfi_restore 7
+ 818              		.cfi_def_cfa_offset 0
+ 819 0010 7047     		bx	lr
+ 820              	.L50:
+ 821 0012 00BF     		.align	2
+ 822              	.L49:
+ 823 0014 80E100E0 		.word	-536813184
+ 824              		.cfi_endproc
+ 825              	.LFE10:
+ 826              		.size	tick_Disable, .-tick_Disable
+ 827              		.section	.text.tick_SetPending,"ax",%progbits
+ 828              		.align	2
+ 829              		.global	tick_SetPending
+ 830              		.thumb
+ 831              		.thumb_func
+ 832              		.type	tick_SetPending, %function
+ 833              	tick_SetPending:
+ 834              	.LFB11:
+ 447:Generated_Source\PSoC5/tick.c **** 
+ 448:Generated_Source\PSoC5/tick.c **** 
+ 449:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 450:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPending
+ 451:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 452:Generated_Source\PSoC5/tick.c **** *
+ 453:Generated_Source\PSoC5/tick.c **** * Summary:
+ 454:Generated_Source\PSoC5/tick.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 455:Generated_Source\PSoC5/tick.c **** *   generating the interrupt.
+ 456:Generated_Source\PSoC5/tick.c **** *
+ 457:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 458:Generated_Source\PSoC5/tick.c **** *   None
+ 459:Generated_Source\PSoC5/tick.c **** *
+ 460:Generated_Source\PSoC5/tick.c **** * Return:
+ 461:Generated_Source\PSoC5/tick.c **** *   None
+ 462:Generated_Source\PSoC5/tick.c **** *
+ 463:Generated_Source\PSoC5/tick.c **** * Side Effects:
+ 464:Generated_Source\PSoC5/tick.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 465:Generated_Source\PSoC5/tick.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 466:Generated_Source\PSoC5/tick.c **** *   interrupts).
+ 467:Generated_Source\PSoC5/tick.c **** *
+ 468:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 469:Generated_Source\PSoC5/tick.c **** void tick_SetPending(void)
+ 470:Generated_Source\PSoC5/tick.c **** {
+ 835              		.loc 1 470 0
+ 836              		.cfi_startproc
+ 837              		@ args = 0, pretend = 0, frame = 0
+ 838              		@ frame_needed = 1, uses_anonymous_args = 0
+ 839              		@ link register save eliminated.
+ 840 0000 80B4     		push	{r7}
+ 841              		.cfi_def_cfa_offset 4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 24
+
+
+ 842              		.cfi_offset 7, -4
+ 843 0002 00AF     		add	r7, sp, #0
+ 844              		.cfi_def_cfa_register 7
+ 471:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_PD = tick__INTC_MASK;
+ 845              		.loc 1 471 0
+ 846 0004 034B     		ldr	r3, .L52
+ 847 0006 0122     		movs	r2, #1
+ 848 0008 1A60     		str	r2, [r3]
+ 472:Generated_Source\PSoC5/tick.c **** }
+ 849              		.loc 1 472 0
+ 850 000a 00BF     		nop
+ 851 000c BD46     		mov	sp, r7
+ 852              		.cfi_def_cfa_register 13
+ 853              		@ sp needed
+ 854 000e 80BC     		pop	{r7}
+ 855              		.cfi_restore 7
+ 856              		.cfi_def_cfa_offset 0
+ 857 0010 7047     		bx	lr
+ 858              	.L53:
+ 859 0012 00BF     		.align	2
+ 860              	.L52:
+ 861 0014 00E200E0 		.word	-536813056
+ 862              		.cfi_endproc
+ 863              	.LFE11:
+ 864              		.size	tick_SetPending, .-tick_SetPending
+ 865              		.section	.text.tick_ClearPending,"ax",%progbits
+ 866              		.align	2
+ 867              		.global	tick_ClearPending
+ 868              		.thumb
+ 869              		.thumb_func
+ 870              		.type	tick_ClearPending, %function
+ 871              	tick_ClearPending:
+ 872              	.LFB12:
+ 473:Generated_Source\PSoC5/tick.c **** 
+ 474:Generated_Source\PSoC5/tick.c **** 
+ 475:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 476:Generated_Source\PSoC5/tick.c **** * Function Name: tick_ClearPending
+ 477:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 478:Generated_Source\PSoC5/tick.c **** *
+ 479:Generated_Source\PSoC5/tick.c **** * Summary:
+ 480:Generated_Source\PSoC5/tick.c **** *   Clears a pending interrupt in the interrupt controller.
+ 481:Generated_Source\PSoC5/tick.c **** *
+ 482:Generated_Source\PSoC5/tick.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 483:Generated_Source\PSoC5/tick.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 484:Generated_Source\PSoC5/tick.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 485:Generated_Source\PSoC5/tick.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 486:Generated_Source\PSoC5/tick.c **** *
+ 487:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 488:Generated_Source\PSoC5/tick.c **** *   None
+ 489:Generated_Source\PSoC5/tick.c **** *
+ 490:Generated_Source\PSoC5/tick.c **** * Return:
+ 491:Generated_Source\PSoC5/tick.c **** *   None
+ 492:Generated_Source\PSoC5/tick.c **** *
+ 493:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 494:Generated_Source\PSoC5/tick.c **** void tick_ClearPending(void)
+ 495:Generated_Source\PSoC5/tick.c **** {
+ 873              		.loc 1 495 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 25
+
+
+ 874              		.cfi_startproc
+ 875              		@ args = 0, pretend = 0, frame = 0
+ 876              		@ frame_needed = 1, uses_anonymous_args = 0
+ 877              		@ link register save eliminated.
+ 878 0000 80B4     		push	{r7}
+ 879              		.cfi_def_cfa_offset 4
+ 880              		.cfi_offset 7, -4
+ 881 0002 00AF     		add	r7, sp, #0
+ 882              		.cfi_def_cfa_register 7
+ 496:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_PD = tick__INTC_MASK;
+ 883              		.loc 1 496 0
+ 884 0004 034B     		ldr	r3, .L55
+ 885 0006 0122     		movs	r2, #1
+ 886 0008 1A60     		str	r2, [r3]
+ 497:Generated_Source\PSoC5/tick.c **** }
+ 887              		.loc 1 497 0
+ 888 000a 00BF     		nop
+ 889 000c BD46     		mov	sp, r7
+ 890              		.cfi_def_cfa_register 13
+ 891              		@ sp needed
+ 892 000e 80BC     		pop	{r7}
+ 893              		.cfi_restore 7
+ 894              		.cfi_def_cfa_offset 0
+ 895 0010 7047     		bx	lr
+ 896              	.L56:
+ 897 0012 00BF     		.align	2
+ 898              	.L55:
+ 899 0014 80E200E0 		.word	-536812928
+ 900              		.cfi_endproc
+ 901              	.LFE12:
+ 902              		.size	tick_ClearPending, .-tick_ClearPending
+ 903              		.text
+ 904              	.Letext0:
+ 905              		.file 2 "Generated_Source\\PSoC5/cytypes.h"
+ 906              		.section	.debug_info,"",%progbits
+ 907              	.Ldebug_info0:
+ 908 0000 57030000 		.4byte	0x357
+ 909 0004 0400     		.2byte	0x4
+ 910 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 911 000a 04       		.byte	0x4
+ 912 000b 01       		.uleb128 0x1
+ 913 000c 1D000000 		.4byte	.LASF52
+ 914 0010 0C       		.byte	0xc
+ 915 0011 96010000 		.4byte	.LASF53
+ 916 0015 DB020000 		.4byte	.LASF54
+ 917 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 918 001d 00000000 		.4byte	0
+ 919 0021 00000000 		.4byte	.Ldebug_line0
+ 920 0025 02       		.uleb128 0x2
+ 921 0026 04       		.byte	0x4
+ 922 0027 05       		.byte	0x5
+ 923 0028 696E7400 		.ascii	"int\000"
+ 924 002c 03       		.uleb128 0x3
+ 925 002d 04       		.byte	0x4
+ 926 002e 07       		.byte	0x7
+ 927 002f 2B020000 		.4byte	.LASF0
+ 928 0033 03       		.uleb128 0x3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 26
+
+
+ 929 0034 08       		.byte	0x8
+ 930 0035 05       		.byte	0x5
+ 931 0036 AF020000 		.4byte	.LASF1
+ 932 003a 03       		.uleb128 0x3
+ 933 003b 08       		.byte	0x8
+ 934 003c 04       		.byte	0x4
+ 935 003d 76030000 		.4byte	.LASF2
+ 936 0041 03       		.uleb128 0x3
+ 937 0042 01       		.byte	0x1
+ 938 0043 06       		.byte	0x6
+ 939 0044 82030000 		.4byte	.LASF3
+ 940 0048 03       		.uleb128 0x3
+ 941 0049 01       		.byte	0x1
+ 942 004a 08       		.byte	0x8
+ 943 004b 45010000 		.4byte	.LASF4
+ 944 004f 03       		.uleb128 0x3
+ 945 0050 02       		.byte	0x2
+ 946 0051 05       		.byte	0x5
+ 947 0052 D1020000 		.4byte	.LASF5
+ 948 0056 03       		.uleb128 0x3
+ 949 0057 02       		.byte	0x2
+ 950 0058 07       		.byte	0x7
+ 951 0059 CF000000 		.4byte	.LASF6
+ 952 005d 03       		.uleb128 0x3
+ 953 005e 04       		.byte	0x4
+ 954 005f 05       		.byte	0x5
+ 955 0060 4D030000 		.4byte	.LASF7
+ 956 0064 03       		.uleb128 0x3
+ 957 0065 04       		.byte	0x4
+ 958 0066 07       		.byte	0x7
+ 959 0067 64010000 		.4byte	.LASF8
+ 960 006b 03       		.uleb128 0x3
+ 961 006c 08       		.byte	0x8
+ 962 006d 07       		.byte	0x7
+ 963 006e 40020000 		.4byte	.LASF9
+ 964 0072 03       		.uleb128 0x3
+ 965 0073 04       		.byte	0x4
+ 966 0074 07       		.byte	0x7
+ 967 0075 A6020000 		.4byte	.LASF10
+ 968 0079 03       		.uleb128 0x3
+ 969 007a 01       		.byte	0x1
+ 970 007b 08       		.byte	0x8
+ 971 007c BD020000 		.4byte	.LASF11
+ 972 0080 04       		.uleb128 0x4
+ 973 0081 04       		.byte	0x4
+ 974 0082 86000000 		.4byte	0x86
+ 975 0086 05       		.uleb128 0x5
+ 976 0087 06       		.uleb128 0x6
+ 977 0088 3D030000 		.4byte	.LASF12
+ 978 008c 02       		.byte	0x2
+ 979 008d 9201     		.2byte	0x192
+ 980 008f 48000000 		.4byte	0x48
+ 981 0093 06       		.uleb128 0x6
+ 982 0094 E1010000 		.4byte	.LASF13
+ 983 0098 02       		.byte	0x2
+ 984 0099 9301     		.2byte	0x193
+ 985 009b 56000000 		.4byte	0x56
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 27
+
+
+ 986 009f 06       		.uleb128 0x6
+ 987 00a0 02020000 		.4byte	.LASF14
+ 988 00a4 02       		.byte	0x2
+ 989 00a5 9401     		.2byte	0x194
+ 990 00a7 64000000 		.4byte	0x64
+ 991 00ab 06       		.uleb128 0x6
+ 992 00ac 76010000 		.4byte	.LASF15
+ 993 00b0 02       		.byte	0x2
+ 994 00b1 9701     		.2byte	0x197
+ 995 00b3 5D000000 		.4byte	0x5d
+ 996 00b7 03       		.uleb128 0x3
+ 997 00b8 04       		.byte	0x4
+ 998 00b9 04       		.byte	0x4
+ 999 00ba 18010000 		.4byte	.LASF16
+ 1000 00be 03       		.uleb128 0x3
+ 1001 00bf 08       		.byte	0x8
+ 1002 00c0 04       		.byte	0x4
+ 1003 00c1 F1000000 		.4byte	.LASF17
+ 1004 00c5 06       		.uleb128 0x6
+ 1005 00c6 5F010000 		.4byte	.LASF18
+ 1006 00ca 02       		.byte	0x2
+ 1007 00cb 3C02     		.2byte	0x23c
+ 1008 00cd D1000000 		.4byte	0xd1
+ 1009 00d1 07       		.uleb128 0x7
+ 1010 00d2 87000000 		.4byte	0x87
+ 1011 00d6 07       		.uleb128 0x7
+ 1012 00d7 93000000 		.4byte	0x93
+ 1013 00db 06       		.uleb128 0x6
+ 1014 00dc 17000000 		.4byte	.LASF19
+ 1015 00e0 02       		.byte	0x2
+ 1016 00e1 3E02     		.2byte	0x23e
+ 1017 00e3 E7000000 		.4byte	0xe7
+ 1018 00e7 07       		.uleb128 0x7
+ 1019 00e8 9F000000 		.4byte	0x9f
+ 1020 00ec 06       		.uleb128 0x6
+ 1021 00ed 81020000 		.4byte	.LASF20
+ 1022 00f1 02       		.byte	0x2
+ 1023 00f2 4E02     		.2byte	0x24e
+ 1024 00f4 80000000 		.4byte	0x80
+ 1025 00f8 08       		.uleb128 0x8
+ 1026 00f9 82010000 		.4byte	.LASF21
+ 1027 00fd 01       		.byte	0x1
+ 1028 00fe 51       		.byte	0x51
+ 1029 00ff 00000000 		.4byte	.LFB0
+ 1030 0103 20000000 		.4byte	.LFE0-.LFB0
+ 1031 0107 01       		.uleb128 0x1
+ 1032 0108 9C       		.byte	0x9c
+ 1033 0109 09       		.uleb128 0x9
+ 1034 010a 8E020000 		.4byte	.LASF24
+ 1035 010e 01       		.byte	0x1
+ 1036 010f 7C       		.byte	0x7c
+ 1037 0110 00000000 		.4byte	.LFB1
+ 1038 0114 24000000 		.4byte	.LFE1-.LFB1
+ 1039 0118 01       		.uleb128 0x1
+ 1040 0119 9C       		.byte	0x9c
+ 1041 011a 2D010000 		.4byte	0x12d
+ 1042 011e 0A       		.uleb128 0xa
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 28
+
+
+ 1043 011f 38020000 		.4byte	.LASF26
+ 1044 0123 01       		.byte	0x1
+ 1045 0124 7C       		.byte	0x7c
+ 1046 0125 EC000000 		.4byte	0xec
+ 1047 0129 02       		.uleb128 0x2
+ 1048 012a 91       		.byte	0x91
+ 1049 012b 74       		.sleb128 -12
+ 1050 012c 00       		.byte	0
+ 1051 012d 08       		.uleb128 0x8
+ 1052 012e F8010000 		.4byte	.LASF22
+ 1053 0132 01       		.byte	0x1
+ 1054 0133 9A       		.byte	0x9a
+ 1055 0134 00000000 		.4byte	.LFB2
+ 1056 0138 18000000 		.4byte	.LFE2-.LFB2
+ 1057 013c 01       		.uleb128 0x1
+ 1058 013d 9C       		.byte	0x9c
+ 1059 013e 08       		.uleb128 0x8
+ 1060 013f C0000000 		.4byte	.LASF23
+ 1061 0143 01       		.byte	0x1
+ 1062 0144 B4       		.byte	0xb4
+ 1063 0145 00000000 		.4byte	.LFB3
+ 1064 0149 B8020000 		.4byte	.LFE3-.LFB3
+ 1065 014d 01       		.uleb128 0x1
+ 1066 014e 9C       		.byte	0x9c
+ 1067 014f 0B       		.uleb128 0xb
+ 1068 0150 E2000000 		.4byte	.LASF25
+ 1069 0154 01       		.byte	0x1
+ 1070 0155 2501     		.2byte	0x125
+ 1071 0157 00000000 		.4byte	.LFB4
+ 1072 015b 24000000 		.4byte	.LFE4-.LFB4
+ 1073 015f 01       		.uleb128 0x1
+ 1074 0160 9C       		.byte	0x9c
+ 1075 0161 84010000 		.4byte	0x184
+ 1076 0165 0C       		.uleb128 0xc
+ 1077 0166 38020000 		.4byte	.LASF26
+ 1078 016a 01       		.byte	0x1
+ 1079 016b 2501     		.2byte	0x125
+ 1080 016d EC000000 		.4byte	0xec
+ 1081 0171 02       		.uleb128 0x2
+ 1082 0172 91       		.byte	0x91
+ 1083 0173 6C       		.sleb128 -20
+ 1084 0174 0D       		.uleb128 0xd
+ 1085 0175 C2020000 		.4byte	.LASF27
+ 1086 0179 01       		.byte	0x1
+ 1087 017a 2701     		.2byte	0x127
+ 1088 017c 84010000 		.4byte	0x184
+ 1089 0180 02       		.uleb128 0x2
+ 1090 0181 91       		.byte	0x91
+ 1091 0182 74       		.sleb128 -12
+ 1092 0183 00       		.byte	0
+ 1093 0184 04       		.uleb128 0x4
+ 1094 0185 04       		.byte	0x4
+ 1095 0186 EC000000 		.4byte	0xec
+ 1096 018a 0E       		.uleb128 0xe
+ 1097 018b 09010000 		.4byte	.LASF30
+ 1098 018f 01       		.byte	0x1
+ 1099 0190 3D01     		.2byte	0x13d
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 29
+
+
+ 1100 0192 EC000000 		.4byte	0xec
+ 1101 0196 00000000 		.4byte	.LFB5
+ 1102 019a 20000000 		.4byte	.LFE5-.LFB5
+ 1103 019e 01       		.uleb128 0x1
+ 1104 019f 9C       		.byte	0x9c
+ 1105 01a0 B4010000 		.4byte	0x1b4
+ 1106 01a4 0D       		.uleb128 0xd
+ 1107 01a5 C2020000 		.4byte	.LASF27
+ 1108 01a9 01       		.byte	0x1
+ 1109 01aa 3F01     		.2byte	0x13f
+ 1110 01ac 84010000 		.4byte	0x184
+ 1111 01b0 02       		.uleb128 0x2
+ 1112 01b1 91       		.byte	0x91
+ 1113 01b2 74       		.sleb128 -12
+ 1114 01b3 00       		.byte	0
+ 1115 01b4 0B       		.uleb128 0xb
+ 1116 01b5 57020000 		.4byte	.LASF28
+ 1117 01b9 01       		.byte	0x1
+ 1118 01ba 5F01     		.2byte	0x15f
+ 1119 01bc 00000000 		.4byte	.LFB6
+ 1120 01c0 24000000 		.4byte	.LFE6-.LFB6
+ 1121 01c4 01       		.uleb128 0x1
+ 1122 01c5 9C       		.byte	0x9c
+ 1123 01c6 DA010000 		.4byte	0x1da
+ 1124 01ca 0C       		.uleb128 0xc
+ 1125 01cb 8D010000 		.4byte	.LASF29
+ 1126 01cf 01       		.byte	0x1
+ 1127 01d0 5F01     		.2byte	0x15f
+ 1128 01d2 87000000 		.4byte	0x87
+ 1129 01d6 02       		.uleb128 0x2
+ 1130 01d7 91       		.byte	0x91
+ 1131 01d8 77       		.sleb128 -9
+ 1132 01d9 00       		.byte	0
+ 1133 01da 0E       		.uleb128 0xe
+ 1134 01db F8000000 		.4byte	.LASF31
+ 1135 01df 01       		.byte	0x1
+ 1136 01e0 7501     		.2byte	0x175
+ 1137 01e2 87000000 		.4byte	0x87
+ 1138 01e6 00000000 		.4byte	.LFB7
+ 1139 01ea 20000000 		.4byte	.LFE7-.LFB7
+ 1140 01ee 01       		.uleb128 0x1
+ 1141 01ef 9C       		.byte	0x9c
+ 1142 01f0 04020000 		.4byte	0x204
+ 1143 01f4 0D       		.uleb128 0xd
+ 1144 01f5 8D010000 		.4byte	.LASF29
+ 1145 01f9 01       		.byte	0x1
+ 1146 01fa 7701     		.2byte	0x177
+ 1147 01fc 87000000 		.4byte	0x87
+ 1148 0200 02       		.uleb128 0x2
+ 1149 0201 91       		.byte	0x91
+ 1150 0202 77       		.sleb128 -9
+ 1151 0203 00       		.byte	0
+ 1152 0204 0F       		.uleb128 0xf
+ 1153 0205 75020000 		.4byte	.LASF32
+ 1154 0209 01       		.byte	0x1
+ 1155 020a 9001     		.2byte	0x190
+ 1156 020c 00000000 		.4byte	.LFB8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 30
+
+
+ 1157 0210 18000000 		.4byte	.LFE8-.LFB8
+ 1158 0214 01       		.uleb128 0x1
+ 1159 0215 9C       		.byte	0x9c
+ 1160 0216 10       		.uleb128 0x10
+ 1161 0217 56030000 		.4byte	.LASF55
+ 1162 021b 01       		.byte	0x1
+ 1163 021c A501     		.2byte	0x1a5
+ 1164 021e 87000000 		.4byte	0x87
+ 1165 0222 00000000 		.4byte	.LFB9
+ 1166 0226 1C000000 		.4byte	.LFE9-.LFB9
+ 1167 022a 01       		.uleb128 0x1
+ 1168 022b 9C       		.byte	0x9c
+ 1169 022c 0F       		.uleb128 0xf
+ 1170 022d 68020000 		.4byte	.LASF33
+ 1171 0231 01       		.byte	0x1
+ 1172 0232 BA01     		.2byte	0x1ba
+ 1173 0234 00000000 		.4byte	.LFB10
+ 1174 0238 18000000 		.4byte	.LFE10-.LFB10
+ 1175 023c 01       		.uleb128 0x1
+ 1176 023d 9C       		.byte	0x9c
+ 1177 023e 0F       		.uleb128 0xf
+ 1178 023f 09020000 		.4byte	.LASF34
+ 1179 0243 01       		.byte	0x1
+ 1180 0244 D501     		.2byte	0x1d5
+ 1181 0246 00000000 		.4byte	.LFB11
+ 1182 024a 18000000 		.4byte	.LFE11-.LFB11
+ 1183 024e 01       		.uleb128 0x1
+ 1184 024f 9C       		.byte	0x9c
+ 1185 0250 0F       		.uleb128 0xf
+ 1186 0251 19020000 		.4byte	.LASF35
+ 1187 0255 01       		.byte	0x1
+ 1188 0256 EE01     		.2byte	0x1ee
+ 1189 0258 00000000 		.4byte	.LFB12
+ 1190 025c 18000000 		.4byte	.LFE12-.LFB12
+ 1191 0260 01       		.uleb128 0x1
+ 1192 0261 9C       		.byte	0x9c
+ 1193 0262 11       		.uleb128 0x11
+ 1194 0263 E8010000 		.4byte	.LASF36
+ 1195 0267 01       		.byte	0x1
+ 1196 0268 23       		.byte	0x23
+ 1197 0269 D1000000 		.4byte	0xd1
+ 1198 026d 11       		.uleb128 0x11
+ 1199 026e 7C010000 		.4byte	.LASF37
+ 1200 0272 01       		.byte	0x1
+ 1201 0273 24       		.byte	0x24
+ 1202 0274 78020000 		.4byte	0x278
+ 1203 0278 07       		.uleb128 0x7
+ 1204 0279 AB000000 		.4byte	0xab
+ 1205 027d 11       		.uleb128 0x11
+ 1206 027e BF010000 		.4byte	.LASF38
+ 1207 0282 01       		.byte	0x1
+ 1208 0283 25       		.byte	0x25
+ 1209 0284 D6000000 		.4byte	0xd6
+ 1210 0288 11       		.uleb128 0x11
+ 1211 0289 9B020000 		.4byte	.LASF39
+ 1212 028d 01       		.byte	0x1
+ 1213 028e 26       		.byte	0x26
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 31
+
+
+ 1214 028f 78020000 		.4byte	0x278
+ 1215 0293 12       		.uleb128 0x12
+ 1216 0294 E7000000 		.4byte	0xe7
+ 1217 0298 A3020000 		.4byte	0x2a3
+ 1218 029c 13       		.uleb128 0x13
+ 1219 029d 72000000 		.4byte	0x72
+ 1220 02a1 10       		.byte	0x10
+ 1221 02a2 00       		.byte	0
+ 1222 02a3 11       		.uleb128 0x11
+ 1223 02a4 B4010000 		.4byte	.LASF40
+ 1224 02a8 01       		.byte	0x1
+ 1225 02a9 27       		.byte	0x27
+ 1226 02aa AE020000 		.4byte	0x2ae
+ 1227 02ae 07       		.uleb128 0x7
+ 1228 02af 93020000 		.4byte	0x293
+ 1229 02b3 11       		.uleb128 0x11
+ 1230 02b4 D2010000 		.4byte	.LASF41
+ 1231 02b8 01       		.byte	0x1
+ 1232 02b9 28       		.byte	0x28
+ 1233 02ba 78020000 		.4byte	0x278
+ 1234 02be 11       		.uleb128 0x11
+ 1235 02bf 8E030000 		.4byte	.LASF42
+ 1236 02c3 01       		.byte	0x1
+ 1237 02c4 29       		.byte	0x29
+ 1238 02c5 78020000 		.4byte	0x278
+ 1239 02c9 11       		.uleb128 0x11
+ 1240 02ca AB000000 		.4byte	.LASF43
+ 1241 02ce 01       		.byte	0x1
+ 1242 02cf 2A       		.byte	0x2a
+ 1243 02d0 78020000 		.4byte	0x278
+ 1244 02d4 11       		.uleb128 0x11
+ 1245 02d5 37010000 		.4byte	.LASF44
+ 1246 02d9 01       		.byte	0x1
+ 1247 02da 2B       		.byte	0x2b
+ 1248 02db 78020000 		.4byte	0x278
+ 1249 02df 12       		.uleb128 0x12
+ 1250 02e0 78020000 		.4byte	0x278
+ 1251 02e4 F0020000 		.4byte	0x2f0
+ 1252 02e8 14       		.uleb128 0x14
+ 1253 02e9 72000000 		.4byte	0x72
+ 1254 02ed FF01     		.2byte	0x1ff
+ 1255 02ef 00       		.byte	0
+ 1256 02f0 11       		.uleb128 0x11
+ 1257 02f1 43030000 		.4byte	.LASF45
+ 1258 02f5 01       		.byte	0x1
+ 1259 02f6 2C       		.byte	0x2c
+ 1260 02f7 FB020000 		.4byte	0x2fb
+ 1261 02fb 07       		.uleb128 0x7
+ 1262 02fc DF020000 		.4byte	0x2df
+ 1263 0300 15       		.uleb128 0x15
+ 1264 0301 33030000 		.4byte	.LASF46
+ 1265 0305 01       		.byte	0x1
+ 1266 0306 2D       		.byte	0x2d
+ 1267 0307 78020000 		.4byte	0x278
+ 1268 030b 05       		.uleb128 0x5
+ 1269 030c 03       		.byte	0x3
+ 1270 030d 00000000 		.4byte	angle_old
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 32
+
+
+ 1271 0311 15       		.uleb128 0x15
+ 1272 0312 64030000 		.4byte	.LASF47
+ 1273 0316 01       		.byte	0x1
+ 1274 0317 2E       		.byte	0x2e
+ 1275 0318 78020000 		.4byte	0x278
+ 1276 031c 05       		.uleb128 0x5
+ 1277 031d 03       		.byte	0x3
+ 1278 031e 00000000 		.4byte	axis_position_old
+ 1279 0322 11       		.uleb128 0x11
+ 1280 0323 00000000 		.4byte	.LASF48
+ 1281 0327 01       		.byte	0x1
+ 1282 0328 2F       		.byte	0x2f
+ 1283 0329 78020000 		.4byte	0x278
+ 1284 032d 11       		.uleb128 0x11
+ 1285 032e 1E010000 		.4byte	.LASF49
+ 1286 0332 01       		.byte	0x1
+ 1287 0333 30       		.byte	0x30
+ 1288 0334 78020000 		.4byte	0x278
+ 1289 0338 15       		.uleb128 0x15
+ 1290 0339 53010000 		.4byte	.LASF50
+ 1291 033d 01       		.byte	0x1
+ 1292 033e 31       		.byte	0x31
+ 1293 033f 25000000 		.4byte	0x25
+ 1294 0343 05       		.uleb128 0x5
+ 1295 0344 03       		.byte	0x3
+ 1296 0345 00000000 		.4byte	start_count
+ 1297 0349 15       		.uleb128 0x15
+ 1298 034a BA000000 		.4byte	.LASF51
+ 1299 034e 01       		.byte	0x1
+ 1300 034f 32       		.byte	0x32
+ 1301 0350 25000000 		.4byte	0x25
+ 1302 0354 05       		.uleb128 0x5
+ 1303 0355 03       		.byte	0x3
+ 1304 0356 00000000 		.4byte	count
+ 1305 035a 00       		.byte	0
+ 1306              		.section	.debug_abbrev,"",%progbits
+ 1307              	.Ldebug_abbrev0:
+ 1308 0000 01       		.uleb128 0x1
+ 1309 0001 11       		.uleb128 0x11
+ 1310 0002 01       		.byte	0x1
+ 1311 0003 25       		.uleb128 0x25
+ 1312 0004 0E       		.uleb128 0xe
+ 1313 0005 13       		.uleb128 0x13
+ 1314 0006 0B       		.uleb128 0xb
+ 1315 0007 03       		.uleb128 0x3
+ 1316 0008 0E       		.uleb128 0xe
+ 1317 0009 1B       		.uleb128 0x1b
+ 1318 000a 0E       		.uleb128 0xe
+ 1319 000b 55       		.uleb128 0x55
+ 1320 000c 17       		.uleb128 0x17
+ 1321 000d 11       		.uleb128 0x11
+ 1322 000e 01       		.uleb128 0x1
+ 1323 000f 10       		.uleb128 0x10
+ 1324 0010 17       		.uleb128 0x17
+ 1325 0011 00       		.byte	0
+ 1326 0012 00       		.byte	0
+ 1327 0013 02       		.uleb128 0x2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 33
+
+
+ 1328 0014 24       		.uleb128 0x24
+ 1329 0015 00       		.byte	0
+ 1330 0016 0B       		.uleb128 0xb
+ 1331 0017 0B       		.uleb128 0xb
+ 1332 0018 3E       		.uleb128 0x3e
+ 1333 0019 0B       		.uleb128 0xb
+ 1334 001a 03       		.uleb128 0x3
+ 1335 001b 08       		.uleb128 0x8
+ 1336 001c 00       		.byte	0
+ 1337 001d 00       		.byte	0
+ 1338 001e 03       		.uleb128 0x3
+ 1339 001f 24       		.uleb128 0x24
+ 1340 0020 00       		.byte	0
+ 1341 0021 0B       		.uleb128 0xb
+ 1342 0022 0B       		.uleb128 0xb
+ 1343 0023 3E       		.uleb128 0x3e
+ 1344 0024 0B       		.uleb128 0xb
+ 1345 0025 03       		.uleb128 0x3
+ 1346 0026 0E       		.uleb128 0xe
+ 1347 0027 00       		.byte	0
+ 1348 0028 00       		.byte	0
+ 1349 0029 04       		.uleb128 0x4
+ 1350 002a 0F       		.uleb128 0xf
+ 1351 002b 00       		.byte	0
+ 1352 002c 0B       		.uleb128 0xb
+ 1353 002d 0B       		.uleb128 0xb
+ 1354 002e 49       		.uleb128 0x49
+ 1355 002f 13       		.uleb128 0x13
+ 1356 0030 00       		.byte	0
+ 1357 0031 00       		.byte	0
+ 1358 0032 05       		.uleb128 0x5
+ 1359 0033 15       		.uleb128 0x15
+ 1360 0034 00       		.byte	0
+ 1361 0035 27       		.uleb128 0x27
+ 1362 0036 19       		.uleb128 0x19
+ 1363 0037 00       		.byte	0
+ 1364 0038 00       		.byte	0
+ 1365 0039 06       		.uleb128 0x6
+ 1366 003a 16       		.uleb128 0x16
+ 1367 003b 00       		.byte	0
+ 1368 003c 03       		.uleb128 0x3
+ 1369 003d 0E       		.uleb128 0xe
+ 1370 003e 3A       		.uleb128 0x3a
+ 1371 003f 0B       		.uleb128 0xb
+ 1372 0040 3B       		.uleb128 0x3b
+ 1373 0041 05       		.uleb128 0x5
+ 1374 0042 49       		.uleb128 0x49
+ 1375 0043 13       		.uleb128 0x13
+ 1376 0044 00       		.byte	0
+ 1377 0045 00       		.byte	0
+ 1378 0046 07       		.uleb128 0x7
+ 1379 0047 35       		.uleb128 0x35
+ 1380 0048 00       		.byte	0
+ 1381 0049 49       		.uleb128 0x49
+ 1382 004a 13       		.uleb128 0x13
+ 1383 004b 00       		.byte	0
+ 1384 004c 00       		.byte	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 34
+
+
+ 1385 004d 08       		.uleb128 0x8
+ 1386 004e 2E       		.uleb128 0x2e
+ 1387 004f 00       		.byte	0
+ 1388 0050 3F       		.uleb128 0x3f
+ 1389 0051 19       		.uleb128 0x19
+ 1390 0052 03       		.uleb128 0x3
+ 1391 0053 0E       		.uleb128 0xe
+ 1392 0054 3A       		.uleb128 0x3a
+ 1393 0055 0B       		.uleb128 0xb
+ 1394 0056 3B       		.uleb128 0x3b
+ 1395 0057 0B       		.uleb128 0xb
+ 1396 0058 27       		.uleb128 0x27
+ 1397 0059 19       		.uleb128 0x19
+ 1398 005a 11       		.uleb128 0x11
+ 1399 005b 01       		.uleb128 0x1
+ 1400 005c 12       		.uleb128 0x12
+ 1401 005d 06       		.uleb128 0x6
+ 1402 005e 40       		.uleb128 0x40
+ 1403 005f 18       		.uleb128 0x18
+ 1404 0060 9642     		.uleb128 0x2116
+ 1405 0062 19       		.uleb128 0x19
+ 1406 0063 00       		.byte	0
+ 1407 0064 00       		.byte	0
+ 1408 0065 09       		.uleb128 0x9
+ 1409 0066 2E       		.uleb128 0x2e
+ 1410 0067 01       		.byte	0x1
+ 1411 0068 3F       		.uleb128 0x3f
+ 1412 0069 19       		.uleb128 0x19
+ 1413 006a 03       		.uleb128 0x3
+ 1414 006b 0E       		.uleb128 0xe
+ 1415 006c 3A       		.uleb128 0x3a
+ 1416 006d 0B       		.uleb128 0xb
+ 1417 006e 3B       		.uleb128 0x3b
+ 1418 006f 0B       		.uleb128 0xb
+ 1419 0070 27       		.uleb128 0x27
+ 1420 0071 19       		.uleb128 0x19
+ 1421 0072 11       		.uleb128 0x11
+ 1422 0073 01       		.uleb128 0x1
+ 1423 0074 12       		.uleb128 0x12
+ 1424 0075 06       		.uleb128 0x6
+ 1425 0076 40       		.uleb128 0x40
+ 1426 0077 18       		.uleb128 0x18
+ 1427 0078 9642     		.uleb128 0x2116
+ 1428 007a 19       		.uleb128 0x19
+ 1429 007b 01       		.uleb128 0x1
+ 1430 007c 13       		.uleb128 0x13
+ 1431 007d 00       		.byte	0
+ 1432 007e 00       		.byte	0
+ 1433 007f 0A       		.uleb128 0xa
+ 1434 0080 05       		.uleb128 0x5
+ 1435 0081 00       		.byte	0
+ 1436 0082 03       		.uleb128 0x3
+ 1437 0083 0E       		.uleb128 0xe
+ 1438 0084 3A       		.uleb128 0x3a
+ 1439 0085 0B       		.uleb128 0xb
+ 1440 0086 3B       		.uleb128 0x3b
+ 1441 0087 0B       		.uleb128 0xb
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 35
+
+
+ 1442 0088 49       		.uleb128 0x49
+ 1443 0089 13       		.uleb128 0x13
+ 1444 008a 02       		.uleb128 0x2
+ 1445 008b 18       		.uleb128 0x18
+ 1446 008c 00       		.byte	0
+ 1447 008d 00       		.byte	0
+ 1448 008e 0B       		.uleb128 0xb
+ 1449 008f 2E       		.uleb128 0x2e
+ 1450 0090 01       		.byte	0x1
+ 1451 0091 3F       		.uleb128 0x3f
+ 1452 0092 19       		.uleb128 0x19
+ 1453 0093 03       		.uleb128 0x3
+ 1454 0094 0E       		.uleb128 0xe
+ 1455 0095 3A       		.uleb128 0x3a
+ 1456 0096 0B       		.uleb128 0xb
+ 1457 0097 3B       		.uleb128 0x3b
+ 1458 0098 05       		.uleb128 0x5
+ 1459 0099 27       		.uleb128 0x27
+ 1460 009a 19       		.uleb128 0x19
+ 1461 009b 11       		.uleb128 0x11
+ 1462 009c 01       		.uleb128 0x1
+ 1463 009d 12       		.uleb128 0x12
+ 1464 009e 06       		.uleb128 0x6
+ 1465 009f 40       		.uleb128 0x40
+ 1466 00a0 18       		.uleb128 0x18
+ 1467 00a1 9742     		.uleb128 0x2117
+ 1468 00a3 19       		.uleb128 0x19
+ 1469 00a4 01       		.uleb128 0x1
+ 1470 00a5 13       		.uleb128 0x13
+ 1471 00a6 00       		.byte	0
+ 1472 00a7 00       		.byte	0
+ 1473 00a8 0C       		.uleb128 0xc
+ 1474 00a9 05       		.uleb128 0x5
+ 1475 00aa 00       		.byte	0
+ 1476 00ab 03       		.uleb128 0x3
+ 1477 00ac 0E       		.uleb128 0xe
+ 1478 00ad 3A       		.uleb128 0x3a
+ 1479 00ae 0B       		.uleb128 0xb
+ 1480 00af 3B       		.uleb128 0x3b
+ 1481 00b0 05       		.uleb128 0x5
+ 1482 00b1 49       		.uleb128 0x49
+ 1483 00b2 13       		.uleb128 0x13
+ 1484 00b3 02       		.uleb128 0x2
+ 1485 00b4 18       		.uleb128 0x18
+ 1486 00b5 00       		.byte	0
+ 1487 00b6 00       		.byte	0
+ 1488 00b7 0D       		.uleb128 0xd
+ 1489 00b8 34       		.uleb128 0x34
+ 1490 00b9 00       		.byte	0
+ 1491 00ba 03       		.uleb128 0x3
+ 1492 00bb 0E       		.uleb128 0xe
+ 1493 00bc 3A       		.uleb128 0x3a
+ 1494 00bd 0B       		.uleb128 0xb
+ 1495 00be 3B       		.uleb128 0x3b
+ 1496 00bf 05       		.uleb128 0x5
+ 1497 00c0 49       		.uleb128 0x49
+ 1498 00c1 13       		.uleb128 0x13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 36
+
+
+ 1499 00c2 02       		.uleb128 0x2
+ 1500 00c3 18       		.uleb128 0x18
+ 1501 00c4 00       		.byte	0
+ 1502 00c5 00       		.byte	0
+ 1503 00c6 0E       		.uleb128 0xe
+ 1504 00c7 2E       		.uleb128 0x2e
+ 1505 00c8 01       		.byte	0x1
+ 1506 00c9 3F       		.uleb128 0x3f
+ 1507 00ca 19       		.uleb128 0x19
+ 1508 00cb 03       		.uleb128 0x3
+ 1509 00cc 0E       		.uleb128 0xe
+ 1510 00cd 3A       		.uleb128 0x3a
+ 1511 00ce 0B       		.uleb128 0xb
+ 1512 00cf 3B       		.uleb128 0x3b
+ 1513 00d0 05       		.uleb128 0x5
+ 1514 00d1 27       		.uleb128 0x27
+ 1515 00d2 19       		.uleb128 0x19
+ 1516 00d3 49       		.uleb128 0x49
+ 1517 00d4 13       		.uleb128 0x13
+ 1518 00d5 11       		.uleb128 0x11
+ 1519 00d6 01       		.uleb128 0x1
+ 1520 00d7 12       		.uleb128 0x12
+ 1521 00d8 06       		.uleb128 0x6
+ 1522 00d9 40       		.uleb128 0x40
+ 1523 00da 18       		.uleb128 0x18
+ 1524 00db 9742     		.uleb128 0x2117
+ 1525 00dd 19       		.uleb128 0x19
+ 1526 00de 01       		.uleb128 0x1
+ 1527 00df 13       		.uleb128 0x13
+ 1528 00e0 00       		.byte	0
+ 1529 00e1 00       		.byte	0
+ 1530 00e2 0F       		.uleb128 0xf
+ 1531 00e3 2E       		.uleb128 0x2e
+ 1532 00e4 00       		.byte	0
+ 1533 00e5 3F       		.uleb128 0x3f
+ 1534 00e6 19       		.uleb128 0x19
+ 1535 00e7 03       		.uleb128 0x3
+ 1536 00e8 0E       		.uleb128 0xe
+ 1537 00e9 3A       		.uleb128 0x3a
+ 1538 00ea 0B       		.uleb128 0xb
+ 1539 00eb 3B       		.uleb128 0x3b
+ 1540 00ec 05       		.uleb128 0x5
+ 1541 00ed 27       		.uleb128 0x27
+ 1542 00ee 19       		.uleb128 0x19
+ 1543 00ef 11       		.uleb128 0x11
+ 1544 00f0 01       		.uleb128 0x1
+ 1545 00f1 12       		.uleb128 0x12
+ 1546 00f2 06       		.uleb128 0x6
+ 1547 00f3 40       		.uleb128 0x40
+ 1548 00f4 18       		.uleb128 0x18
+ 1549 00f5 9742     		.uleb128 0x2117
+ 1550 00f7 19       		.uleb128 0x19
+ 1551 00f8 00       		.byte	0
+ 1552 00f9 00       		.byte	0
+ 1553 00fa 10       		.uleb128 0x10
+ 1554 00fb 2E       		.uleb128 0x2e
+ 1555 00fc 00       		.byte	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 37
+
+
+ 1556 00fd 3F       		.uleb128 0x3f
+ 1557 00fe 19       		.uleb128 0x19
+ 1558 00ff 03       		.uleb128 0x3
+ 1559 0100 0E       		.uleb128 0xe
+ 1560 0101 3A       		.uleb128 0x3a
+ 1561 0102 0B       		.uleb128 0xb
+ 1562 0103 3B       		.uleb128 0x3b
+ 1563 0104 05       		.uleb128 0x5
+ 1564 0105 27       		.uleb128 0x27
+ 1565 0106 19       		.uleb128 0x19
+ 1566 0107 49       		.uleb128 0x49
+ 1567 0108 13       		.uleb128 0x13
+ 1568 0109 11       		.uleb128 0x11
+ 1569 010a 01       		.uleb128 0x1
+ 1570 010b 12       		.uleb128 0x12
+ 1571 010c 06       		.uleb128 0x6
+ 1572 010d 40       		.uleb128 0x40
+ 1573 010e 18       		.uleb128 0x18
+ 1574 010f 9742     		.uleb128 0x2117
+ 1575 0111 19       		.uleb128 0x19
+ 1576 0112 00       		.byte	0
+ 1577 0113 00       		.byte	0
+ 1578 0114 11       		.uleb128 0x11
+ 1579 0115 34       		.uleb128 0x34
+ 1580 0116 00       		.byte	0
+ 1581 0117 03       		.uleb128 0x3
+ 1582 0118 0E       		.uleb128 0xe
+ 1583 0119 3A       		.uleb128 0x3a
+ 1584 011a 0B       		.uleb128 0xb
+ 1585 011b 3B       		.uleb128 0x3b
+ 1586 011c 0B       		.uleb128 0xb
+ 1587 011d 49       		.uleb128 0x49
+ 1588 011e 13       		.uleb128 0x13
+ 1589 011f 3F       		.uleb128 0x3f
+ 1590 0120 19       		.uleb128 0x19
+ 1591 0121 3C       		.uleb128 0x3c
+ 1592 0122 19       		.uleb128 0x19
+ 1593 0123 00       		.byte	0
+ 1594 0124 00       		.byte	0
+ 1595 0125 12       		.uleb128 0x12
+ 1596 0126 01       		.uleb128 0x1
+ 1597 0127 01       		.byte	0x1
+ 1598 0128 49       		.uleb128 0x49
+ 1599 0129 13       		.uleb128 0x13
+ 1600 012a 01       		.uleb128 0x1
+ 1601 012b 13       		.uleb128 0x13
+ 1602 012c 00       		.byte	0
+ 1603 012d 00       		.byte	0
+ 1604 012e 13       		.uleb128 0x13
+ 1605 012f 21       		.uleb128 0x21
+ 1606 0130 00       		.byte	0
+ 1607 0131 49       		.uleb128 0x49
+ 1608 0132 13       		.uleb128 0x13
+ 1609 0133 2F       		.uleb128 0x2f
+ 1610 0134 0B       		.uleb128 0xb
+ 1611 0135 00       		.byte	0
+ 1612 0136 00       		.byte	0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 38
+
+
+ 1613 0137 14       		.uleb128 0x14
+ 1614 0138 21       		.uleb128 0x21
+ 1615 0139 00       		.byte	0
+ 1616 013a 49       		.uleb128 0x49
+ 1617 013b 13       		.uleb128 0x13
+ 1618 013c 2F       		.uleb128 0x2f
+ 1619 013d 05       		.uleb128 0x5
+ 1620 013e 00       		.byte	0
+ 1621 013f 00       		.byte	0
+ 1622 0140 15       		.uleb128 0x15
+ 1623 0141 34       		.uleb128 0x34
+ 1624 0142 00       		.byte	0
+ 1625 0143 03       		.uleb128 0x3
+ 1626 0144 0E       		.uleb128 0xe
+ 1627 0145 3A       		.uleb128 0x3a
+ 1628 0146 0B       		.uleb128 0xb
+ 1629 0147 3B       		.uleb128 0x3b
+ 1630 0148 0B       		.uleb128 0xb
+ 1631 0149 49       		.uleb128 0x49
+ 1632 014a 13       		.uleb128 0x13
+ 1633 014b 3F       		.uleb128 0x3f
+ 1634 014c 19       		.uleb128 0x19
+ 1635 014d 02       		.uleb128 0x2
+ 1636 014e 18       		.uleb128 0x18
+ 1637 014f 00       		.byte	0
+ 1638 0150 00       		.byte	0
+ 1639 0151 00       		.byte	0
+ 1640              		.section	.debug_aranges,"",%progbits
+ 1641 0000 7C000000 		.4byte	0x7c
+ 1642 0004 0200     		.2byte	0x2
+ 1643 0006 00000000 		.4byte	.Ldebug_info0
+ 1644 000a 04       		.byte	0x4
+ 1645 000b 00       		.byte	0
+ 1646 000c 0000     		.2byte	0
+ 1647 000e 0000     		.2byte	0
+ 1648 0010 00000000 		.4byte	.LFB0
+ 1649 0014 20000000 		.4byte	.LFE0-.LFB0
+ 1650 0018 00000000 		.4byte	.LFB1
+ 1651 001c 24000000 		.4byte	.LFE1-.LFB1
+ 1652 0020 00000000 		.4byte	.LFB2
+ 1653 0024 18000000 		.4byte	.LFE2-.LFB2
+ 1654 0028 00000000 		.4byte	.LFB3
+ 1655 002c B8020000 		.4byte	.LFE3-.LFB3
+ 1656 0030 00000000 		.4byte	.LFB4
+ 1657 0034 24000000 		.4byte	.LFE4-.LFB4
+ 1658 0038 00000000 		.4byte	.LFB5
+ 1659 003c 20000000 		.4byte	.LFE5-.LFB5
+ 1660 0040 00000000 		.4byte	.LFB6
+ 1661 0044 24000000 		.4byte	.LFE6-.LFB6
+ 1662 0048 00000000 		.4byte	.LFB7
+ 1663 004c 20000000 		.4byte	.LFE7-.LFB7
+ 1664 0050 00000000 		.4byte	.LFB8
+ 1665 0054 18000000 		.4byte	.LFE8-.LFB8
+ 1666 0058 00000000 		.4byte	.LFB9
+ 1667 005c 1C000000 		.4byte	.LFE9-.LFB9
+ 1668 0060 00000000 		.4byte	.LFB10
+ 1669 0064 18000000 		.4byte	.LFE10-.LFB10
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 39
+
+
+ 1670 0068 00000000 		.4byte	.LFB11
+ 1671 006c 18000000 		.4byte	.LFE11-.LFB11
+ 1672 0070 00000000 		.4byte	.LFB12
+ 1673 0074 18000000 		.4byte	.LFE12-.LFB12
+ 1674 0078 00000000 		.4byte	0
+ 1675 007c 00000000 		.4byte	0
+ 1676              		.section	.debug_ranges,"",%progbits
+ 1677              	.Ldebug_ranges0:
+ 1678 0000 00000000 		.4byte	.LFB0
+ 1679 0004 20000000 		.4byte	.LFE0
+ 1680 0008 00000000 		.4byte	.LFB1
+ 1681 000c 24000000 		.4byte	.LFE1
+ 1682 0010 00000000 		.4byte	.LFB2
+ 1683 0014 18000000 		.4byte	.LFE2
+ 1684 0018 00000000 		.4byte	.LFB3
+ 1685 001c B8020000 		.4byte	.LFE3
+ 1686 0020 00000000 		.4byte	.LFB4
+ 1687 0024 24000000 		.4byte	.LFE4
+ 1688 0028 00000000 		.4byte	.LFB5
+ 1689 002c 20000000 		.4byte	.LFE5
+ 1690 0030 00000000 		.4byte	.LFB6
+ 1691 0034 24000000 		.4byte	.LFE6
+ 1692 0038 00000000 		.4byte	.LFB7
+ 1693 003c 20000000 		.4byte	.LFE7
+ 1694 0040 00000000 		.4byte	.LFB8
+ 1695 0044 18000000 		.4byte	.LFE8
+ 1696 0048 00000000 		.4byte	.LFB9
+ 1697 004c 1C000000 		.4byte	.LFE9
+ 1698 0050 00000000 		.4byte	.LFB10
+ 1699 0054 18000000 		.4byte	.LFE10
+ 1700 0058 00000000 		.4byte	.LFB11
+ 1701 005c 18000000 		.4byte	.LFE11
+ 1702 0060 00000000 		.4byte	.LFB12
+ 1703 0064 18000000 		.4byte	.LFE12
+ 1704 0068 00000000 		.4byte	0
+ 1705 006c 00000000 		.4byte	0
+ 1706              		.section	.debug_line,"",%progbits
+ 1707              	.Ldebug_line0:
+ 1708 0000 69010000 		.section	.debug_str,"MS",%progbits,1
+ 1708      02004100 
+ 1708      00000201 
+ 1708      FB0E0D00 
+ 1708      01010101 
+ 1709              	.LASF48:
+ 1710 0000 61786973 		.ascii	"axis_position_filtered\000"
+ 1710      5F706F73 
+ 1710      6974696F 
+ 1710      6E5F6669 
+ 1710      6C746572 
+ 1711              	.LASF19:
+ 1712 0017 72656733 		.ascii	"reg32\000"
+ 1712      3200
+ 1713              	.LASF52:
+ 1714 001d 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1714      43313120 
+ 1714      352E342E 
+ 1714      31203230 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 40
+
+
+ 1714      31363036 
+ 1715 0050 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1715      20726576 
+ 1715      6973696F 
+ 1715      6E203233 
+ 1715      37373135 
+ 1716 0083 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1716      66756E63 
+ 1716      74696F6E 
+ 1716      2D736563 
+ 1716      74696F6E 
+ 1717              	.LASF43:
+ 1718 00ab 746F7271 		.ascii	"torque_command\000"
+ 1718      75655F63 
+ 1718      6F6D6D61 
+ 1718      6E6400
+ 1719              	.LASF51:
+ 1720 00ba 636F756E 		.ascii	"count\000"
+ 1720      7400
+ 1721              	.LASF23:
+ 1722 00c0 7469636B 		.ascii	"tick_Interrupt\000"
+ 1722      5F496E74 
+ 1722      65727275 
+ 1722      707400
+ 1723              	.LASF6:
+ 1724 00cf 73686F72 		.ascii	"short unsigned int\000"
+ 1724      7420756E 
+ 1724      7369676E 
+ 1724      65642069 
+ 1724      6E7400
+ 1725              	.LASF25:
+ 1726 00e2 7469636B 		.ascii	"tick_SetVector\000"
+ 1726      5F536574 
+ 1726      56656374 
+ 1726      6F7200
+ 1727              	.LASF17:
+ 1728 00f1 646F7562 		.ascii	"double\000"
+ 1728      6C6500
+ 1729              	.LASF31:
+ 1730 00f8 7469636B 		.ascii	"tick_GetPriority\000"
+ 1730      5F476574 
+ 1730      5072696F 
+ 1730      72697479 
+ 1730      00
+ 1731              	.LASF30:
+ 1732 0109 7469636B 		.ascii	"tick_GetVector\000"
+ 1732      5F476574 
+ 1732      56656374 
+ 1732      6F7200
+ 1733              	.LASF16:
+ 1734 0118 666C6F61 		.ascii	"float\000"
+ 1734      7400
+ 1735              	.LASF49:
+ 1736 011e 61786973 		.ascii	"axis_position_filtered_2\000"
+ 1736      5F706F73 
+ 1736      6974696F 
+ 1736      6E5F6669 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 41
+
+
+ 1736      6C746572 
+ 1737              	.LASF44:
+ 1738 0137 61786973 		.ascii	"axis_position\000"
+ 1738      5F706F73 
+ 1738      6974696F 
+ 1738      6E00
+ 1739              	.LASF4:
+ 1740 0145 756E7369 		.ascii	"unsigned char\000"
+ 1740      676E6564 
+ 1740      20636861 
+ 1740      7200
+ 1741              	.LASF50:
+ 1742 0153 73746172 		.ascii	"start_count\000"
+ 1742      745F636F 
+ 1742      756E7400 
+ 1743              	.LASF18:
+ 1744 015f 72656738 		.ascii	"reg8\000"
+ 1744      00
+ 1745              	.LASF8:
+ 1746 0164 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1746      20756E73 
+ 1746      69676E65 
+ 1746      6420696E 
+ 1746      7400
+ 1747              	.LASF15:
+ 1748 0176 696E7433 		.ascii	"int32\000"
+ 1748      3200
+ 1749              	.LASF37:
+ 1750 017c 616E676C 		.ascii	"angle\000"
+ 1750      6500
+ 1751              	.LASF21:
+ 1752 0182 7469636B 		.ascii	"tick_Start\000"
+ 1752      5F537461 
+ 1752      727400
+ 1753              	.LASF29:
+ 1754 018d 7072696F 		.ascii	"priority\000"
+ 1754      72697479 
+ 1754      00
+ 1755              	.LASF53:
+ 1756 0196 47656E65 		.ascii	"Generated_Source\\PSoC5\\tick.c\000"
+ 1756      72617465 
+ 1756      645F536F 
+ 1756      75726365 
+ 1756      5C50536F 
+ 1757              	.LASF40:
+ 1758 01b4 73746570 		.ascii	"step_array\000"
+ 1758      5F617272 
+ 1758      617900
+ 1759              	.LASF38:
+ 1760 01bf 72656164 		.ascii	"read_angle_command\000"
+ 1760      5F616E67 
+ 1760      6C655F63 
+ 1760      6F6D6D61 
+ 1760      6E6400
+ 1761              	.LASF41:
+ 1762 01d2 616E676C 		.ascii	"angle_electric\000"
+ 1762      655F656C 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 42
+
+
+ 1762      65637472 
+ 1762      696300
+ 1763              	.LASF13:
+ 1764 01e1 75696E74 		.ascii	"uint16\000"
+ 1764      313600
+ 1765              	.LASF36:
+ 1766 01e8 636F6E74 		.ascii	"controller_tick\000"
+ 1766      726F6C6C 
+ 1766      65725F74 
+ 1766      69636B00 
+ 1767              	.LASF22:
+ 1768 01f8 7469636B 		.ascii	"tick_Stop\000"
+ 1768      5F53746F 
+ 1768      7000
+ 1769              	.LASF14:
+ 1770 0202 75696E74 		.ascii	"uint32\000"
+ 1770      333200
+ 1771              	.LASF34:
+ 1772 0209 7469636B 		.ascii	"tick_SetPending\000"
+ 1772      5F536574 
+ 1772      50656E64 
+ 1772      696E6700 
+ 1773              	.LASF35:
+ 1774 0219 7469636B 		.ascii	"tick_ClearPending\000"
+ 1774      5F436C65 
+ 1774      61725065 
+ 1774      6E64696E 
+ 1774      6700
+ 1775              	.LASF0:
+ 1776 022b 756E7369 		.ascii	"unsigned int\000"
+ 1776      676E6564 
+ 1776      20696E74 
+ 1776      00
+ 1777              	.LASF26:
+ 1778 0238 61646472 		.ascii	"address\000"
+ 1778      65737300 
+ 1779              	.LASF9:
+ 1780 0240 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1780      206C6F6E 
+ 1780      6720756E 
+ 1780      7369676E 
+ 1780      65642069 
+ 1781              	.LASF28:
+ 1782 0257 7469636B 		.ascii	"tick_SetPriority\000"
+ 1782      5F536574 
+ 1782      5072696F 
+ 1782      72697479 
+ 1782      00
+ 1783              	.LASF33:
+ 1784 0268 7469636B 		.ascii	"tick_Disable\000"
+ 1784      5F446973 
+ 1784      61626C65 
+ 1784      00
+ 1785              	.LASF32:
+ 1786 0275 7469636B 		.ascii	"tick_Enable\000"
+ 1786      5F456E61 
+ 1786      626C6500 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 43
+
+
+ 1787              	.LASF20:
+ 1788 0281 63796973 		.ascii	"cyisraddress\000"
+ 1788      72616464 
+ 1788      72657373 
+ 1788      00
+ 1789              	.LASF24:
+ 1790 028e 7469636B 		.ascii	"tick_StartEx\000"
+ 1790      5F537461 
+ 1790      72744578 
+ 1790      00
+ 1791              	.LASF39:
+ 1792 029b 6C656164 		.ascii	"lead_angle\000"
+ 1792      5F616E67 
+ 1792      6C6500
+ 1793              	.LASF10:
+ 1794 02a6 73697A65 		.ascii	"sizetype\000"
+ 1794      74797065 
+ 1794      00
+ 1795              	.LASF1:
+ 1796 02af 6C6F6E67 		.ascii	"long long int\000"
+ 1796      206C6F6E 
+ 1796      6720696E 
+ 1796      7400
+ 1797              	.LASF11:
+ 1798 02bd 63686172 		.ascii	"char\000"
+ 1798      00
+ 1799              	.LASF27:
+ 1800 02c2 72616D56 		.ascii	"ramVectorTable\000"
+ 1800      6563746F 
+ 1800      72546162 
+ 1800      6C6500
+ 1801              	.LASF5:
+ 1802 02d1 73686F72 		.ascii	"short int\000"
+ 1802      7420696E 
+ 1802      7400
+ 1803              	.LASF54:
+ 1804 02db 433A5C55 		.ascii	"C:\\Users\\pajoh\\Desktop\\closed_loop_printer\\cod"
+ 1804      73657273 
+ 1804      5C70616A 
+ 1804      6F685C44 
+ 1804      65736B74 
+ 1805 0309 655C416E 		.ascii	"e\\Angle_Sensor\\StepperTorqueControl.cydsn\000"
+ 1805      676C655F 
+ 1805      53656E73 
+ 1805      6F725C53 
+ 1805      74657070 
+ 1806              	.LASF46:
+ 1807 0333 616E676C 		.ascii	"angle_old\000"
+ 1807      655F6F6C 
+ 1807      6400
+ 1808              	.LASF12:
+ 1809 033d 75696E74 		.ascii	"uint8\000"
+ 1809      3800
+ 1810              	.LASF45:
+ 1811 0343 6F666673 		.ascii	"offsetMap\000"
+ 1811      65744D61 
+ 1811      7000
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccQ0f8tb.s 			page 44
+
+
+ 1812              	.LASF7:
+ 1813 034d 6C6F6E67 		.ascii	"long int\000"
+ 1813      20696E74 
+ 1813      00
+ 1814              	.LASF55:
+ 1815 0356 7469636B 		.ascii	"tick_GetState\000"
+ 1815      5F476574 
+ 1815      53746174 
+ 1815      6500
+ 1816              	.LASF47:
+ 1817 0364 61786973 		.ascii	"axis_position_old\000"
+ 1817      5F706F73 
+ 1817      6974696F 
+ 1817      6E5F6F6C 
+ 1817      6400
+ 1818              	.LASF2:
+ 1819 0376 6C6F6E67 		.ascii	"long double\000"
+ 1819      20646F75 
+ 1819      626C6500 
+ 1820              	.LASF3:
+ 1821 0382 7369676E 		.ascii	"signed char\000"
+ 1821      65642063 
+ 1821      68617200 
+ 1822              	.LASF42:
+ 1823 038e 616E676C 		.ascii	"angle_diff\000"
+ 1823      655F6469 
+ 1823      666600
+ 1824              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

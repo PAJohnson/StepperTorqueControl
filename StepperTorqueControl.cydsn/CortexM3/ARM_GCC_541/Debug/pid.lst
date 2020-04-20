@@ -1,0 +1,1369 @@
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"pid.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.PIDConfig,"ax",%progbits
+  20              		.align	2
+  21              		.global	PIDConfig
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	PIDConfig, %function
+  25              	PIDConfig:
+  26              	.LFB1:
+  27              		.file 1 "pid.c"
+   1:pid.c         **** /* ========================================
+   2:pid.c         ****  *
+   3:pid.c         ****  * Copyright YOUR COMPANY, THE YEAR
+   4:pid.c         ****  * All Rights Reserved
+   5:pid.c         ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:pid.c         ****  *
+   7:pid.c         ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:pid.c         ****  * WHICH IS THE PROPERTY OF your company.
+   9:pid.c         ****  *
+  10:pid.c         ****  * ========================================
+  11:pid.c         **** */
+  12:pid.c         **** #include "pid.h"
+  13:pid.c         **** #include "stdio.h"
+  14:pid.c         **** #include "CyLib.h"
+  15:pid.c         **** 
+  16:pid.c         **** int8 PIDConfig(int32 kp, int32 ki, int32 kd, int32 i_limit_pos, int32 i_limit_neg, int32 fs, pid_ts
+  28              		.loc 1 16 0
+  29              		.cfi_startproc
+  30              		@ args = 12, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  33 0000 90B4     		push	{r4, r7}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 4, -8
+  36              		.cfi_offset 7, -4
+  37 0002 84B0     		sub	sp, sp, #16
+  38              		.cfi_def_cfa_offset 24
+  39 0004 00AF     		add	r7, sp, #0
+  40              		.cfi_def_cfa_register 7
+  41 0006 F860     		str	r0, [r7, #12]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 2
+
+
+  42 0008 B960     		str	r1, [r7, #8]
+  43 000a 7A60     		str	r2, [r7, #4]
+  44 000c 3B60     		str	r3, [r7]
+  17:pid.c         ****     PID->kp = kp;
+  45              		.loc 1 17 0
+  46 000e 3B6A     		ldr	r3, [r7, #32]
+  47 0010 FA68     		ldr	r2, [r7, #12]
+  48 0012 1A61     		str	r2, [r3, #16]
+  18:pid.c         ****     PID->ki = ki;
+  49              		.loc 1 18 0
+  50 0014 3B6A     		ldr	r3, [r7, #32]
+  51 0016 BA68     		ldr	r2, [r7, #8]
+  52 0018 5A61     		str	r2, [r3, #20]
+  19:pid.c         ****     PID->kd = kd;
+  53              		.loc 1 19 0
+  54 001a 3B6A     		ldr	r3, [r7, #32]
+  55 001c 7A68     		ldr	r2, [r7, #4]
+  56 001e 9A61     		str	r2, [r3, #24]
+  20:pid.c         ****     PID->i_limit_pos = i_limit_pos;
+  57              		.loc 1 20 0
+  58 0020 3B6A     		ldr	r3, [r7, #32]
+  59 0022 3A68     		ldr	r2, [r7]
+  60 0024 DA61     		str	r2, [r3, #28]
+  21:pid.c         ****     PID->i_limit_neg = i_limit_neg;
+  61              		.loc 1 21 0
+  62 0026 3B6A     		ldr	r3, [r7, #32]
+  63 0028 BA69     		ldr	r2, [r7, #24]
+  64 002a 1A62     		str	r2, [r3, #32]
+  22:pid.c         ****     PID->fs = fs;
+  65              		.loc 1 22 0
+  66 002c 3B6A     		ldr	r3, [r7, #32]
+  67 002e FA69     		ldr	r2, [r7, #28]
+  68 0030 1A64     		str	r2, [r3, #64]
+  23:pid.c         ****     PID->setpoint = 0;
+  69              		.loc 1 23 0
+  70 0032 3B6A     		ldr	r3, [r7, #32]
+  71 0034 0022     		movs	r2, #0
+  72 0036 5A60     		str	r2, [r3, #4]
+  24:pid.c         ****     PID->input = 0;
+  73              		.loc 1 24 0
+  74 0038 3B6A     		ldr	r3, [r7, #32]
+  75 003a 0022     		movs	r2, #0
+  76 003c 1A60     		str	r2, [r3]
+  25:pid.c         ****     PID->error_d = 0;
+  77              		.loc 1 25 0
+  78 003e 3A6A     		ldr	r2, [r7, #32]
+  79 0040 4FF00003 		mov	r3, #0
+  80 0044 4FF00004 		mov	r4, #0
+  81 0048 C2E90E34 		strd	r3, [r2, #56]
+  26:pid.c         ****     PID->error_i = 0;
+  82              		.loc 1 26 0
+  83 004c 3A6A     		ldr	r2, [r7, #32]
+  84 004e 4FF00003 		mov	r3, #0
+  85 0052 4FF00004 		mov	r4, #0
+  86 0056 C2E90C34 		strd	r3, [r2, #48]
+  27:pid.c         ****     PID->error_last = 0;
+  87              		.loc 1 27 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 3
+
+
+  88 005a 3A6A     		ldr	r2, [r7, #32]
+  89 005c 4FF00003 		mov	r3, #0
+  90 0060 4FF00004 		mov	r4, #0
+  91 0064 C2E91234 		strd	r3, [r2, #72]
+  28:pid.c         ****     PID->error_p = 0;
+  92              		.loc 1 28 0
+  93 0068 3A6A     		ldr	r2, [r7, #32]
+  94 006a 4FF00003 		mov	r3, #0
+  95 006e 4FF00004 		mov	r4, #0
+  96 0072 C2E90A34 		strd	r3, [r2, #40]
+  29:pid.c         ****     PID->feedforward = 0;
+  97              		.loc 1 29 0
+  98 0076 3B6A     		ldr	r3, [r7, #32]
+  99 0078 0022     		movs	r2, #0
+ 100 007a DA60     		str	r2, [r3, #12]
+  30:pid.c         ****     PID->output = 0;
+ 101              		.loc 1 30 0
+ 102 007c 3B6A     		ldr	r3, [r7, #32]
+ 103 007e 0022     		movs	r2, #0
+ 104 0080 9A60     		str	r2, [r3, #8]
+  31:pid.c         ****     return 0;
+ 105              		.loc 1 31 0
+ 106 0082 0023     		movs	r3, #0
+  32:pid.c         **** }
+ 107              		.loc 1 32 0
+ 108 0084 1846     		mov	r0, r3
+ 109 0086 1037     		adds	r7, r7, #16
+ 110              		.cfi_def_cfa_offset 8
+ 111 0088 BD46     		mov	sp, r7
+ 112              		.cfi_def_cfa_register 13
+ 113              		@ sp needed
+ 114 008a 90BC     		pop	{r4, r7}
+ 115              		.cfi_restore 7
+ 116              		.cfi_restore 4
+ 117              		.cfi_def_cfa_offset 0
+ 118 008c 7047     		bx	lr
+ 119              		.cfi_endproc
+ 120              	.LFE1:
+ 121              		.size	PIDConfig, .-PIDConfig
+ 122 008e 00BF     		.section	.text.PIDReset,"ax",%progbits
+ 123              		.align	2
+ 124              		.global	PIDReset
+ 125              		.thumb
+ 126              		.thumb_func
+ 127              		.type	PIDReset, %function
+ 128              	PIDReset:
+ 129              	.LFB2:
+  33:pid.c         **** 
+  34:pid.c         **** int8 PIDReset(pid_ts* PID){
+ 130              		.loc 1 34 0
+ 131              		.cfi_startproc
+ 132              		@ args = 0, pretend = 0, frame = 8
+ 133              		@ frame_needed = 1, uses_anonymous_args = 0
+ 134              		@ link register save eliminated.
+ 135 0000 90B4     		push	{r4, r7}
+ 136              		.cfi_def_cfa_offset 8
+ 137              		.cfi_offset 4, -8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 4
+
+
+ 138              		.cfi_offset 7, -4
+ 139 0002 82B0     		sub	sp, sp, #8
+ 140              		.cfi_def_cfa_offset 16
+ 141 0004 00AF     		add	r7, sp, #0
+ 142              		.cfi_def_cfa_register 7
+ 143 0006 7860     		str	r0, [r7, #4]
+  35:pid.c         ****     PID->setpoint = 0;
+ 144              		.loc 1 35 0
+ 145 0008 7B68     		ldr	r3, [r7, #4]
+ 146 000a 0022     		movs	r2, #0
+ 147 000c 5A60     		str	r2, [r3, #4]
+  36:pid.c         ****     PID->input = 0;
+ 148              		.loc 1 36 0
+ 149 000e 7B68     		ldr	r3, [r7, #4]
+ 150 0010 0022     		movs	r2, #0
+ 151 0012 1A60     		str	r2, [r3]
+  37:pid.c         ****     PID->error_i = 0;
+ 152              		.loc 1 37 0
+ 153 0014 7A68     		ldr	r2, [r7, #4]
+ 154 0016 4FF00003 		mov	r3, #0
+ 155 001a 4FF00004 		mov	r4, #0
+ 156 001e C2E90C34 		strd	r3, [r2, #48]
+  38:pid.c         ****     PID->output = 0;
+ 157              		.loc 1 38 0
+ 158 0022 7B68     		ldr	r3, [r7, #4]
+ 159 0024 0022     		movs	r2, #0
+ 160 0026 9A60     		str	r2, [r3, #8]
+  39:pid.c         ****     PID->feedforward = 0;
+ 161              		.loc 1 39 0
+ 162 0028 7B68     		ldr	r3, [r7, #4]
+ 163 002a 0022     		movs	r2, #0
+ 164 002c DA60     		str	r2, [r3, #12]
+  40:pid.c         ****     
+  41:pid.c         ****     return 0;
+ 165              		.loc 1 41 0
+ 166 002e 0023     		movs	r3, #0
+  42:pid.c         **** }
+ 167              		.loc 1 42 0
+ 168 0030 1846     		mov	r0, r3
+ 169 0032 0837     		adds	r7, r7, #8
+ 170              		.cfi_def_cfa_offset 8
+ 171 0034 BD46     		mov	sp, r7
+ 172              		.cfi_def_cfa_register 13
+ 173              		@ sp needed
+ 174 0036 90BC     		pop	{r4, r7}
+ 175              		.cfi_restore 7
+ 176              		.cfi_restore 4
+ 177              		.cfi_def_cfa_offset 0
+ 178 0038 7047     		bx	lr
+ 179              		.cfi_endproc
+ 180              	.LFE2:
+ 181              		.size	PIDReset, .-PIDReset
+ 182              		.global	__aeabi_ldivmod
+ 183 003a 00BF     		.section	.text.PID,"ax",%progbits
+ 184              		.align	2
+ 185              		.global	PID
+ 186              		.thumb
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 5
+
+
+ 187              		.thumb_func
+ 188              		.type	PID, %function
+ 189              	PID:
+ 190              	.LFB3:
+  43:pid.c         **** 
+  44:pid.c         **** int32 PID(int32 input, int32 setpoint, int32 feedforward, pid_ts* PID){
+ 191              		.loc 1 44 0
+ 192              		.cfi_startproc
+ 193              		@ args = 0, pretend = 0, frame = 24
+ 194              		@ frame_needed = 1, uses_anonymous_args = 0
+ 195 0000 B0B5     		push	{r4, r5, r7, lr}
+ 196              		.cfi_def_cfa_offset 16
+ 197              		.cfi_offset 4, -16
+ 198              		.cfi_offset 5, -12
+ 199              		.cfi_offset 7, -8
+ 200              		.cfi_offset 14, -4
+ 201 0002 86B0     		sub	sp, sp, #24
+ 202              		.cfi_def_cfa_offset 40
+ 203 0004 00AF     		add	r7, sp, #0
+ 204              		.cfi_def_cfa_register 7
+ 205 0006 F860     		str	r0, [r7, #12]
+ 206 0008 B960     		str	r1, [r7, #8]
+ 207 000a 7A60     		str	r2, [r7, #4]
+ 208 000c 3B60     		str	r3, [r7]
+  45:pid.c         ****     //PID function in integer math
+  46:pid.c         ****     int32 error;
+  47:pid.c         ****     int32 error_i;
+  48:pid.c         ****     
+  49:pid.c         ****     PID->input = input;
+ 209              		.loc 1 49 0
+ 210 000e 3B68     		ldr	r3, [r7]
+ 211 0010 FA68     		ldr	r2, [r7, #12]
+ 212 0012 1A60     		str	r2, [r3]
+  50:pid.c         ****     PID->setpoint = setpoint;
+ 213              		.loc 1 50 0
+ 214 0014 3B68     		ldr	r3, [r7]
+ 215 0016 BA68     		ldr	r2, [r7, #8]
+ 216 0018 5A60     		str	r2, [r3, #4]
+  51:pid.c         ****     PID->feedforward = feedforward;
+ 217              		.loc 1 51 0
+ 218 001a 3B68     		ldr	r3, [r7]
+ 219 001c 7A68     		ldr	r2, [r7, #4]
+ 220 001e DA60     		str	r2, [r3, #12]
+  52:pid.c         ****     
+  53:pid.c         ****     error = PID->setpoint - PID->input;
+ 221              		.loc 1 53 0
+ 222 0020 3B68     		ldr	r3, [r7]
+ 223 0022 5A68     		ldr	r2, [r3, #4]
+ 224 0024 3B68     		ldr	r3, [r7]
+ 225 0026 1B68     		ldr	r3, [r3]
+ 226 0028 D31A     		subs	r3, r2, r3
+ 227 002a 7B61     		str	r3, [r7, #20]
+  54:pid.c         ****     
+  55:pid.c         ****     PID->error_p = (error * PID->kp) / 1000;
+ 228              		.loc 1 55 0
+ 229 002c 3B68     		ldr	r3, [r7]
+ 230 002e 1B69     		ldr	r3, [r3, #16]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 6
+
+
+ 231 0030 7A69     		ldr	r2, [r7, #20]
+ 232 0032 02FB03F3 		mul	r3, r2, r3
+ 233 0036 4F4A     		ldr	r2, .L10
+ 234 0038 82FB0312 		smull	r1, r2, r2, r3
+ 235 003c 9211     		asrs	r2, r2, #6
+ 236 003e DB17     		asrs	r3, r3, #31
+ 237 0040 D31A     		subs	r3, r2, r3
+ 238 0042 4FEAE374 		asr	r4, r3, #31
+ 239 0046 3A68     		ldr	r2, [r7]
+ 240 0048 C2E90A34 		strd	r3, [r2, #40]
+  56:pid.c         ****     error_i = (error * PID->ki) / 1000;
+ 241              		.loc 1 56 0
+ 242 004c 3B68     		ldr	r3, [r7]
+ 243 004e 5B69     		ldr	r3, [r3, #20]
+ 244 0050 7A69     		ldr	r2, [r7, #20]
+ 245 0052 02FB03F3 		mul	r3, r2, r3
+ 246 0056 474A     		ldr	r2, .L10
+ 247 0058 82FB0312 		smull	r1, r2, r2, r3
+ 248 005c 9211     		asrs	r2, r2, #6
+ 249 005e DB17     		asrs	r3, r3, #31
+ 250 0060 D31A     		subs	r3, r2, r3
+ 251 0062 3B61     		str	r3, [r7, #16]
+  57:pid.c         ****     
+  58:pid.c         ****     //anti-windup logic
+  59:pid.c         ****     if(PID->error_i + error_i < PID->i_limit_neg){
+ 252              		.loc 1 59 0
+ 253 0064 3B68     		ldr	r3, [r7]
+ 254 0066 D3E90C12 		ldrd	r1, [r3, #48]
+ 255 006a 3B69     		ldr	r3, [r7, #16]
+ 256 006c 4FEAE374 		asr	r4, r3, #31
+ 257 0070 C918     		adds	r1, r1, r3
+ 258 0072 42EB0402 		adc	r2, r2, r4
+ 259 0076 3B68     		ldr	r3, [r7]
+ 260 0078 1B6A     		ldr	r3, [r3, #32]
+ 261 007a 4FEAE374 		asr	r4, r3, #31
+ 262 007e 9942     		cmp	r1, r3
+ 263 0080 72EB0403 		sbcs	r3, r2, r4
+ 264 0084 07DA     		bge	.L6
+  60:pid.c         ****         PID->error_i = PID->i_limit_neg;   
+ 265              		.loc 1 60 0
+ 266 0086 3B68     		ldr	r3, [r7]
+ 267 0088 1B6A     		ldr	r3, [r3, #32]
+ 268 008a 4FEAE374 		asr	r4, r3, #31
+ 269 008e 3A68     		ldr	r2, [r7]
+ 270 0090 C2E90C34 		strd	r3, [r2, #48]
+ 271 0094 25E0     		b	.L7
+ 272              	.L6:
+  61:pid.c         ****     }
+  62:pid.c         ****     else if(PID->error_i + error_i > PID->i_limit_pos){
+ 273              		.loc 1 62 0
+ 274 0096 3B68     		ldr	r3, [r7]
+ 275 0098 D3E90C12 		ldrd	r1, [r3, #48]
+ 276 009c 3B69     		ldr	r3, [r7, #16]
+ 277 009e 4FEAE374 		asr	r4, r3, #31
+ 278 00a2 5B18     		adds	r3, r3, r1
+ 279 00a4 44EB0204 		adc	r4, r4, r2
+ 280 00a8 3A68     		ldr	r2, [r7]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 7
+
+
+ 281 00aa D269     		ldr	r2, [r2, #28]
+ 282 00ac 1146     		mov	r1, r2
+ 283 00ae 4FEAE172 		asr	r2, r1, #31
+ 284 00b2 9942     		cmp	r1, r3
+ 285 00b4 72EB0403 		sbcs	r3, r2, r4
+ 286 00b8 07DA     		bge	.L8
+  63:pid.c         ****         PID->error_i = PID->i_limit_pos;   
+ 287              		.loc 1 63 0
+ 288 00ba 3B68     		ldr	r3, [r7]
+ 289 00bc DB69     		ldr	r3, [r3, #28]
+ 290 00be 4FEAE374 		asr	r4, r3, #31
+ 291 00c2 3A68     		ldr	r2, [r7]
+ 292 00c4 C2E90C34 		strd	r3, [r2, #48]
+ 293 00c8 0BE0     		b	.L7
+ 294              	.L8:
+  64:pid.c         ****     }
+  65:pid.c         ****     else{
+  66:pid.c         ****         PID->error_i = PID->error_i + error_i;   
+ 295              		.loc 1 66 0
+ 296 00ca 3B68     		ldr	r3, [r7]
+ 297 00cc D3E90C12 		ldrd	r1, [r3, #48]
+ 298 00d0 3B69     		ldr	r3, [r7, #16]
+ 299 00d2 4FEAE374 		asr	r4, r3, #31
+ 300 00d6 5B18     		adds	r3, r3, r1
+ 301 00d8 44EB0204 		adc	r4, r4, r2
+ 302 00dc 3A68     		ldr	r2, [r7]
+ 303 00de C2E90C34 		strd	r3, [r2, #48]
+ 304              	.L7:
+  67:pid.c         ****     }
+  68:pid.c         ****     PID->error_d = (error - PID->error_last) * PID->kd / 1000;
+ 305              		.loc 1 68 0
+ 306 00e2 7B69     		ldr	r3, [r7, #20]
+ 307 00e4 1946     		mov	r1, r3
+ 308 00e6 4FEAE172 		asr	r2, r1, #31
+ 309 00ea 3B68     		ldr	r3, [r7]
+ 310 00ec 03F14804 		add	r4, r3, #72
+ 311 00f0 D4E90034 		ldrd	r3, [r4]
+ 312 00f4 C91A     		subs	r1, r1, r3
+ 313 00f6 62EB0402 		sbc	r2, r2, r4
+ 314 00fa 3B68     		ldr	r3, [r7]
+ 315 00fc 9B69     		ldr	r3, [r3, #24]
+ 316 00fe 4FEAE374 		asr	r4, r3, #31
+ 317 0102 03FB02F5 		mul	r5, r3, r2
+ 318 0106 01FB04F0 		mul	r0, r1, r4
+ 319 010a 0544     		add	r5, r5, r0
+ 320 010c A1FB0301 		umull	r0, r1, r1, r3
+ 321 0110 6B18     		adds	r3, r5, r1
+ 322 0112 1946     		mov	r1, r3
+ 323 0114 4FF47A72 		mov	r2, #1000
+ 324 0118 4FF00003 		mov	r3, #0
+ 325 011c FFF7FEFF 		bl	__aeabi_ldivmod
+ 326 0120 0346     		mov	r3, r0
+ 327 0122 0C46     		mov	r4, r1
+ 328 0124 3A68     		ldr	r2, [r7]
+ 329 0126 C2E90E34 		strd	r3, [r2, #56]
+  69:pid.c         ****     PID->error_last = error;
+ 330              		.loc 1 69 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 8
+
+
+ 331 012a 7B69     		ldr	r3, [r7, #20]
+ 332 012c 4FEAE374 		asr	r4, r3, #31
+ 333 0130 3A68     		ldr	r2, [r7]
+ 334 0132 C2E91234 		strd	r3, [r2, #72]
+  70:pid.c         ****     
+  71:pid.c         ****     PID->output = PID->feedforward + PID->error_p + PID->error_i + PID->error_d;
+ 335              		.loc 1 71 0
+ 336 0136 3B68     		ldr	r3, [r7]
+ 337 0138 DB68     		ldr	r3, [r3, #12]
+ 338 013a 1A46     		mov	r2, r3
+ 339 013c 3B68     		ldr	r3, [r7]
+ 340 013e 03F12804 		add	r4, r3, #40
+ 341 0142 D4E90034 		ldrd	r3, [r4]
+ 342 0146 1A44     		add	r2, r2, r3
+ 343 0148 3B68     		ldr	r3, [r7]
+ 344 014a 03F13004 		add	r4, r3, #48
+ 345 014e D4E90034 		ldrd	r3, [r4]
+ 346 0152 1A44     		add	r2, r2, r3
+ 347 0154 3B68     		ldr	r3, [r7]
+ 348 0156 03F13804 		add	r4, r3, #56
+ 349 015a D4E90034 		ldrd	r3, [r4]
+ 350 015e 1344     		add	r3, r3, r2
+ 351 0160 1A46     		mov	r2, r3
+ 352 0162 3B68     		ldr	r3, [r7]
+ 353 0164 9A60     		str	r2, [r3, #8]
+  72:pid.c         ****     
+  73:pid.c         ****     return PID->output;
+ 354              		.loc 1 73 0
+ 355 0166 3B68     		ldr	r3, [r7]
+ 356 0168 9B68     		ldr	r3, [r3, #8]
+  74:pid.c         **** }
+ 357              		.loc 1 74 0
+ 358 016a 1846     		mov	r0, r3
+ 359 016c 1837     		adds	r7, r7, #24
+ 360              		.cfi_def_cfa_offset 16
+ 361 016e BD46     		mov	sp, r7
+ 362              		.cfi_def_cfa_register 13
+ 363              		@ sp needed
+ 364 0170 B0BD     		pop	{r4, r5, r7, pc}
+ 365              	.L11:
+ 366 0172 00BF     		.align	2
+ 367              	.L10:
+ 368 0174 D34D6210 		.word	274877907
+ 369              		.cfi_endproc
+ 370              	.LFE3:
+ 371              		.size	PID, .-PID
+ 372              		.section	.text.PIDStatus,"ax",%progbits
+ 373              		.align	2
+ 374              		.global	PIDStatus
+ 375              		.thumb
+ 376              		.thumb_func
+ 377              		.type	PIDStatus, %function
+ 378              	PIDStatus:
+ 379              	.LFB4:
+  75:pid.c         **** 
+  76:pid.c         **** uint32 PIDStatus(pid_ts* PID){
+ 380              		.loc 1 76 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 9
+
+
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 8
+ 383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 384              		@ link register save eliminated.
+ 385 0000 80B4     		push	{r7}
+ 386              		.cfi_def_cfa_offset 4
+ 387              		.cfi_offset 7, -4
+ 388 0002 83B0     		sub	sp, sp, #12
+ 389              		.cfi_def_cfa_offset 16
+ 390 0004 00AF     		add	r7, sp, #0
+ 391              		.cfi_def_cfa_register 7
+ 392 0006 7860     		str	r0, [r7, #4]
+  77:pid.c         ****     return PID->status;
+ 393              		.loc 1 77 0
+ 394 0008 7B68     		ldr	r3, [r7, #4]
+ 395 000a 1B6D     		ldr	r3, [r3, #80]
+  78:pid.c         **** }
+ 396              		.loc 1 78 0
+ 397 000c 1846     		mov	r0, r3
+ 398 000e 0C37     		adds	r7, r7, #12
+ 399              		.cfi_def_cfa_offset 4
+ 400 0010 BD46     		mov	sp, r7
+ 401              		.cfi_def_cfa_register 13
+ 402              		@ sp needed
+ 403 0012 80BC     		pop	{r7}
+ 404              		.cfi_restore 7
+ 405              		.cfi_def_cfa_offset 0
+ 406 0014 7047     		bx	lr
+ 407              		.cfi_endproc
+ 408              	.LFE4:
+ 409              		.size	PIDStatus, .-PIDStatus
+ 410 0016 00BF     		.text
+ 411              	.Letext0:
+ 412              		.file 2 "Generated_Source\\PSoC5/cytypes.h"
+ 413              		.file 3 "pid.h"
+ 414              		.section	.debug_info,"",%progbits
+ 415              	.Ldebug_info0:
+ 416 0000 BB020000 		.4byte	0x2bb
+ 417 0004 0400     		.2byte	0x4
+ 418 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 419 000a 04       		.byte	0x4
+ 420 000b 01       		.uleb128 0x1
+ 421 000c 08000000 		.4byte	.LASF33
+ 422 0010 0C       		.byte	0xc
+ 423 0011 D1000000 		.4byte	.LASF34
+ 424 0015 A4010000 		.4byte	.LASF35
+ 425 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 426 001d 00000000 		.4byte	0
+ 427 0021 00000000 		.4byte	.Ldebug_line0
+ 428 0025 02       		.uleb128 0x2
+ 429 0026 01       		.byte	0x1
+ 430 0027 06       		.byte	0x6
+ 431 0028 21020000 		.4byte	.LASF0
+ 432 002c 02       		.uleb128 0x2
+ 433 002d 01       		.byte	0x1
+ 434 002e 08       		.byte	0x8
+ 435 002f E9000000 		.4byte	.LASF1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 10
+
+
+ 436 0033 02       		.uleb128 0x2
+ 437 0034 02       		.byte	0x2
+ 438 0035 05       		.byte	0x5
+ 439 0036 9A010000 		.4byte	.LASF2
+ 440 003a 02       		.uleb128 0x2
+ 441 003b 02       		.byte	0x2
+ 442 003c 07       		.byte	0x7
+ 443 003d A1000000 		.4byte	.LASF3
+ 444 0041 02       		.uleb128 0x2
+ 445 0042 04       		.byte	0x4
+ 446 0043 05       		.byte	0x5
+ 447 0044 03020000 		.4byte	.LASF4
+ 448 0048 02       		.uleb128 0x2
+ 449 0049 04       		.byte	0x4
+ 450 004a 07       		.byte	0x7
+ 451 004b FD000000 		.4byte	.LASF5
+ 452 004f 02       		.uleb128 0x2
+ 453 0050 08       		.byte	0x8
+ 454 0051 05       		.byte	0x5
+ 455 0052 7B010000 		.4byte	.LASF6
+ 456 0056 02       		.uleb128 0x2
+ 457 0057 08       		.byte	0x8
+ 458 0058 07       		.byte	0x7
+ 459 0059 4D010000 		.4byte	.LASF7
+ 460 005d 03       		.uleb128 0x3
+ 461 005e 04       		.byte	0x4
+ 462 005f 05       		.byte	0x5
+ 463 0060 696E7400 		.ascii	"int\000"
+ 464 0064 02       		.uleb128 0x2
+ 465 0065 04       		.byte	0x4
+ 466 0066 07       		.byte	0x7
+ 467 0067 37010000 		.4byte	.LASF8
+ 468 006b 02       		.uleb128 0x2
+ 469 006c 08       		.byte	0x8
+ 470 006d 04       		.byte	0x4
+ 471 006e 0C020000 		.4byte	.LASF9
+ 472 0072 02       		.uleb128 0x2
+ 473 0073 04       		.byte	0x4
+ 474 0074 07       		.byte	0x7
+ 475 0075 6C010000 		.4byte	.LASF10
+ 476 0079 02       		.uleb128 0x2
+ 477 007a 01       		.byte	0x1
+ 478 007b 08       		.byte	0x8
+ 479 007c 89010000 		.4byte	.LASF11
+ 480 0080 04       		.uleb128 0x4
+ 481 0081 30010000 		.4byte	.LASF12
+ 482 0085 02       		.byte	0x2
+ 483 0086 9401     		.2byte	0x194
+ 484 0088 48000000 		.4byte	0x48
+ 485 008c 04       		.uleb128 0x4
+ 486 008d 23010000 		.4byte	.LASF13
+ 487 0091 02       		.byte	0x2
+ 488 0092 9501     		.2byte	0x195
+ 489 0094 25000000 		.4byte	0x25
+ 490 0098 04       		.uleb128 0x4
+ 491 0099 0F010000 		.4byte	.LASF14
+ 492 009d 02       		.byte	0x2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 11
+
+
+ 493 009e 9701     		.2byte	0x197
+ 494 00a0 41000000 		.4byte	0x41
+ 495 00a4 02       		.uleb128 0x2
+ 496 00a5 04       		.byte	0x4
+ 497 00a6 04       		.byte	0x4
+ 498 00a7 E3000000 		.4byte	.LASF15
+ 499 00ab 02       		.uleb128 0x2
+ 500 00ac 08       		.byte	0x8
+ 501 00ad 04       		.byte	0x4
+ 502 00ae 1C010000 		.4byte	.LASF16
+ 503 00b2 04       		.uleb128 0x4
+ 504 00b3 37020000 		.4byte	.LASF17
+ 505 00b7 02       		.byte	0x2
+ 506 00b8 9D01     		.2byte	0x19d
+ 507 00ba 4F000000 		.4byte	0x4f
+ 508 00be 05       		.uleb128 0x5
+ 509 00bf 15010000 		.4byte	.LASF29
+ 510 00c3 58       		.byte	0x58
+ 511 00c4 03       		.byte	0x3
+ 512 00c5 13       		.byte	0x13
+ 513 00c6 7B010000 		.4byte	0x17b
+ 514 00ca 06       		.uleb128 0x6
+ 515 00cb F7000000 		.4byte	.LASF18
+ 516 00cf 03       		.byte	0x3
+ 517 00d0 14       		.byte	0x14
+ 518 00d1 98000000 		.4byte	0x98
+ 519 00d5 00       		.byte	0
+ 520 00d6 06       		.uleb128 0x6
+ 521 00d7 44010000 		.4byte	.LASF19
+ 522 00db 03       		.byte	0x3
+ 523 00dc 15       		.byte	0x15
+ 524 00dd 98000000 		.4byte	0x98
+ 525 00e1 04       		.byte	0x4
+ 526 00e2 06       		.uleb128 0x6
+ 527 00e3 FC010000 		.4byte	.LASF20
+ 528 00e7 03       		.byte	0x3
+ 529 00e8 16       		.byte	0x16
+ 530 00e9 98000000 		.4byte	0x98
+ 531 00ed 08       		.byte	0x8
+ 532 00ee 06       		.uleb128 0x6
+ 533 00ef 8E010000 		.4byte	.LASF21
+ 534 00f3 03       		.byte	0x3
+ 535 00f4 17       		.byte	0x17
+ 536 00f5 98000000 		.4byte	0x98
+ 537 00f9 0C       		.byte	0xc
+ 538 00fa 07       		.uleb128 0x7
+ 539 00fb 6B7000   		.ascii	"kp\000"
+ 540 00fe 03       		.byte	0x3
+ 541 00ff 18       		.byte	0x18
+ 542 0100 98000000 		.4byte	0x98
+ 543 0104 10       		.byte	0x10
+ 544 0105 07       		.uleb128 0x7
+ 545 0106 6B6900   		.ascii	"ki\000"
+ 546 0109 03       		.byte	0x3
+ 547 010a 19       		.byte	0x19
+ 548 010b 98000000 		.4byte	0x98
+ 549 010f 14       		.byte	0x14
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 12
+
+
+ 550 0110 07       		.uleb128 0x7
+ 551 0111 6B6400   		.ascii	"kd\000"
+ 552 0114 03       		.byte	0x3
+ 553 0115 1A       		.byte	0x1a
+ 554 0116 98000000 		.4byte	0x98
+ 555 011a 18       		.byte	0x18
+ 556 011b 06       		.uleb128 0x6
+ 557 011c D7000000 		.4byte	.LASF22
+ 558 0120 03       		.byte	0x3
+ 559 0121 1B       		.byte	0x1b
+ 560 0122 98000000 		.4byte	0x98
+ 561 0126 1C       		.byte	0x1c
+ 562 0127 06       		.uleb128 0x6
+ 563 0128 B4000000 		.4byte	.LASF23
+ 564 012c 03       		.byte	0x3
+ 565 012d 1C       		.byte	0x1c
+ 566 012e 98000000 		.4byte	0x98
+ 567 0132 20       		.byte	0x20
+ 568 0133 06       		.uleb128 0x6
+ 569 0134 00000000 		.4byte	.LASF24
+ 570 0138 03       		.byte	0x3
+ 571 0139 1D       		.byte	0x1d
+ 572 013a B2000000 		.4byte	0xb2
+ 573 013e 28       		.byte	0x28
+ 574 013f 06       		.uleb128 0x6
+ 575 0140 64010000 		.4byte	.LASF25
+ 576 0144 03       		.byte	0x3
+ 577 0145 1E       		.byte	0x1e
+ 578 0146 B2000000 		.4byte	0xb2
+ 579 014a 30       		.byte	0x30
+ 580 014b 06       		.uleb128 0x6
+ 581 014c 28010000 		.4byte	.LASF26
+ 582 0150 03       		.byte	0x3
+ 583 0151 1F       		.byte	0x1f
+ 584 0152 B2000000 		.4byte	0xb2
+ 585 0156 38       		.byte	0x38
+ 586 0157 07       		.uleb128 0x7
+ 587 0158 667300   		.ascii	"fs\000"
+ 588 015b 03       		.byte	0x3
+ 589 015c 20       		.byte	0x20
+ 590 015d 98000000 		.4byte	0x98
+ 591 0161 40       		.byte	0x40
+ 592 0162 06       		.uleb128 0x6
+ 593 0163 96000000 		.4byte	.LASF27
+ 594 0167 03       		.byte	0x3
+ 595 0168 21       		.byte	0x21
+ 596 0169 B2000000 		.4byte	0xb2
+ 597 016d 48       		.byte	0x48
+ 598 016e 06       		.uleb128 0x6
+ 599 016f CA000000 		.4byte	.LASF28
+ 600 0173 03       		.byte	0x3
+ 601 0174 22       		.byte	0x22
+ 602 0175 80000000 		.4byte	0x80
+ 603 0179 50       		.byte	0x50
+ 604 017a 00       		.byte	0
+ 605 017b 08       		.uleb128 0x8
+ 606 017c 15010000 		.4byte	.LASF29
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 13
+
+
+ 607 0180 03       		.byte	0x3
+ 608 0181 23       		.byte	0x23
+ 609 0182 BE000000 		.4byte	0xbe
+ 610 0186 09       		.uleb128 0x9
+ 611 0187 C0000000 		.4byte	.LASF30
+ 612 018b 01       		.byte	0x1
+ 613 018c 10       		.byte	0x10
+ 614 018d 8C000000 		.4byte	0x8c
+ 615 0191 00000000 		.4byte	.LFB1
+ 616 0195 8E000000 		.4byte	.LFE1-.LFB1
+ 617 0199 01       		.uleb128 0x1
+ 618 019a 9C       		.byte	0x9c
+ 619 019b FE010000 		.4byte	0x1fe
+ 620 019f 0A       		.uleb128 0xa
+ 621 01a0 6B7000   		.ascii	"kp\000"
+ 622 01a3 01       		.byte	0x1
+ 623 01a4 10       		.byte	0x10
+ 624 01a5 98000000 		.4byte	0x98
+ 625 01a9 02       		.uleb128 0x2
+ 626 01aa 91       		.byte	0x91
+ 627 01ab 74       		.sleb128 -12
+ 628 01ac 0A       		.uleb128 0xa
+ 629 01ad 6B6900   		.ascii	"ki\000"
+ 630 01b0 01       		.byte	0x1
+ 631 01b1 10       		.byte	0x10
+ 632 01b2 98000000 		.4byte	0x98
+ 633 01b6 02       		.uleb128 0x2
+ 634 01b7 91       		.byte	0x91
+ 635 01b8 70       		.sleb128 -16
+ 636 01b9 0A       		.uleb128 0xa
+ 637 01ba 6B6400   		.ascii	"kd\000"
+ 638 01bd 01       		.byte	0x1
+ 639 01be 10       		.byte	0x10
+ 640 01bf 98000000 		.4byte	0x98
+ 641 01c3 02       		.uleb128 0x2
+ 642 01c4 91       		.byte	0x91
+ 643 01c5 6C       		.sleb128 -20
+ 644 01c6 0B       		.uleb128 0xb
+ 645 01c7 D7000000 		.4byte	.LASF22
+ 646 01cb 01       		.byte	0x1
+ 647 01cc 10       		.byte	0x10
+ 648 01cd 98000000 		.4byte	0x98
+ 649 01d1 02       		.uleb128 0x2
+ 650 01d2 91       		.byte	0x91
+ 651 01d3 68       		.sleb128 -24
+ 652 01d4 0B       		.uleb128 0xb
+ 653 01d5 B4000000 		.4byte	.LASF23
+ 654 01d9 01       		.byte	0x1
+ 655 01da 10       		.byte	0x10
+ 656 01db 98000000 		.4byte	0x98
+ 657 01df 02       		.uleb128 0x2
+ 658 01e0 91       		.byte	0x91
+ 659 01e1 00       		.sleb128 0
+ 660 01e2 0A       		.uleb128 0xa
+ 661 01e3 667300   		.ascii	"fs\000"
+ 662 01e6 01       		.byte	0x1
+ 663 01e7 10       		.byte	0x10
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 14
+
+
+ 664 01e8 98000000 		.4byte	0x98
+ 665 01ec 02       		.uleb128 0x2
+ 666 01ed 91       		.byte	0x91
+ 667 01ee 04       		.sleb128 4
+ 668 01ef 0A       		.uleb128 0xa
+ 669 01f0 50494400 		.ascii	"PID\000"
+ 670 01f4 01       		.byte	0x1
+ 671 01f5 10       		.byte	0x10
+ 672 01f6 FE010000 		.4byte	0x1fe
+ 673 01fa 02       		.uleb128 0x2
+ 674 01fb 91       		.byte	0x91
+ 675 01fc 08       		.sleb128 8
+ 676 01fd 00       		.byte	0
+ 677 01fe 0C       		.uleb128 0xc
+ 678 01ff 04       		.byte	0x4
+ 679 0200 7B010000 		.4byte	0x17b
+ 680 0204 09       		.uleb128 0x9
+ 681 0205 18020000 		.4byte	.LASF31
+ 682 0209 01       		.byte	0x1
+ 683 020a 22       		.byte	0x22
+ 684 020b 8C000000 		.4byte	0x8c
+ 685 020f 00000000 		.4byte	.LFB2
+ 686 0213 3A000000 		.4byte	.LFE2-.LFB2
+ 687 0217 01       		.uleb128 0x1
+ 688 0218 9C       		.byte	0x9c
+ 689 0219 2C020000 		.4byte	0x22c
+ 690 021d 0A       		.uleb128 0xa
+ 691 021e 50494400 		.ascii	"PID\000"
+ 692 0222 01       		.byte	0x1
+ 693 0223 22       		.byte	0x22
+ 694 0224 FE010000 		.4byte	0x1fe
+ 695 0228 02       		.uleb128 0x2
+ 696 0229 91       		.byte	0x91
+ 697 022a 74       		.sleb128 -12
+ 698 022b 00       		.byte	0
+ 699 022c 0D       		.uleb128 0xd
+ 700 022d 50494400 		.ascii	"PID\000"
+ 701 0231 01       		.byte	0x1
+ 702 0232 2C       		.byte	0x2c
+ 703 0233 98000000 		.4byte	0x98
+ 704 0237 00000000 		.4byte	.LFB3
+ 705 023b 78010000 		.4byte	.LFE3-.LFB3
+ 706 023f 01       		.uleb128 0x1
+ 707 0240 9C       		.byte	0x9c
+ 708 0241 9A020000 		.4byte	0x29a
+ 709 0245 0B       		.uleb128 0xb
+ 710 0246 F7000000 		.4byte	.LASF18
+ 711 024a 01       		.byte	0x1
+ 712 024b 2C       		.byte	0x2c
+ 713 024c 98000000 		.4byte	0x98
+ 714 0250 02       		.uleb128 0x2
+ 715 0251 91       		.byte	0x91
+ 716 0252 64       		.sleb128 -28
+ 717 0253 0B       		.uleb128 0xb
+ 718 0254 44010000 		.4byte	.LASF19
+ 719 0258 01       		.byte	0x1
+ 720 0259 2C       		.byte	0x2c
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 15
+
+
+ 721 025a 98000000 		.4byte	0x98
+ 722 025e 02       		.uleb128 0x2
+ 723 025f 91       		.byte	0x91
+ 724 0260 60       		.sleb128 -32
+ 725 0261 0B       		.uleb128 0xb
+ 726 0262 8E010000 		.4byte	.LASF21
+ 727 0266 01       		.byte	0x1
+ 728 0267 2C       		.byte	0x2c
+ 729 0268 98000000 		.4byte	0x98
+ 730 026c 02       		.uleb128 0x2
+ 731 026d 91       		.byte	0x91
+ 732 026e 5C       		.sleb128 -36
+ 733 026f 0A       		.uleb128 0xa
+ 734 0270 50494400 		.ascii	"PID\000"
+ 735 0274 01       		.byte	0x1
+ 736 0275 2C       		.byte	0x2c
+ 737 0276 FE010000 		.4byte	0x1fe
+ 738 027a 02       		.uleb128 0x2
+ 739 027b 91       		.byte	0x91
+ 740 027c 58       		.sleb128 -40
+ 741 027d 0E       		.uleb128 0xe
+ 742 027e 75010000 		.4byte	.LASF32
+ 743 0282 01       		.byte	0x1
+ 744 0283 2E       		.byte	0x2e
+ 745 0284 98000000 		.4byte	0x98
+ 746 0288 02       		.uleb128 0x2
+ 747 0289 91       		.byte	0x91
+ 748 028a 6C       		.sleb128 -20
+ 749 028b 0E       		.uleb128 0xe
+ 750 028c 64010000 		.4byte	.LASF25
+ 751 0290 01       		.byte	0x1
+ 752 0291 2F       		.byte	0x2f
+ 753 0292 98000000 		.4byte	0x98
+ 754 0296 02       		.uleb128 0x2
+ 755 0297 91       		.byte	0x91
+ 756 0298 68       		.sleb128 -24
+ 757 0299 00       		.byte	0
+ 758 029a 0F       		.uleb128 0xf
+ 759 029b 2D020000 		.4byte	.LASF36
+ 760 029f 01       		.byte	0x1
+ 761 02a0 4C       		.byte	0x4c
+ 762 02a1 80000000 		.4byte	0x80
+ 763 02a5 00000000 		.4byte	.LFB4
+ 764 02a9 16000000 		.4byte	.LFE4-.LFB4
+ 765 02ad 01       		.uleb128 0x1
+ 766 02ae 9C       		.byte	0x9c
+ 767 02af 0A       		.uleb128 0xa
+ 768 02b0 50494400 		.ascii	"PID\000"
+ 769 02b4 01       		.byte	0x1
+ 770 02b5 4C       		.byte	0x4c
+ 771 02b6 FE010000 		.4byte	0x1fe
+ 772 02ba 02       		.uleb128 0x2
+ 773 02bb 91       		.byte	0x91
+ 774 02bc 74       		.sleb128 -12
+ 775 02bd 00       		.byte	0
+ 776 02be 00       		.byte	0
+ 777              		.section	.debug_abbrev,"",%progbits
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 16
+
+
+ 778              	.Ldebug_abbrev0:
+ 779 0000 01       		.uleb128 0x1
+ 780 0001 11       		.uleb128 0x11
+ 781 0002 01       		.byte	0x1
+ 782 0003 25       		.uleb128 0x25
+ 783 0004 0E       		.uleb128 0xe
+ 784 0005 13       		.uleb128 0x13
+ 785 0006 0B       		.uleb128 0xb
+ 786 0007 03       		.uleb128 0x3
+ 787 0008 0E       		.uleb128 0xe
+ 788 0009 1B       		.uleb128 0x1b
+ 789 000a 0E       		.uleb128 0xe
+ 790 000b 55       		.uleb128 0x55
+ 791 000c 17       		.uleb128 0x17
+ 792 000d 11       		.uleb128 0x11
+ 793 000e 01       		.uleb128 0x1
+ 794 000f 10       		.uleb128 0x10
+ 795 0010 17       		.uleb128 0x17
+ 796 0011 00       		.byte	0
+ 797 0012 00       		.byte	0
+ 798 0013 02       		.uleb128 0x2
+ 799 0014 24       		.uleb128 0x24
+ 800 0015 00       		.byte	0
+ 801 0016 0B       		.uleb128 0xb
+ 802 0017 0B       		.uleb128 0xb
+ 803 0018 3E       		.uleb128 0x3e
+ 804 0019 0B       		.uleb128 0xb
+ 805 001a 03       		.uleb128 0x3
+ 806 001b 0E       		.uleb128 0xe
+ 807 001c 00       		.byte	0
+ 808 001d 00       		.byte	0
+ 809 001e 03       		.uleb128 0x3
+ 810 001f 24       		.uleb128 0x24
+ 811 0020 00       		.byte	0
+ 812 0021 0B       		.uleb128 0xb
+ 813 0022 0B       		.uleb128 0xb
+ 814 0023 3E       		.uleb128 0x3e
+ 815 0024 0B       		.uleb128 0xb
+ 816 0025 03       		.uleb128 0x3
+ 817 0026 08       		.uleb128 0x8
+ 818 0027 00       		.byte	0
+ 819 0028 00       		.byte	0
+ 820 0029 04       		.uleb128 0x4
+ 821 002a 16       		.uleb128 0x16
+ 822 002b 00       		.byte	0
+ 823 002c 03       		.uleb128 0x3
+ 824 002d 0E       		.uleb128 0xe
+ 825 002e 3A       		.uleb128 0x3a
+ 826 002f 0B       		.uleb128 0xb
+ 827 0030 3B       		.uleb128 0x3b
+ 828 0031 05       		.uleb128 0x5
+ 829 0032 49       		.uleb128 0x49
+ 830 0033 13       		.uleb128 0x13
+ 831 0034 00       		.byte	0
+ 832 0035 00       		.byte	0
+ 833 0036 05       		.uleb128 0x5
+ 834 0037 13       		.uleb128 0x13
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 17
+
+
+ 835 0038 01       		.byte	0x1
+ 836 0039 03       		.uleb128 0x3
+ 837 003a 0E       		.uleb128 0xe
+ 838 003b 0B       		.uleb128 0xb
+ 839 003c 0B       		.uleb128 0xb
+ 840 003d 3A       		.uleb128 0x3a
+ 841 003e 0B       		.uleb128 0xb
+ 842 003f 3B       		.uleb128 0x3b
+ 843 0040 0B       		.uleb128 0xb
+ 844 0041 01       		.uleb128 0x1
+ 845 0042 13       		.uleb128 0x13
+ 846 0043 00       		.byte	0
+ 847 0044 00       		.byte	0
+ 848 0045 06       		.uleb128 0x6
+ 849 0046 0D       		.uleb128 0xd
+ 850 0047 00       		.byte	0
+ 851 0048 03       		.uleb128 0x3
+ 852 0049 0E       		.uleb128 0xe
+ 853 004a 3A       		.uleb128 0x3a
+ 854 004b 0B       		.uleb128 0xb
+ 855 004c 3B       		.uleb128 0x3b
+ 856 004d 0B       		.uleb128 0xb
+ 857 004e 49       		.uleb128 0x49
+ 858 004f 13       		.uleb128 0x13
+ 859 0050 38       		.uleb128 0x38
+ 860 0051 0B       		.uleb128 0xb
+ 861 0052 00       		.byte	0
+ 862 0053 00       		.byte	0
+ 863 0054 07       		.uleb128 0x7
+ 864 0055 0D       		.uleb128 0xd
+ 865 0056 00       		.byte	0
+ 866 0057 03       		.uleb128 0x3
+ 867 0058 08       		.uleb128 0x8
+ 868 0059 3A       		.uleb128 0x3a
+ 869 005a 0B       		.uleb128 0xb
+ 870 005b 3B       		.uleb128 0x3b
+ 871 005c 0B       		.uleb128 0xb
+ 872 005d 49       		.uleb128 0x49
+ 873 005e 13       		.uleb128 0x13
+ 874 005f 38       		.uleb128 0x38
+ 875 0060 0B       		.uleb128 0xb
+ 876 0061 00       		.byte	0
+ 877 0062 00       		.byte	0
+ 878 0063 08       		.uleb128 0x8
+ 879 0064 16       		.uleb128 0x16
+ 880 0065 00       		.byte	0
+ 881 0066 03       		.uleb128 0x3
+ 882 0067 0E       		.uleb128 0xe
+ 883 0068 3A       		.uleb128 0x3a
+ 884 0069 0B       		.uleb128 0xb
+ 885 006a 3B       		.uleb128 0x3b
+ 886 006b 0B       		.uleb128 0xb
+ 887 006c 49       		.uleb128 0x49
+ 888 006d 13       		.uleb128 0x13
+ 889 006e 00       		.byte	0
+ 890 006f 00       		.byte	0
+ 891 0070 09       		.uleb128 0x9
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 18
+
+
+ 892 0071 2E       		.uleb128 0x2e
+ 893 0072 01       		.byte	0x1
+ 894 0073 3F       		.uleb128 0x3f
+ 895 0074 19       		.uleb128 0x19
+ 896 0075 03       		.uleb128 0x3
+ 897 0076 0E       		.uleb128 0xe
+ 898 0077 3A       		.uleb128 0x3a
+ 899 0078 0B       		.uleb128 0xb
+ 900 0079 3B       		.uleb128 0x3b
+ 901 007a 0B       		.uleb128 0xb
+ 902 007b 27       		.uleb128 0x27
+ 903 007c 19       		.uleb128 0x19
+ 904 007d 49       		.uleb128 0x49
+ 905 007e 13       		.uleb128 0x13
+ 906 007f 11       		.uleb128 0x11
+ 907 0080 01       		.uleb128 0x1
+ 908 0081 12       		.uleb128 0x12
+ 909 0082 06       		.uleb128 0x6
+ 910 0083 40       		.uleb128 0x40
+ 911 0084 18       		.uleb128 0x18
+ 912 0085 9742     		.uleb128 0x2117
+ 913 0087 19       		.uleb128 0x19
+ 914 0088 01       		.uleb128 0x1
+ 915 0089 13       		.uleb128 0x13
+ 916 008a 00       		.byte	0
+ 917 008b 00       		.byte	0
+ 918 008c 0A       		.uleb128 0xa
+ 919 008d 05       		.uleb128 0x5
+ 920 008e 00       		.byte	0
+ 921 008f 03       		.uleb128 0x3
+ 922 0090 08       		.uleb128 0x8
+ 923 0091 3A       		.uleb128 0x3a
+ 924 0092 0B       		.uleb128 0xb
+ 925 0093 3B       		.uleb128 0x3b
+ 926 0094 0B       		.uleb128 0xb
+ 927 0095 49       		.uleb128 0x49
+ 928 0096 13       		.uleb128 0x13
+ 929 0097 02       		.uleb128 0x2
+ 930 0098 18       		.uleb128 0x18
+ 931 0099 00       		.byte	0
+ 932 009a 00       		.byte	0
+ 933 009b 0B       		.uleb128 0xb
+ 934 009c 05       		.uleb128 0x5
+ 935 009d 00       		.byte	0
+ 936 009e 03       		.uleb128 0x3
+ 937 009f 0E       		.uleb128 0xe
+ 938 00a0 3A       		.uleb128 0x3a
+ 939 00a1 0B       		.uleb128 0xb
+ 940 00a2 3B       		.uleb128 0x3b
+ 941 00a3 0B       		.uleb128 0xb
+ 942 00a4 49       		.uleb128 0x49
+ 943 00a5 13       		.uleb128 0x13
+ 944 00a6 02       		.uleb128 0x2
+ 945 00a7 18       		.uleb128 0x18
+ 946 00a8 00       		.byte	0
+ 947 00a9 00       		.byte	0
+ 948 00aa 0C       		.uleb128 0xc
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 19
+
+
+ 949 00ab 0F       		.uleb128 0xf
+ 950 00ac 00       		.byte	0
+ 951 00ad 0B       		.uleb128 0xb
+ 952 00ae 0B       		.uleb128 0xb
+ 953 00af 49       		.uleb128 0x49
+ 954 00b0 13       		.uleb128 0x13
+ 955 00b1 00       		.byte	0
+ 956 00b2 00       		.byte	0
+ 957 00b3 0D       		.uleb128 0xd
+ 958 00b4 2E       		.uleb128 0x2e
+ 959 00b5 01       		.byte	0x1
+ 960 00b6 3F       		.uleb128 0x3f
+ 961 00b7 19       		.uleb128 0x19
+ 962 00b8 03       		.uleb128 0x3
+ 963 00b9 08       		.uleb128 0x8
+ 964 00ba 3A       		.uleb128 0x3a
+ 965 00bb 0B       		.uleb128 0xb
+ 966 00bc 3B       		.uleb128 0x3b
+ 967 00bd 0B       		.uleb128 0xb
+ 968 00be 27       		.uleb128 0x27
+ 969 00bf 19       		.uleb128 0x19
+ 970 00c0 49       		.uleb128 0x49
+ 971 00c1 13       		.uleb128 0x13
+ 972 00c2 11       		.uleb128 0x11
+ 973 00c3 01       		.uleb128 0x1
+ 974 00c4 12       		.uleb128 0x12
+ 975 00c5 06       		.uleb128 0x6
+ 976 00c6 40       		.uleb128 0x40
+ 977 00c7 18       		.uleb128 0x18
+ 978 00c8 9642     		.uleb128 0x2116
+ 979 00ca 19       		.uleb128 0x19
+ 980 00cb 01       		.uleb128 0x1
+ 981 00cc 13       		.uleb128 0x13
+ 982 00cd 00       		.byte	0
+ 983 00ce 00       		.byte	0
+ 984 00cf 0E       		.uleb128 0xe
+ 985 00d0 34       		.uleb128 0x34
+ 986 00d1 00       		.byte	0
+ 987 00d2 03       		.uleb128 0x3
+ 988 00d3 0E       		.uleb128 0xe
+ 989 00d4 3A       		.uleb128 0x3a
+ 990 00d5 0B       		.uleb128 0xb
+ 991 00d6 3B       		.uleb128 0x3b
+ 992 00d7 0B       		.uleb128 0xb
+ 993 00d8 49       		.uleb128 0x49
+ 994 00d9 13       		.uleb128 0x13
+ 995 00da 02       		.uleb128 0x2
+ 996 00db 18       		.uleb128 0x18
+ 997 00dc 00       		.byte	0
+ 998 00dd 00       		.byte	0
+ 999 00de 0F       		.uleb128 0xf
+ 1000 00df 2E       		.uleb128 0x2e
+ 1001 00e0 01       		.byte	0x1
+ 1002 00e1 3F       		.uleb128 0x3f
+ 1003 00e2 19       		.uleb128 0x19
+ 1004 00e3 03       		.uleb128 0x3
+ 1005 00e4 0E       		.uleb128 0xe
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 20
+
+
+ 1006 00e5 3A       		.uleb128 0x3a
+ 1007 00e6 0B       		.uleb128 0xb
+ 1008 00e7 3B       		.uleb128 0x3b
+ 1009 00e8 0B       		.uleb128 0xb
+ 1010 00e9 27       		.uleb128 0x27
+ 1011 00ea 19       		.uleb128 0x19
+ 1012 00eb 49       		.uleb128 0x49
+ 1013 00ec 13       		.uleb128 0x13
+ 1014 00ed 11       		.uleb128 0x11
+ 1015 00ee 01       		.uleb128 0x1
+ 1016 00ef 12       		.uleb128 0x12
+ 1017 00f0 06       		.uleb128 0x6
+ 1018 00f1 40       		.uleb128 0x40
+ 1019 00f2 18       		.uleb128 0x18
+ 1020 00f3 9742     		.uleb128 0x2117
+ 1021 00f5 19       		.uleb128 0x19
+ 1022 00f6 00       		.byte	0
+ 1023 00f7 00       		.byte	0
+ 1024 00f8 00       		.byte	0
+ 1025              		.section	.debug_aranges,"",%progbits
+ 1026 0000 34000000 		.4byte	0x34
+ 1027 0004 0200     		.2byte	0x2
+ 1028 0006 00000000 		.4byte	.Ldebug_info0
+ 1029 000a 04       		.byte	0x4
+ 1030 000b 00       		.byte	0
+ 1031 000c 0000     		.2byte	0
+ 1032 000e 0000     		.2byte	0
+ 1033 0010 00000000 		.4byte	.LFB1
+ 1034 0014 8E000000 		.4byte	.LFE1-.LFB1
+ 1035 0018 00000000 		.4byte	.LFB2
+ 1036 001c 3A000000 		.4byte	.LFE2-.LFB2
+ 1037 0020 00000000 		.4byte	.LFB3
+ 1038 0024 78010000 		.4byte	.LFE3-.LFB3
+ 1039 0028 00000000 		.4byte	.LFB4
+ 1040 002c 16000000 		.4byte	.LFE4-.LFB4
+ 1041 0030 00000000 		.4byte	0
+ 1042 0034 00000000 		.4byte	0
+ 1043              		.section	.debug_ranges,"",%progbits
+ 1044              	.Ldebug_ranges0:
+ 1045 0000 00000000 		.4byte	.LFB1
+ 1046 0004 8E000000 		.4byte	.LFE1
+ 1047 0008 00000000 		.4byte	.LFB2
+ 1048 000c 3A000000 		.4byte	.LFE2
+ 1049 0010 00000000 		.4byte	.LFB3
+ 1050 0014 78010000 		.4byte	.LFE3
+ 1051 0018 00000000 		.4byte	.LFB4
+ 1052 001c 16000000 		.4byte	.LFE4
+ 1053 0020 00000000 		.4byte	0
+ 1054 0024 00000000 		.4byte	0
+ 1055              		.section	.debug_line,"",%progbits
+ 1056              	.Ldebug_line0:
+ 1057 0000 BA000000 		.section	.debug_str,"MS",%progbits,1
+ 1057      02004900 
+ 1057      00000201 
+ 1057      FB0E0D00 
+ 1057      01010101 
+ 1058              	.LASF24:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 21
+
+
+ 1059 0000 6572726F 		.ascii	"error_p\000"
+ 1059      725F7000 
+ 1060              	.LASF33:
+ 1061 0008 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1061      43313120 
+ 1061      352E342E 
+ 1061      31203230 
+ 1061      31363036 
+ 1062 003b 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1062      20726576 
+ 1062      6973696F 
+ 1062      6E203233 
+ 1062      37373135 
+ 1063 006e 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 1063      66756E63 
+ 1063      74696F6E 
+ 1063      2D736563 
+ 1063      74696F6E 
+ 1064              	.LASF27:
+ 1065 0096 6572726F 		.ascii	"error_last\000"
+ 1065      725F6C61 
+ 1065      737400
+ 1066              	.LASF3:
+ 1067 00a1 73686F72 		.ascii	"short unsigned int\000"
+ 1067      7420756E 
+ 1067      7369676E 
+ 1067      65642069 
+ 1067      6E7400
+ 1068              	.LASF23:
+ 1069 00b4 695F6C69 		.ascii	"i_limit_neg\000"
+ 1069      6D69745F 
+ 1069      6E656700 
+ 1070              	.LASF30:
+ 1071 00c0 50494443 		.ascii	"PIDConfig\000"
+ 1071      6F6E6669 
+ 1071      6700
+ 1072              	.LASF28:
+ 1073 00ca 73746174 		.ascii	"status\000"
+ 1073      757300
+ 1074              	.LASF34:
+ 1075 00d1 7069642E 		.ascii	"pid.c\000"
+ 1075      6300
+ 1076              	.LASF22:
+ 1077 00d7 695F6C69 		.ascii	"i_limit_pos\000"
+ 1077      6D69745F 
+ 1077      706F7300 
+ 1078              	.LASF15:
+ 1079 00e3 666C6F61 		.ascii	"float\000"
+ 1079      7400
+ 1080              	.LASF1:
+ 1081 00e9 756E7369 		.ascii	"unsigned char\000"
+ 1081      676E6564 
+ 1081      20636861 
+ 1081      7200
+ 1082              	.LASF18:
+ 1083 00f7 696E7075 		.ascii	"input\000"
+ 1083      7400
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 22
+
+
+ 1084              	.LASF5:
+ 1085 00fd 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1085      20756E73 
+ 1085      69676E65 
+ 1085      6420696E 
+ 1085      7400
+ 1086              	.LASF14:
+ 1087 010f 696E7433 		.ascii	"int32\000"
+ 1087      3200
+ 1088              	.LASF29:
+ 1089 0115 7069645F 		.ascii	"pid_ts\000"
+ 1089      747300
+ 1090              	.LASF16:
+ 1091 011c 646F7562 		.ascii	"double\000"
+ 1091      6C6500
+ 1092              	.LASF13:
+ 1093 0123 696E7438 		.ascii	"int8\000"
+ 1093      00
+ 1094              	.LASF26:
+ 1095 0128 6572726F 		.ascii	"error_d\000"
+ 1095      725F6400 
+ 1096              	.LASF12:
+ 1097 0130 75696E74 		.ascii	"uint32\000"
+ 1097      333200
+ 1098              	.LASF8:
+ 1099 0137 756E7369 		.ascii	"unsigned int\000"
+ 1099      676E6564 
+ 1099      20696E74 
+ 1099      00
+ 1100              	.LASF19:
+ 1101 0144 73657470 		.ascii	"setpoint\000"
+ 1101      6F696E74 
+ 1101      00
+ 1102              	.LASF7:
+ 1103 014d 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1103      206C6F6E 
+ 1103      6720756E 
+ 1103      7369676E 
+ 1103      65642069 
+ 1104              	.LASF25:
+ 1105 0164 6572726F 		.ascii	"error_i\000"
+ 1105      725F6900 
+ 1106              	.LASF10:
+ 1107 016c 73697A65 		.ascii	"sizetype\000"
+ 1107      74797065 
+ 1107      00
+ 1108              	.LASF32:
+ 1109 0175 6572726F 		.ascii	"error\000"
+ 1109      7200
+ 1110              	.LASF6:
+ 1111 017b 6C6F6E67 		.ascii	"long long int\000"
+ 1111      206C6F6E 
+ 1111      6720696E 
+ 1111      7400
+ 1112              	.LASF11:
+ 1113 0189 63686172 		.ascii	"char\000"
+ 1113      00
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 23
+
+
+ 1114              	.LASF21:
+ 1115 018e 66656564 		.ascii	"feedforward\000"
+ 1115      666F7277 
+ 1115      61726400 
+ 1116              	.LASF2:
+ 1117 019a 73686F72 		.ascii	"short int\000"
+ 1117      7420696E 
+ 1117      7400
+ 1118              	.LASF35:
+ 1119 01a4 433A5C55 		.ascii	"C:\\Users\\pajoh\\Desktop\\closed_loop_printer\\cod"
+ 1119      73657273 
+ 1119      5C70616A 
+ 1119      6F685C44 
+ 1119      65736B74 
+ 1120 01d2 655C416E 		.ascii	"e\\Angle_Sensor\\StepperTorqueControl.cydsn\000"
+ 1120      676C655F 
+ 1120      53656E73 
+ 1120      6F725C53 
+ 1120      74657070 
+ 1121              	.LASF20:
+ 1122 01fc 6F757470 		.ascii	"output\000"
+ 1122      757400
+ 1123              	.LASF4:
+ 1124 0203 6C6F6E67 		.ascii	"long int\000"
+ 1124      20696E74 
+ 1124      00
+ 1125              	.LASF9:
+ 1126 020c 6C6F6E67 		.ascii	"long double\000"
+ 1126      20646F75 
+ 1126      626C6500 
+ 1127              	.LASF31:
+ 1128 0218 50494452 		.ascii	"PIDReset\000"
+ 1128      65736574 
+ 1128      00
+ 1129              	.LASF0:
+ 1130 0221 7369676E 		.ascii	"signed char\000"
+ 1130      65642063 
+ 1130      68617200 
+ 1131              	.LASF36:
+ 1132 022d 50494453 		.ascii	"PIDStatus\000"
+ 1132      74617475 
+ 1132      7300
+ 1133              	.LASF17:
+ 1134 0237 696E7436 		.ascii	"int64\000"
+ 1134      3400
+ 1135              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

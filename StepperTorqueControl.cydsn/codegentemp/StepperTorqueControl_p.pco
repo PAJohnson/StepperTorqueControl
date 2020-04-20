@@ -1,0 +1,112 @@
+dont_use_io iocell 1 0
+dont_use_io iocell 1 1
+dont_use_io iocell 1 3
+set_location "\UART_1:BUART:tx_state_2\" macrocell 1 2 1 1
+set_location "\UART_1:BUART:sRX:RxBitCounter\" count7cell 0 1 7 
+set_location "\StepDir:CounterUDB:status_3\" macrocell 2 4 0 1
+set_location "\UART_1:BUART:sTX:TxShifter:u0\" datapathcell 1 3 2 
+set_location "\StepDir:CounterUDB:status_0\" macrocell 1 1 0 0
+set_location "\UART_1:BUART:rx_status_4\" macrocell 1 1 0 3
+set_location "\StepDir:CounterUDB:sC32:counterdp:u1\" datapathcell 1 2 2 
+set_location "\StepDir:CounterUDB:sC32:counterdp:u2\" datapathcell 0 2 2 
+set_location "\UART_1:BUART:tx_status_2\" macrocell 2 2 1 1
+set_location "\ShiftReg_1:bSR:StsReg\" statusicell 3 3 4 
+set_location "\UART_1:BUART:rx_postpoll\" macrocell 1 0 0 3
+set_location "\SPIM:BSPIM:rx_status_6\" macrocell 0 4 0 3
+set_location "\UART_1:BUART:rx_bitclk_enable\" macrocell 0 1 1 3
+set_location "\SPIM:BSPIM:RxStsReg\" statusicell 0 4 4 
+set_location "\SPIM:BSPIM:BitCounter\" count7cell 0 2 7 
+set_location "\UART_1:BUART:counter_load_not\" macrocell 1 3 1 1
+set_location "\StepDir:CounterUDB:status_2\" macrocell 2 2 1 3
+set_location "\SPIM:BSPIM:tx_status_4\" macrocell 0 3 0 2
+set_location "\SPIM:BSPIM:load_cond\" macrocell 0 2 0 2
+set_location "Net_30" macrocell 0 4 1 2
+set_location "\StepDir:CounterUDB:count_stored_i\" macrocell 2 2 1 0
+set_location "\UART_1:BUART:rx_state_3\" macrocell 1 0 0 1
+set_location "\UART_1:BUART:rx_state_stop1_reg\" macrocell 1 0 0 2
+set_location "\StepDir:CounterUDB:prevCompare\" macrocell 1 0 1 1
+set_location "Net_15" macrocell 0 3 1 2
+set_location "\SPIM:BSPIM:load_rx_data\" macrocell 1 4 1 2
+set_location "\UART_1:BUART:sRX:RxShifter:u0\" datapathcell 1 0 2 
+set_location "\UART_1:BUART:rx_last\" macrocell 0 0 1 3
+set_location "\UART_1:BUART:rx_status_5\" macrocell 1 1 1 0
+set_location "Net_420" macrocell 1 1 1 1
+set_location "Net_31" macrocell 0 4 1 1
+set_location "__ONE__" macrocell 1 3 0 0
+set_location "\UART_1:BUART:tx_status_0\" macrocell 2 2 0 0
+set_location "\SPIM:BSPIM:sR16:Dp:u0\" datapathcell 1 4 2 
+set_location "\SPIM:BSPIM:state_2\" macrocell 1 4 0 0
+set_location "\StepDir:CounterUDB:underflow_reg_i\" macrocell 2 4 1 1
+set_location "\UART_1:BUART:rx_state_2\" macrocell 0 0 0 1
+set_location "\StepDir:CounterUDB:overflow_reg_i\" macrocell 2 2 0 2
+set_location "\StepDir:CounterUDB:sC32:counterdp:u3\" datapathcell 0 3 2 
+set_location "\UART_1:BUART:pollcount_1\" macrocell 0 0 1 0
+set_location "\SPIM:BSPIM:cnt_enable\" macrocell 0 2 1 2
+set_location "\ShiftReg_1:bSR:sC32:BShiftRegDp:u2\" datapathcell 2 3 2 
+set_location "Net_90" macrocell 1 1 1 2
+set_location "\ShiftReg_1:bSR:sC32:BShiftRegDp:u1\" datapathcell 2 4 2 
+set_location "\SPIM:BSPIM:sR16:Dp:u1\" datapathcell 0 4 2 
+set_location "\UART_1:BUART:rx_state_0\" macrocell 0 0 0 0
+set_location "Net_403" macrocell 3 4 1 0
+set_location "\StepDir:CounterUDB:sC32:counterdp:u0\" datapathcell 2 2 2 
+set_location "\SPIM:BSPIM:TxStsReg\" statusicell 0 3 4 
+set_location "\ShiftReg_1:bSR:sC32:BShiftRegDp:u3\" datapathcell 3 3 2 
+set_location "\UART_1:BUART:rx_status_3\" macrocell 1 0 0 0
+set_location "\StepDir:CounterUDB:reload\" macrocell 2 3 0 0
+set_location "\UART_1:BUART:tx_bitclk\" macrocell 2 3 0 2
+set_location "\ShiftReg_1:bSR:sC32:BShiftRegDp:u0\" datapathcell 3 4 2 
+set_location "\UART_1:BUART:pollcount_0\" macrocell 0 0 1 1
+set_location "\StepDir:CounterUDB:sSTSReg:stsreg\" statusicell 2 3 4 
+set_location "\UART_1:BUART:txn\" macrocell 1 2 0 0
+set_location "\UART_1:BUART:rx_load_fifo\" macrocell 1 1 0 2
+set_location "\SPIM:BSPIM:tx_status_0\" macrocell 0 2 1 3
+set_location "\UART_1:BUART:sTX:sCLOCK:TxBitClkGen\" datapathcell 1 1 2 
+set_location "\UART_1:BUART:tx_state_0\" macrocell 2 3 1 0
+set_location "\SPIM:BSPIM:state_1\" macrocell 1 3 0 2
+set_location "\StepDir:CounterUDB:count_enable\" macrocell 2 2 0 3
+set_location "\UART_1:BUART:sTX:TxSts\" statusicell 2 2 4 
+set_location "\SPIM:BSPIM:state_0\" macrocell 0 3 0 0
+set_location "\UART_1:BUART:tx_state_1\" macrocell 1 2 1 3
+set_location "\UART_1:BUART:sRX:RxSts\" statusicell 1 1 4 
+set_location "\UART_1:BUART:tx_ctrl_mark_last\" macrocell 0 1 1 0
+set_location "\UART_1:BUART:rx_counter_load\" macrocell 0 1 0 1
+set_location "\I2C_1:I2C_FF\" i2ccell -1 -1 0
+set_location "\Direction:Sync:ctrl_reg\" controlcell 1 4 6 
+set_location "\Timer_1:TimerHW\" timercell -1 -1 0
+set_location "ClockBlock" clockblockcell -1 -1 0
+set_location "tick" interrupt -1 -1 0
+set_location "SCL_1(0)_SYNC" synccell 3 2 5 0
+set_location "SDA_1(0)_SYNC" synccell 3 4 5 0
+set_location "\sw1_read:sts:sts_reg\" statuscell 1 2 3 
+set_location "\ADC_DelSig_1:DSM\" dsmodcell -1 -1 0
+set_io "STEP(0)" iocell 0 7
+set_location "\StepDir:CounterUDB:sCTRLReg:ctrlreg\" controlcell 2 3 6 
+set_io "MS2(0)" iocell 0 4
+set_io "mosi(0)" iocell 2 1
+set_location "\ShiftReg_1:bSR:SyncCtl:CtrlReg\" controlcell 3 3 6 
+set_io "SW1(0)" iocell 2 2
+set_location "\Step_reg:Sync:ctrl_reg\" controlcell 2 4 6 
+# Note: port 12 is the logical name for port 7
+set_io "SDA_1(0)" iocell 12 1
+set_location "Rx_1(0)_SYNC" synccell 0 0 5 0
+set_io "DIR(0)" iocell 0 6
+set_io "MS3(0)" iocell 0 5
+# Note: port 12 is the logical name for port 7
+set_io "DIR_IN(0)" iocell 12 3
+# Note: port 12 is the logical name for port 7
+set_io "SCL_1(0)" iocell 12 0
+set_io "ss(0)" iocell 2 3
+# Note: port 12 is the logical name for port 7
+set_io "Tx_1(0)" iocell 12 7
+set_io "STEP_IN(0)" iocell 3 4
+set_location "\ADC_DelSig_1:IRQ\" interrupt -1 -1 29
+set_location "\I2C_1:I2C_IRQ\" interrupt -1 -1 15
+# Note: port 12 is the logical name for port 7
+set_io "Rx_1(0)" iocell 12 6
+set_io "miso(0)" iocell 2 0
+set_io "MS1(0)" iocell 0 3
+set_io "x_ref_in(0)" iocell 3 3
+set_io "Interrupt_t(0)" iocell 3 7
+set_location "\ADC_DelSig_1:DEC\" decimatorcell -1 -1 0
+set_io "sclk(0)" iocell 2 4
+set_location "\Microstep:Sync:ctrl_reg\" controlcell 3 4 6 
