@@ -1,3 +1,3 @@
-# Component constraints for C:\Users\pajoh\Desktop\closed_loop_printer\code\Angle_Sensor\StepperTorqueControl.cydsn\TopDesign\TopDesign.cysch
-# Project: C:\Users\pajoh\Desktop\closed_loop_printer\code\Angle_Sensor\StepperTorqueControl.cydsn\StepperTorqueControl.cyprj
-# Date: Mon, 20 Apr 2020 14:06:51 GMT
+# Component constraints for C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\TopDesign\TopDesign.cysch
+# Project: C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\StepperTorqueControl.cyprj
+# Date: Sat, 16 May 2020 15:29:07 GMT

@@ -1,5 +1,5 @@
 -- Project:   StepperTorqueControl
--- Generated: 04/20/2020 10:06:58
+-- Generated: 05/16/2020 11:29:13
 -- PSoC Creator  4.2
 
 ENTITY StepperTorqueControl IS

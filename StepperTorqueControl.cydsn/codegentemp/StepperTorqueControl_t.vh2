@@ -1,5 +1,5 @@
--- Project:   C:\Users\pajoh\Desktop\closed_loop_printer\code\Angle_Sensor\StepperTorqueControl.cydsn\StepperTorqueControl.cyprj
--- Generated: 04/20/2020 10:07:01
+-- Project:   C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\StepperTorqueControl.cyprj
+-- Generated: 05/16/2020 11:29:17
 -- PSoC Creator  4.2
 
 ENTITY StepperTorqueControl IS

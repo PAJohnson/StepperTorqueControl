@@ -2,7 +2,7 @@
 --	Conversion of StepperTorqueControl.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Mon Apr 20 10:06:54 2020
+--	Sat May 16 11:29:09 2020
 --
 
 USE cypress.cypress.all;

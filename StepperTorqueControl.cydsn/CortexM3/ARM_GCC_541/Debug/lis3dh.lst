@@ -1,0 +1,879 @@
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"lis3dh.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.writeRegister8,"ax",%progbits
+  20              		.align	2
+  21              		.global	writeRegister8
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	writeRegister8, %function
+  25              	writeRegister8:
+  26              	.LFB0:
+  27              		.file 1 "lis3dh.c"
+   1:lis3dh.c      **** /* ========================================
+   2:lis3dh.c      ****  * Helper functions for LIS3DH I2C accelerometer
+   3:lis3dh.c      ****  * ========================================
+   4:lis3dh.c      **** */
+   5:lis3dh.c      **** 
+   6:lis3dh.c      **** #include "lis3dh.h"
+   7:lis3dh.c      **** 
+   8:lis3dh.c      **** void writeRegister8(uint8 reg, uint8 val){
+  28              		.loc 1 8 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 7, -8
+  35              		.cfi_offset 14, -4
+  36 0002 82B0     		sub	sp, sp, #8
+  37              		.cfi_def_cfa_offset 16
+  38 0004 00AF     		add	r7, sp, #0
+  39              		.cfi_def_cfa_register 7
+  40 0006 0346     		mov	r3, r0
+  41 0008 0A46     		mov	r2, r1
+  42 000a FB71     		strb	r3, [r7, #7]
+  43 000c 1346     		mov	r3, r2
+  44 000e BB71     		strb	r3, [r7, #6]
+   9:lis3dh.c      ****     //this function writes "val" to register "reg"
+  10:lis3dh.c      ****     
+  11:lis3dh.c      ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_WRITE_XFER_MODE);
+  45              		.loc 1 11 0
+  46 0010 0021     		movs	r1, #0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 2
+
+
+  47 0012 1820     		movs	r0, #24
+  48 0014 FFF7FEFF 		bl	I2C_1_MasterSendStart
+  12:lis3dh.c      ****     I2C_1_MasterWriteByte(reg);
+  49              		.loc 1 12 0
+  50 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  51 001a 1846     		mov	r0, r3
+  52 001c FFF7FEFF 		bl	I2C_1_MasterWriteByte
+  13:lis3dh.c      ****     I2C_1_MasterWriteByte(val);
+  53              		.loc 1 13 0
+  54 0020 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+  55 0022 1846     		mov	r0, r3
+  56 0024 FFF7FEFF 		bl	I2C_1_MasterWriteByte
+  14:lis3dh.c      ****     I2C_1_MasterSendStop();
+  57              		.loc 1 14 0
+  58 0028 FFF7FEFF 		bl	I2C_1_MasterSendStop
+  15:lis3dh.c      **** }
+  59              		.loc 1 15 0
+  60 002c 00BF     		nop
+  61 002e 0837     		adds	r7, r7, #8
+  62              		.cfi_def_cfa_offset 8
+  63 0030 BD46     		mov	sp, r7
+  64              		.cfi_def_cfa_register 13
+  65              		@ sp needed
+  66 0032 80BD     		pop	{r7, pc}
+  67              		.cfi_endproc
+  68              	.LFE0:
+  69              		.size	writeRegister8, .-writeRegister8
+  70              		.section	.text.readRegister8,"ax",%progbits
+  71              		.align	2
+  72              		.global	readRegister8
+  73              		.thumb
+  74              		.thumb_func
+  75              		.type	readRegister8, %function
+  76              	readRegister8:
+  77              	.LFB1:
+  16:lis3dh.c      **** 
+  17:lis3dh.c      **** uint8 readRegister8(uint8 reg){
+  78              		.loc 1 17 0
+  79              		.cfi_startproc
+  80              		@ args = 0, pretend = 0, frame = 16
+  81              		@ frame_needed = 1, uses_anonymous_args = 0
+  82 0000 80B5     		push	{r7, lr}
+  83              		.cfi_def_cfa_offset 8
+  84              		.cfi_offset 7, -8
+  85              		.cfi_offset 14, -4
+  86 0002 84B0     		sub	sp, sp, #16
+  87              		.cfi_def_cfa_offset 24
+  88 0004 00AF     		add	r7, sp, #0
+  89              		.cfi_def_cfa_register 7
+  90 0006 0346     		mov	r3, r0
+  91 0008 FB71     		strb	r3, [r7, #7]
+  18:lis3dh.c      ****     //Do an I2C transaction, writing the desired register address and 
+  19:lis3dh.c      ****     //another transaction to read the data at that address
+  20:lis3dh.c      ****     uint8 read;
+  21:lis3dh.c      ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_WRITE_XFER_MODE);
+  92              		.loc 1 21 0
+  93 000a 0021     		movs	r1, #0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 3
+
+
+  94 000c 1820     		movs	r0, #24
+  95 000e FFF7FEFF 		bl	I2C_1_MasterSendStart
+  22:lis3dh.c      ****     I2C_1_MasterWriteByte(reg);
+  96              		.loc 1 22 0
+  97 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  98 0014 1846     		mov	r0, r3
+  99 0016 FFF7FEFF 		bl	I2C_1_MasterWriteByte
+  23:lis3dh.c      ****     I2C_1_MasterSendStop();
+ 100              		.loc 1 23 0
+ 101 001a FFF7FEFF 		bl	I2C_1_MasterSendStop
+  24:lis3dh.c      ****     
+  25:lis3dh.c      ****     I2C_1_MasterSendStart(LIS3DH_ADDRESS,I2C_1_READ_XFER_MODE);
+ 102              		.loc 1 25 0
+ 103 001e 0121     		movs	r1, #1
+ 104 0020 1820     		movs	r0, #24
+ 105 0022 FFF7FEFF 		bl	I2C_1_MasterSendStart
+  26:lis3dh.c      ****     read = I2C_1_MasterReadByte(I2C_1_NAK_DATA);
+ 106              		.loc 1 26 0
+ 107 0026 0020     		movs	r0, #0
+ 108 0028 FFF7FEFF 		bl	I2C_1_MasterReadByte
+ 109 002c 0346     		mov	r3, r0
+ 110 002e FB73     		strb	r3, [r7, #15]
+  27:lis3dh.c      ****     I2C_1_MasterSendStop();
+ 111              		.loc 1 27 0
+ 112 0030 FFF7FEFF 		bl	I2C_1_MasterSendStop
+  28:lis3dh.c      ****     return read;
+ 113              		.loc 1 28 0
+ 114 0034 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  29:lis3dh.c      **** }
+ 115              		.loc 1 29 0
+ 116 0036 1846     		mov	r0, r3
+ 117 0038 1037     		adds	r7, r7, #16
+ 118              		.cfi_def_cfa_offset 8
+ 119 003a BD46     		mov	sp, r7
+ 120              		.cfi_def_cfa_register 13
+ 121              		@ sp needed
+ 122 003c 80BD     		pop	{r7, pc}
+ 123              		.cfi_endproc
+ 124              	.LFE1:
+ 125              		.size	readRegister8, .-readRegister8
+ 126 003e 00BF     		.section	.text.accel_update,"ax",%progbits
+ 127              		.align	2
+ 128              		.global	accel_update
+ 129              		.thumb
+ 130              		.thumb_func
+ 131              		.type	accel_update, %function
+ 132              	accel_update:
+ 133              	.LFB2:
+  30:lis3dh.c      **** 
+  31:lis3dh.c      **** void accel_update(struct Accel * acc_struct){
+ 134              		.loc 1 31 0
+ 135              		.cfi_startproc
+ 136              		@ args = 0, pretend = 0, frame = 8
+ 137              		@ frame_needed = 1, uses_anonymous_args = 0
+ 138 0000 80B5     		push	{r7, lr}
+ 139              		.cfi_def_cfa_offset 8
+ 140              		.cfi_offset 7, -8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 4
+
+
+ 141              		.cfi_offset 14, -4
+ 142 0002 82B0     		sub	sp, sp, #8
+ 143              		.cfi_def_cfa_offset 16
+ 144 0004 00AF     		add	r7, sp, #0
+ 145              		.cfi_def_cfa_register 7
+ 146 0006 7860     		str	r0, [r7, #4]
+  32:lis3dh.c      ****     //read all three axes of the accelerometer
+  33:lis3dh.c      ****     
+  34:lis3dh.c      ****     acc_struct->accel_x = readRegister8(0x28);
+ 147              		.loc 1 34 0
+ 148 0008 2820     		movs	r0, #40
+ 149 000a FFF7FEFF 		bl	readRegister8
+ 150 000e 0346     		mov	r3, r0
+ 151 0010 1AB2     		sxth	r2, r3
+ 152 0012 7B68     		ldr	r3, [r7, #4]
+ 153 0014 1A80     		strh	r2, [r3]	@ movhi
+  35:lis3dh.c      ****     acc_struct->accel_x |= (readRegister8(0x29) << 8);
+ 154              		.loc 1 35 0
+ 155 0016 2920     		movs	r0, #41
+ 156 0018 FFF7FEFF 		bl	readRegister8
+ 157 001c 0346     		mov	r3, r0
+ 158 001e 1902     		lsls	r1, r3, #8
+ 159 0020 7B68     		ldr	r3, [r7, #4]
+ 160 0022 B3F90020 		ldrsh	r2, [r3]
+ 161 0026 0BB2     		sxth	r3, r1
+ 162 0028 1343     		orrs	r3, r3, r2
+ 163 002a 1AB2     		sxth	r2, r3
+ 164 002c 7B68     		ldr	r3, [r7, #4]
+ 165 002e 1A80     		strh	r2, [r3]	@ movhi
+  36:lis3dh.c      ****     acc_struct->accel_y = readRegister8(0x2A);
+ 166              		.loc 1 36 0
+ 167 0030 2A20     		movs	r0, #42
+ 168 0032 FFF7FEFF 		bl	readRegister8
+ 169 0036 0346     		mov	r3, r0
+ 170 0038 1AB2     		sxth	r2, r3
+ 171 003a 7B68     		ldr	r3, [r7, #4]
+ 172 003c 5A80     		strh	r2, [r3, #2]	@ movhi
+  37:lis3dh.c      ****     acc_struct->accel_y |= (readRegister8(0x2B) << 8);
+ 173              		.loc 1 37 0
+ 174 003e 2B20     		movs	r0, #43
+ 175 0040 FFF7FEFF 		bl	readRegister8
+ 176 0044 0346     		mov	r3, r0
+ 177 0046 1902     		lsls	r1, r3, #8
+ 178 0048 7B68     		ldr	r3, [r7, #4]
+ 179 004a B3F90220 		ldrsh	r2, [r3, #2]
+ 180 004e 0BB2     		sxth	r3, r1
+ 181 0050 1343     		orrs	r3, r3, r2
+ 182 0052 1AB2     		sxth	r2, r3
+ 183 0054 7B68     		ldr	r3, [r7, #4]
+ 184 0056 5A80     		strh	r2, [r3, #2]	@ movhi
+  38:lis3dh.c      ****     acc_struct->accel_z = readRegister8(0x2C);
+ 185              		.loc 1 38 0
+ 186 0058 2C20     		movs	r0, #44
+ 187 005a FFF7FEFF 		bl	readRegister8
+ 188 005e 0346     		mov	r3, r0
+ 189 0060 1AB2     		sxth	r2, r3
+ 190 0062 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 5
+
+
+ 191 0064 9A80     		strh	r2, [r3, #4]	@ movhi
+  39:lis3dh.c      ****     acc_struct->accel_z |= (readRegister8(0x2D) << 8);  
+ 192              		.loc 1 39 0
+ 193 0066 2D20     		movs	r0, #45
+ 194 0068 FFF7FEFF 		bl	readRegister8
+ 195 006c 0346     		mov	r3, r0
+ 196 006e 1902     		lsls	r1, r3, #8
+ 197 0070 7B68     		ldr	r3, [r7, #4]
+ 198 0072 B3F90420 		ldrsh	r2, [r3, #4]
+ 199 0076 0BB2     		sxth	r3, r1
+ 200 0078 1343     		orrs	r3, r3, r2
+ 201 007a 1AB2     		sxth	r2, r3
+ 202 007c 7B68     		ldr	r3, [r7, #4]
+ 203 007e 9A80     		strh	r2, [r3, #4]	@ movhi
+  40:lis3dh.c      ****     return;
+ 204              		.loc 1 40 0
+ 205 0080 00BF     		nop
+  41:lis3dh.c      **** }
+ 206              		.loc 1 41 0
+ 207 0082 0837     		adds	r7, r7, #8
+ 208              		.cfi_def_cfa_offset 8
+ 209 0084 BD46     		mov	sp, r7
+ 210              		.cfi_def_cfa_register 13
+ 211              		@ sp needed
+ 212 0086 80BD     		pop	{r7, pc}
+ 213              		.cfi_endproc
+ 214              	.LFE2:
+ 215              		.size	accel_update, .-accel_update
+ 216              		.text
+ 217              	.Letext0:
+ 218              		.file 2 "Generated_Source\\PSoC5/cytypes.h"
+ 219              		.file 3 "lis3dh.h"
+ 220              		.section	.debug_info,"",%progbits
+ 221              	.Ldebug_info0:
+ 222 0000 8A010000 		.4byte	0x18a
+ 223 0004 0400     		.2byte	0x4
+ 224 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 225 000a 04       		.byte	0x4
+ 226 000b 01       		.uleb128 0x1
+ 227 000c 00000000 		.4byte	.LASF25
+ 228 0010 0C       		.byte	0xc
+ 229 0011 49010000 		.4byte	.LASF26
+ 230 0015 CE000000 		.4byte	.LASF27
+ 231 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 232 001d 00000000 		.4byte	0
+ 233 0021 00000000 		.4byte	.Ldebug_line0
+ 234 0025 02       		.uleb128 0x2
+ 235 0026 01       		.byte	0x1
+ 236 0027 06       		.byte	0x6
+ 237 0028 DF010000 		.4byte	.LASF0
+ 238 002c 02       		.uleb128 0x2
+ 239 002d 01       		.byte	0x1
+ 240 002e 08       		.byte	0x8
+ 241 002f 16010000 		.4byte	.LASF1
+ 242 0033 02       		.uleb128 0x2
+ 243 0034 02       		.byte	0x2
+ 244 0035 05       		.byte	0x5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 6
+
+
+ 245 0036 B7010000 		.4byte	.LASF2
+ 246 003a 02       		.uleb128 0x2
+ 247 003b 02       		.byte	0x2
+ 248 003c 07       		.byte	0x7
+ 249 003d EB010000 		.4byte	.LASF3
+ 250 0041 02       		.uleb128 0x2
+ 251 0042 04       		.byte	0x4
+ 252 0043 05       		.byte	0x5
+ 253 0044 CA010000 		.4byte	.LASF4
+ 254 0048 02       		.uleb128 0x2
+ 255 0049 04       		.byte	0x4
+ 256 004a 07       		.byte	0x7
+ 257 004b 2A010000 		.4byte	.LASF5
+ 258 004f 02       		.uleb128 0x2
+ 259 0050 08       		.byte	0x8
+ 260 0051 05       		.byte	0x5
+ 261 0052 A4010000 		.4byte	.LASF6
+ 262 0056 02       		.uleb128 0x2
+ 263 0057 08       		.byte	0x8
+ 264 0058 07       		.byte	0x7
+ 265 0059 7B010000 		.4byte	.LASF7
+ 266 005d 03       		.uleb128 0x3
+ 267 005e 04       		.byte	0x4
+ 268 005f 05       		.byte	0x5
+ 269 0060 696E7400 		.ascii	"int\000"
+ 270 0064 02       		.uleb128 0x2
+ 271 0065 04       		.byte	0x4
+ 272 0066 07       		.byte	0x7
+ 273 0067 60010000 		.4byte	.LASF8
+ 274 006b 04       		.uleb128 0x4
+ 275 006c 3C010000 		.4byte	.LASF9
+ 276 0070 02       		.byte	0x2
+ 277 0071 9201     		.2byte	0x192
+ 278 0073 2C000000 		.4byte	0x2c
+ 279 0077 04       		.uleb128 0x4
+ 280 0078 24010000 		.4byte	.LASF10
+ 281 007c 02       		.byte	0x2
+ 282 007d 9601     		.2byte	0x196
+ 283 007f 33000000 		.4byte	0x33
+ 284 0083 02       		.uleb128 0x2
+ 285 0084 04       		.byte	0x4
+ 286 0085 04       		.byte	0x4
+ 287 0086 C8000000 		.4byte	.LASF11
+ 288 008a 02       		.uleb128 0x2
+ 289 008b 08       		.byte	0x8
+ 290 008c 04       		.byte	0x4
+ 291 008d 42010000 		.4byte	.LASF12
+ 292 0091 02       		.uleb128 0x2
+ 293 0092 01       		.byte	0x1
+ 294 0093 08       		.byte	0x8
+ 295 0094 B2010000 		.4byte	.LASF13
+ 296 0098 02       		.uleb128 0x2
+ 297 0099 08       		.byte	0x8
+ 298 009a 04       		.byte	0x4
+ 299 009b D3010000 		.4byte	.LASF14
+ 300 009f 02       		.uleb128 0x2
+ 301 00a0 04       		.byte	0x4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 7
+
+
+ 302 00a1 07       		.byte	0x7
+ 303 00a2 9B010000 		.4byte	.LASF15
+ 304 00a6 05       		.uleb128 0x5
+ 305 00a7 C2000000 		.4byte	.LASF28
+ 306 00ab 0C       		.byte	0xc
+ 307 00ac 03       		.byte	0x3
+ 308 00ad 0E       		.byte	0xe
+ 309 00ae FB000000 		.4byte	0xfb
+ 310 00b2 06       		.uleb128 0x6
+ 311 00b3 9D000000 		.4byte	.LASF16
+ 312 00b7 03       		.byte	0x3
+ 313 00b8 0F       		.byte	0xf
+ 314 00b9 77000000 		.4byte	0x77
+ 315 00bd 00       		.byte	0
+ 316 00be 06       		.uleb128 0x6
+ 317 00bf A5000000 		.4byte	.LASF17
+ 318 00c3 03       		.byte	0x3
+ 319 00c4 10       		.byte	0x10
+ 320 00c5 77000000 		.4byte	0x77
+ 321 00c9 02       		.byte	0x2
+ 322 00ca 06       		.uleb128 0x6
+ 323 00cb AD000000 		.4byte	.LASF18
+ 324 00cf 03       		.byte	0x3
+ 325 00d0 11       		.byte	0x11
+ 326 00d1 77000000 		.4byte	0x77
+ 327 00d5 04       		.byte	0x4
+ 328 00d6 06       		.uleb128 0x6
+ 329 00d7 C1010000 		.4byte	.LASF19
+ 330 00db 03       		.byte	0x3
+ 331 00dc 12       		.byte	0x12
+ 332 00dd 77000000 		.4byte	0x77
+ 333 00e1 06       		.byte	0x6
+ 334 00e2 06       		.uleb128 0x6
+ 335 00e3 92010000 		.4byte	.LASF20
+ 336 00e7 03       		.byte	0x3
+ 337 00e8 13       		.byte	0x13
+ 338 00e9 77000000 		.4byte	0x77
+ 339 00ed 08       		.byte	0x8
+ 340 00ee 06       		.uleb128 0x6
+ 341 00ef 57010000 		.4byte	.LASF21
+ 342 00f3 03       		.byte	0x3
+ 343 00f4 14       		.byte	0x14
+ 344 00f5 77000000 		.4byte	0x77
+ 345 00f9 0A       		.byte	0xa
+ 346 00fa 00       		.byte	0
+ 347 00fb 07       		.uleb128 0x7
+ 348 00fc 8E000000 		.4byte	.LASF22
+ 349 0100 01       		.byte	0x1
+ 350 0101 08       		.byte	0x8
+ 351 0102 00000000 		.4byte	.LFB0
+ 352 0106 34000000 		.4byte	.LFE0-.LFB0
+ 353 010a 01       		.uleb128 0x1
+ 354 010b 9C       		.byte	0x9c
+ 355 010c 2D010000 		.4byte	0x12d
+ 356 0110 08       		.uleb128 0x8
+ 357 0111 72656700 		.ascii	"reg\000"
+ 358 0115 01       		.byte	0x1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 8
+
+
+ 359 0116 08       		.byte	0x8
+ 360 0117 6B000000 		.4byte	0x6b
+ 361 011b 02       		.uleb128 0x2
+ 362 011c 91       		.byte	0x91
+ 363 011d 77       		.sleb128 -9
+ 364 011e 08       		.uleb128 0x8
+ 365 011f 76616C00 		.ascii	"val\000"
+ 366 0123 01       		.byte	0x1
+ 367 0124 08       		.byte	0x8
+ 368 0125 6B000000 		.4byte	0x6b
+ 369 0129 02       		.uleb128 0x2
+ 370 012a 91       		.byte	0x91
+ 371 012b 76       		.sleb128 -10
+ 372 012c 00       		.byte	0
+ 373 012d 09       		.uleb128 0x9
+ 374 012e 6D010000 		.4byte	.LASF29
+ 375 0132 01       		.byte	0x1
+ 376 0133 11       		.byte	0x11
+ 377 0134 6B000000 		.4byte	0x6b
+ 378 0138 00000000 		.4byte	.LFB1
+ 379 013c 3E000000 		.4byte	.LFE1-.LFB1
+ 380 0140 01       		.uleb128 0x1
+ 381 0141 9C       		.byte	0x9c
+ 382 0142 63010000 		.4byte	0x163
+ 383 0146 08       		.uleb128 0x8
+ 384 0147 72656700 		.ascii	"reg\000"
+ 385 014b 01       		.byte	0x1
+ 386 014c 11       		.byte	0x11
+ 387 014d 6B000000 		.4byte	0x6b
+ 388 0151 02       		.uleb128 0x2
+ 389 0152 91       		.byte	0x91
+ 390 0153 6F       		.sleb128 -17
+ 391 0154 0A       		.uleb128 0xa
+ 392 0155 52010000 		.4byte	.LASF30
+ 393 0159 01       		.byte	0x1
+ 394 015a 14       		.byte	0x14
+ 395 015b 6B000000 		.4byte	0x6b
+ 396 015f 02       		.uleb128 0x2
+ 397 0160 91       		.byte	0x91
+ 398 0161 77       		.sleb128 -9
+ 399 0162 00       		.byte	0
+ 400 0163 07       		.uleb128 0x7
+ 401 0164 B5000000 		.4byte	.LASF23
+ 402 0168 01       		.byte	0x1
+ 403 0169 1F       		.byte	0x1f
+ 404 016a 00000000 		.4byte	.LFB2
+ 405 016e 88000000 		.4byte	.LFE2-.LFB2
+ 406 0172 01       		.uleb128 0x1
+ 407 0173 9C       		.byte	0x9c
+ 408 0174 87010000 		.4byte	0x187
+ 409 0178 0B       		.uleb128 0xb
+ 410 0179 FE010000 		.4byte	.LASF24
+ 411 017d 01       		.byte	0x1
+ 412 017e 1F       		.byte	0x1f
+ 413 017f 87010000 		.4byte	0x187
+ 414 0183 02       		.uleb128 0x2
+ 415 0184 91       		.byte	0x91
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 9
+
+
+ 416 0185 74       		.sleb128 -12
+ 417 0186 00       		.byte	0
+ 418 0187 0C       		.uleb128 0xc
+ 419 0188 04       		.byte	0x4
+ 420 0189 A6000000 		.4byte	0xa6
+ 421 018d 00       		.byte	0
+ 422              		.section	.debug_abbrev,"",%progbits
+ 423              	.Ldebug_abbrev0:
+ 424 0000 01       		.uleb128 0x1
+ 425 0001 11       		.uleb128 0x11
+ 426 0002 01       		.byte	0x1
+ 427 0003 25       		.uleb128 0x25
+ 428 0004 0E       		.uleb128 0xe
+ 429 0005 13       		.uleb128 0x13
+ 430 0006 0B       		.uleb128 0xb
+ 431 0007 03       		.uleb128 0x3
+ 432 0008 0E       		.uleb128 0xe
+ 433 0009 1B       		.uleb128 0x1b
+ 434 000a 0E       		.uleb128 0xe
+ 435 000b 55       		.uleb128 0x55
+ 436 000c 17       		.uleb128 0x17
+ 437 000d 11       		.uleb128 0x11
+ 438 000e 01       		.uleb128 0x1
+ 439 000f 10       		.uleb128 0x10
+ 440 0010 17       		.uleb128 0x17
+ 441 0011 00       		.byte	0
+ 442 0012 00       		.byte	0
+ 443 0013 02       		.uleb128 0x2
+ 444 0014 24       		.uleb128 0x24
+ 445 0015 00       		.byte	0
+ 446 0016 0B       		.uleb128 0xb
+ 447 0017 0B       		.uleb128 0xb
+ 448 0018 3E       		.uleb128 0x3e
+ 449 0019 0B       		.uleb128 0xb
+ 450 001a 03       		.uleb128 0x3
+ 451 001b 0E       		.uleb128 0xe
+ 452 001c 00       		.byte	0
+ 453 001d 00       		.byte	0
+ 454 001e 03       		.uleb128 0x3
+ 455 001f 24       		.uleb128 0x24
+ 456 0020 00       		.byte	0
+ 457 0021 0B       		.uleb128 0xb
+ 458 0022 0B       		.uleb128 0xb
+ 459 0023 3E       		.uleb128 0x3e
+ 460 0024 0B       		.uleb128 0xb
+ 461 0025 03       		.uleb128 0x3
+ 462 0026 08       		.uleb128 0x8
+ 463 0027 00       		.byte	0
+ 464 0028 00       		.byte	0
+ 465 0029 04       		.uleb128 0x4
+ 466 002a 16       		.uleb128 0x16
+ 467 002b 00       		.byte	0
+ 468 002c 03       		.uleb128 0x3
+ 469 002d 0E       		.uleb128 0xe
+ 470 002e 3A       		.uleb128 0x3a
+ 471 002f 0B       		.uleb128 0xb
+ 472 0030 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 10
+
+
+ 473 0031 05       		.uleb128 0x5
+ 474 0032 49       		.uleb128 0x49
+ 475 0033 13       		.uleb128 0x13
+ 476 0034 00       		.byte	0
+ 477 0035 00       		.byte	0
+ 478 0036 05       		.uleb128 0x5
+ 479 0037 13       		.uleb128 0x13
+ 480 0038 01       		.byte	0x1
+ 481 0039 03       		.uleb128 0x3
+ 482 003a 0E       		.uleb128 0xe
+ 483 003b 0B       		.uleb128 0xb
+ 484 003c 0B       		.uleb128 0xb
+ 485 003d 3A       		.uleb128 0x3a
+ 486 003e 0B       		.uleb128 0xb
+ 487 003f 3B       		.uleb128 0x3b
+ 488 0040 0B       		.uleb128 0xb
+ 489 0041 01       		.uleb128 0x1
+ 490 0042 13       		.uleb128 0x13
+ 491 0043 00       		.byte	0
+ 492 0044 00       		.byte	0
+ 493 0045 06       		.uleb128 0x6
+ 494 0046 0D       		.uleb128 0xd
+ 495 0047 00       		.byte	0
+ 496 0048 03       		.uleb128 0x3
+ 497 0049 0E       		.uleb128 0xe
+ 498 004a 3A       		.uleb128 0x3a
+ 499 004b 0B       		.uleb128 0xb
+ 500 004c 3B       		.uleb128 0x3b
+ 501 004d 0B       		.uleb128 0xb
+ 502 004e 49       		.uleb128 0x49
+ 503 004f 13       		.uleb128 0x13
+ 504 0050 38       		.uleb128 0x38
+ 505 0051 0B       		.uleb128 0xb
+ 506 0052 00       		.byte	0
+ 507 0053 00       		.byte	0
+ 508 0054 07       		.uleb128 0x7
+ 509 0055 2E       		.uleb128 0x2e
+ 510 0056 01       		.byte	0x1
+ 511 0057 3F       		.uleb128 0x3f
+ 512 0058 19       		.uleb128 0x19
+ 513 0059 03       		.uleb128 0x3
+ 514 005a 0E       		.uleb128 0xe
+ 515 005b 3A       		.uleb128 0x3a
+ 516 005c 0B       		.uleb128 0xb
+ 517 005d 3B       		.uleb128 0x3b
+ 518 005e 0B       		.uleb128 0xb
+ 519 005f 27       		.uleb128 0x27
+ 520 0060 19       		.uleb128 0x19
+ 521 0061 11       		.uleb128 0x11
+ 522 0062 01       		.uleb128 0x1
+ 523 0063 12       		.uleb128 0x12
+ 524 0064 06       		.uleb128 0x6
+ 525 0065 40       		.uleb128 0x40
+ 526 0066 18       		.uleb128 0x18
+ 527 0067 9642     		.uleb128 0x2116
+ 528 0069 19       		.uleb128 0x19
+ 529 006a 01       		.uleb128 0x1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 11
+
+
+ 530 006b 13       		.uleb128 0x13
+ 531 006c 00       		.byte	0
+ 532 006d 00       		.byte	0
+ 533 006e 08       		.uleb128 0x8
+ 534 006f 05       		.uleb128 0x5
+ 535 0070 00       		.byte	0
+ 536 0071 03       		.uleb128 0x3
+ 537 0072 08       		.uleb128 0x8
+ 538 0073 3A       		.uleb128 0x3a
+ 539 0074 0B       		.uleb128 0xb
+ 540 0075 3B       		.uleb128 0x3b
+ 541 0076 0B       		.uleb128 0xb
+ 542 0077 49       		.uleb128 0x49
+ 543 0078 13       		.uleb128 0x13
+ 544 0079 02       		.uleb128 0x2
+ 545 007a 18       		.uleb128 0x18
+ 546 007b 00       		.byte	0
+ 547 007c 00       		.byte	0
+ 548 007d 09       		.uleb128 0x9
+ 549 007e 2E       		.uleb128 0x2e
+ 550 007f 01       		.byte	0x1
+ 551 0080 3F       		.uleb128 0x3f
+ 552 0081 19       		.uleb128 0x19
+ 553 0082 03       		.uleb128 0x3
+ 554 0083 0E       		.uleb128 0xe
+ 555 0084 3A       		.uleb128 0x3a
+ 556 0085 0B       		.uleb128 0xb
+ 557 0086 3B       		.uleb128 0x3b
+ 558 0087 0B       		.uleb128 0xb
+ 559 0088 27       		.uleb128 0x27
+ 560 0089 19       		.uleb128 0x19
+ 561 008a 49       		.uleb128 0x49
+ 562 008b 13       		.uleb128 0x13
+ 563 008c 11       		.uleb128 0x11
+ 564 008d 01       		.uleb128 0x1
+ 565 008e 12       		.uleb128 0x12
+ 566 008f 06       		.uleb128 0x6
+ 567 0090 40       		.uleb128 0x40
+ 568 0091 18       		.uleb128 0x18
+ 569 0092 9642     		.uleb128 0x2116
+ 570 0094 19       		.uleb128 0x19
+ 571 0095 01       		.uleb128 0x1
+ 572 0096 13       		.uleb128 0x13
+ 573 0097 00       		.byte	0
+ 574 0098 00       		.byte	0
+ 575 0099 0A       		.uleb128 0xa
+ 576 009a 34       		.uleb128 0x34
+ 577 009b 00       		.byte	0
+ 578 009c 03       		.uleb128 0x3
+ 579 009d 0E       		.uleb128 0xe
+ 580 009e 3A       		.uleb128 0x3a
+ 581 009f 0B       		.uleb128 0xb
+ 582 00a0 3B       		.uleb128 0x3b
+ 583 00a1 0B       		.uleb128 0xb
+ 584 00a2 49       		.uleb128 0x49
+ 585 00a3 13       		.uleb128 0x13
+ 586 00a4 02       		.uleb128 0x2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 12
+
+
+ 587 00a5 18       		.uleb128 0x18
+ 588 00a6 00       		.byte	0
+ 589 00a7 00       		.byte	0
+ 590 00a8 0B       		.uleb128 0xb
+ 591 00a9 05       		.uleb128 0x5
+ 592 00aa 00       		.byte	0
+ 593 00ab 03       		.uleb128 0x3
+ 594 00ac 0E       		.uleb128 0xe
+ 595 00ad 3A       		.uleb128 0x3a
+ 596 00ae 0B       		.uleb128 0xb
+ 597 00af 3B       		.uleb128 0x3b
+ 598 00b0 0B       		.uleb128 0xb
+ 599 00b1 49       		.uleb128 0x49
+ 600 00b2 13       		.uleb128 0x13
+ 601 00b3 02       		.uleb128 0x2
+ 602 00b4 18       		.uleb128 0x18
+ 603 00b5 00       		.byte	0
+ 604 00b6 00       		.byte	0
+ 605 00b7 0C       		.uleb128 0xc
+ 606 00b8 0F       		.uleb128 0xf
+ 607 00b9 00       		.byte	0
+ 608 00ba 0B       		.uleb128 0xb
+ 609 00bb 0B       		.uleb128 0xb
+ 610 00bc 49       		.uleb128 0x49
+ 611 00bd 13       		.uleb128 0x13
+ 612 00be 00       		.byte	0
+ 613 00bf 00       		.byte	0
+ 614 00c0 00       		.byte	0
+ 615              		.section	.debug_aranges,"",%progbits
+ 616 0000 2C000000 		.4byte	0x2c
+ 617 0004 0200     		.2byte	0x2
+ 618 0006 00000000 		.4byte	.Ldebug_info0
+ 619 000a 04       		.byte	0x4
+ 620 000b 00       		.byte	0
+ 621 000c 0000     		.2byte	0
+ 622 000e 0000     		.2byte	0
+ 623 0010 00000000 		.4byte	.LFB0
+ 624 0014 34000000 		.4byte	.LFE0-.LFB0
+ 625 0018 00000000 		.4byte	.LFB1
+ 626 001c 3E000000 		.4byte	.LFE1-.LFB1
+ 627 0020 00000000 		.4byte	.LFB2
+ 628 0024 88000000 		.4byte	.LFE2-.LFB2
+ 629 0028 00000000 		.4byte	0
+ 630 002c 00000000 		.4byte	0
+ 631              		.section	.debug_ranges,"",%progbits
+ 632              	.Ldebug_ranges0:
+ 633 0000 00000000 		.4byte	.LFB0
+ 634 0004 34000000 		.4byte	.LFE0
+ 635 0008 00000000 		.4byte	.LFB1
+ 636 000c 3E000000 		.4byte	.LFE1
+ 637 0010 00000000 		.4byte	.LFB2
+ 638 0014 88000000 		.4byte	.LFE2
+ 639 0018 00000000 		.4byte	0
+ 640 001c 00000000 		.4byte	0
+ 641              		.section	.debug_line,"",%progbits
+ 642              	.Ldebug_line0:
+ 643 0000 95000000 		.section	.debug_str,"MS",%progbits,1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 13
+
+
+ 643      02004F00 
+ 643      00000201 
+ 643      FB0E0D00 
+ 643      01010101 
+ 644              	.LASF25:
+ 645 0000 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 645      43313120 
+ 645      352E342E 
+ 645      31203230 
+ 645      31363036 
+ 646 0033 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 646      20726576 
+ 646      6973696F 
+ 646      6E203233 
+ 646      37373135 
+ 647 0066 30202D66 		.ascii	"0 -ffunction-sections -ffat-lto-objects\000"
+ 647      66756E63 
+ 647      74696F6E 
+ 647      2D736563 
+ 647      74696F6E 
+ 648              	.LASF22:
+ 649 008e 77726974 		.ascii	"writeRegister8\000"
+ 649      65526567 
+ 649      69737465 
+ 649      723800
+ 650              	.LASF16:
+ 651 009d 61636365 		.ascii	"accel_x\000"
+ 651      6C5F7800 
+ 652              	.LASF17:
+ 653 00a5 61636365 		.ascii	"accel_y\000"
+ 653      6C5F7900 
+ 654              	.LASF18:
+ 655 00ad 61636365 		.ascii	"accel_z\000"
+ 655      6C5F7A00 
+ 656              	.LASF23:
+ 657 00b5 61636365 		.ascii	"accel_update\000"
+ 657      6C5F7570 
+ 657      64617465 
+ 657      00
+ 658              	.LASF28:
+ 659 00c2 41636365 		.ascii	"Accel\000"
+ 659      6C00
+ 660              	.LASF11:
+ 661 00c8 666C6F61 		.ascii	"float\000"
+ 661      7400
+ 662              	.LASF27:
+ 663 00ce 433A5C55 		.ascii	"C:\\Users\\pajoh\\projects\\StepperTorqueControl\\S"
+ 663      73657273 
+ 663      5C70616A 
+ 663      6F685C70 
+ 663      726F6A65 
+ 664 00fc 74657070 		.ascii	"tepperTorqueControl.cydsn\000"
+ 664      6572546F 
+ 664      72717565 
+ 664      436F6E74 
+ 664      726F6C2E 
+ 665              	.LASF1:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 14
+
+
+ 666 0116 756E7369 		.ascii	"unsigned char\000"
+ 666      676E6564 
+ 666      20636861 
+ 666      7200
+ 667              	.LASF10:
+ 668 0124 696E7431 		.ascii	"int16\000"
+ 668      3600
+ 669              	.LASF5:
+ 670 012a 6C6F6E67 		.ascii	"long unsigned int\000"
+ 670      20756E73 
+ 670      69676E65 
+ 670      6420696E 
+ 670      7400
+ 671              	.LASF9:
+ 672 013c 75696E74 		.ascii	"uint8\000"
+ 672      3800
+ 673              	.LASF12:
+ 674 0142 646F7562 		.ascii	"double\000"
+ 674      6C6500
+ 675              	.LASF26:
+ 676 0149 6C697333 		.ascii	"lis3dh.c\000"
+ 676      64682E63 
+ 676      00
+ 677              	.LASF30:
+ 678 0152 72656164 		.ascii	"read\000"
+ 678      00
+ 679              	.LASF21:
+ 680 0157 7A5F6F66 		.ascii	"z_offset\000"
+ 680      66736574 
+ 680      00
+ 681              	.LASF8:
+ 682 0160 756E7369 		.ascii	"unsigned int\000"
+ 682      676E6564 
+ 682      20696E74 
+ 682      00
+ 683              	.LASF29:
+ 684 016d 72656164 		.ascii	"readRegister8\000"
+ 684      52656769 
+ 684      73746572 
+ 684      3800
+ 685              	.LASF7:
+ 686 017b 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 686      206C6F6E 
+ 686      6720756E 
+ 686      7369676E 
+ 686      65642069 
+ 687              	.LASF20:
+ 688 0192 795F6F66 		.ascii	"y_offset\000"
+ 688      66736574 
+ 688      00
+ 689              	.LASF15:
+ 690 019b 73697A65 		.ascii	"sizetype\000"
+ 690      74797065 
+ 690      00
+ 691              	.LASF6:
+ 692 01a4 6C6F6E67 		.ascii	"long long int\000"
+ 692      206C6F6E 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc681OFN.s 			page 15
+
+
+ 692      6720696E 
+ 692      7400
+ 693              	.LASF13:
+ 694 01b2 63686172 		.ascii	"char\000"
+ 694      00
+ 695              	.LASF2:
+ 696 01b7 73686F72 		.ascii	"short int\000"
+ 696      7420696E 
+ 696      7400
+ 697              	.LASF19:
+ 698 01c1 785F6F66 		.ascii	"x_offset\000"
+ 698      66736574 
+ 698      00
+ 699              	.LASF4:
+ 700 01ca 6C6F6E67 		.ascii	"long int\000"
+ 700      20696E74 
+ 700      00
+ 701              	.LASF14:
+ 702 01d3 6C6F6E67 		.ascii	"long double\000"
+ 702      20646F75 
+ 702      626C6500 
+ 703              	.LASF0:
+ 704 01df 7369676E 		.ascii	"signed char\000"
+ 704      65642063 
+ 704      68617200 
+ 705              	.LASF3:
+ 706 01eb 73686F72 		.ascii	"short unsigned int\000"
+ 706      7420756E 
+ 706      7369676E 
+ 706      65642069 
+ 706      6E7400
+ 707              	.LASF24:
+ 708 01fe 6163635F 		.ascii	"acc_struct\000"
+ 708      73747275 
+ 708      637400
+ 709              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

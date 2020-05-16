@@ -45,7 +45,6 @@
     volatile int32 angle_old = 0;
     volatile int32 axis_position_old = 0;
     extern volatile int32 axis_position_filtered;
-    extern volatile int32 axis_position_filtered_2;
     int start_count;
     int count;
 /* `#END` */
@@ -185,7 +184,7 @@ CY_ISR(tick_Interrupt)
 
     /*  Place your Interrupt code here. */
     /* `#START tick_Interrupt` */
-        Interrupt_t_Write(1);
+        
         //sample the angle sensor
         //send read command after checking for data
         //interrupt takes less time this way (hopefully)
@@ -194,7 +193,10 @@ CY_ISR(tick_Interrupt)
             angle = angle + offsetMap[angle/32];
         }
         SPIM_WriteTxData(read_angle_command);
+        
         axis_position_old = axis_position;
+        
+        //calculate axis position from shaft angle position
         if(angle - angle_old > 10000){
             //angle decreasing, crossed over 0
             axis_position = axis_position + (angle - (angle_old + 16384));
@@ -207,20 +209,21 @@ CY_ISR(tick_Interrupt)
             axis_position = axis_position + angle - angle_old;
         }
         angle_old = angle;
+        
+        //a touch of filtering
+        axis_position_filtered = (axis_position_filtered*5 + axis_position*3)/8;
+        
         if(start_count < 100){
             start_count++;   
         }
-        axis_position_filtered = (axis_position_filtered*5 + axis_position*3)/8;
-        axis_position_filtered_2 = (axis_position_filtered_2 * 15 + axis_position) / 16;
-        //axis_position = (axis_position_old + axis_position) / 2;
-        
         #ifdef TORQUE_CTRL
         if(start_count == 100){
         count = (count + 1)%10;
-        //if(count == 0){
+        if(count == 0){
             controller_tick = 1;
-       // }
-        //angle_diff = (int32)angle_electric - (int32)((axis_position & 0xFFFFFFFC) + velocity) * 3200 / 16384;
+        }
+        
+        
         angle_diff = angle_electric - (axis_position_filtered * 3200) / 16384;
         
         lead_angle = torque_command - angle_diff;
@@ -254,10 +257,8 @@ CY_ISR(tick_Interrupt)
         else{
             angle_electric = axis_position * 3200 / 16384;   
             axis_position_filtered = axis_position;
-            axis_position_filtered_2 = axis_position;
         }
         #endif
-        Interrupt_t_Write(0);
         
     /* `#END` */
 }
