@@ -65,7 +65,7 @@ int32 PID(int32 input, int32 setpoint, int32 feedforward, pid_ts* PID){
     else{
         PID->error_i = PID->error_i + error_i;   
     }
-    PID->error_d = (error - PID->error_last) * PID->kd / 1000;
+    PID->error_d = ((error - PID->error_last) * PID->kd) / 1000;
     PID->error_last = error;
     
     PID->output = PID->feedforward + PID->error_p + PID->error_i + PID->error_d;

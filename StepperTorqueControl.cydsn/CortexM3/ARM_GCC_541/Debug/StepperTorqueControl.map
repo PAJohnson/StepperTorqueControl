@@ -1583,11 +1583,11 @@ END GROUP
  *(.debug_str)
  .debug_str     0x00000000      0x2f2 .\CortexM3\ARM_GCC_541\Debug\main.o
                                 0x34d (size before relaxing)
- .debug_str     0x000002f2       0x81 .\CortexM3\ARM_GCC_541\Debug\pid.o
-                                0x23d (size before relaxing)
- .debug_str     0x00000373       0x7c .\CortexM3\ARM_GCC_541\Debug\lis3dh.o
+ .debug_str     0x000002f2       0x29 .\CortexM3\ARM_GCC_541\Debug\pid.o
+                                0x22d (size before relaxing)
+ .debug_str     0x0000031b       0x7c .\CortexM3\ARM_GCC_541\Debug\lis3dh.o
                                 0x209 (size before relaxing)
- .debug_str     0x000003ef      0x1fb .\CortexM3\ARM_GCC_541\Debug\cyfitter_cfg.o
+ .debug_str     0x00000397      0x253 .\CortexM3\ARM_GCC_541\Debug\cyfitter_cfg.o
                                 0x3a5 (size before relaxing)
  .debug_str     0x000005ea       0x7f .\CortexM3\ARM_GCC_541\Debug\cymetadata.o
                                 0x1fa (size before relaxing)

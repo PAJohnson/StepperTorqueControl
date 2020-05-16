@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
   13:Generated_Source\PSoC5/tick.c **** * You may use this file only in accordance with the license, terms, conditions, 
   14:Generated_Source\PSoC5/tick.c **** * disclaimers, and limitations in the end user license agreement accompanying 
   15:Generated_Source\PSoC5/tick.c **** * the software package with which this file was provided.
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 2
 
 
   16:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
   70:Generated_Source\PSoC5/tick.c **** *  Design Wide Resources Interrupt Editor, then enables the interrupt to the 
   71:Generated_Source\PSoC5/tick.c **** *  interrupt controller.
   72:Generated_Source\PSoC5/tick.c **** *
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 3
 
 
   73:Generated_Source\PSoC5/tick.c **** * Parameters:  
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
   76              		.thumb
   77              		.thumb_func
   78              		.type	tick_StartEx, %function
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 4
 
 
   79              	tick_StartEx:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
   97 000c 7868     		ldr	r0, [r7, #4]
   98 000e FFF7FEFF 		bl	tick_SetVector
  130:Generated_Source\PSoC5/tick.c **** 
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 5
 
 
  131:Generated_Source\PSoC5/tick.c ****     /* Set the priority. */
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  129              		.cfi_offset 7, -8
  130              		.cfi_offset 14, -4
  131 0002 00AF     		add	r7, sp, #0
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 6
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 6
 
 
  132              		.cfi_def_cfa_register 7
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  160 0000 80B5     		push	{r7, lr}
  161              		.cfi_def_cfa_offset 8
  162              		.cfi_offset 7, -8
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 7
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 7
 
 
  163              		.cfi_offset 14, -4
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  200              		.loc 1 197 0
  201 0046 824B     		ldr	r3, .L26+12
  202 0048 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 8
 
 
  203 004a 824A     		ldr	r2, .L26+16
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  248 00a0 013B     		subs	r3, r3, #1
  249 00a2 6FEA8343 		mvn	r3, r3, lsl #18
  250 00a6 6FEA9343 		mvn	r3, r3, lsr #18
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 9
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 9
 
 
  251 00aa 0133     		adds	r3, r3, #1
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  297 00f8 1A60     		str	r2, [r3]
  215:Generated_Source\PSoC5/tick.c ****         
  216:Generated_Source\PSoC5/tick.c ****         if(start_count < 100){
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 10
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 10
 
 
  298              		.loc 1 216 0
@@ -592,15 +592,17 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  339 0142 1A70     		strb	r2, [r3]
  340              	.L18:
  224:Generated_Source\PSoC5/tick.c ****         }
- 225:Generated_Source\PSoC5/tick.c ****         angle_diff = angle_electric - (axis_position_filtered * 3200) / 16384;
- 341              		.loc 1 225 0
+ 225:Generated_Source\PSoC5/tick.c ****         
+ 226:Generated_Source\PSoC5/tick.c ****         
+ 227:Generated_Source\PSoC5/tick.c ****         angle_diff = angle_electric - (axis_position_filtered * 3200) / 16384;
+ 341              		.loc 1 227 0
  342 0144 4C4B     		ldr	r3, .L26+52
  343 0146 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 11
+
+
  344 0148 464B     		ldr	r3, .L26+32
  345 014a 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 11
-
-
  346 014c 4FF44861 		mov	r1, #3200
  347 0150 01FB03F3 		mul	r3, r1, r3
  348 0154 002B     		cmp	r3, #0
@@ -612,9 +614,9 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  354 0160 D31A     		subs	r3, r2, r3
  355 0162 464A     		ldr	r2, .L26+56
  356 0164 1360     		str	r3, [r2]
- 226:Generated_Source\PSoC5/tick.c ****         
- 227:Generated_Source\PSoC5/tick.c ****         lead_angle = torque_command - angle_diff;
- 357              		.loc 1 227 0
+ 228:Generated_Source\PSoC5/tick.c ****         
+ 229:Generated_Source\PSoC5/tick.c ****         lead_angle = torque_command - angle_diff;
+ 357              		.loc 1 229 0
  358 0166 464B     		ldr	r3, .L26+60
  359 0168 1A68     		ldr	r2, [r3]
  360 016a 444B     		ldr	r3, .L26+56
@@ -622,66 +624,66 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  362 016e D31A     		subs	r3, r2, r3
  363 0170 444A     		ldr	r2, .L26+64
  364 0172 1360     		str	r3, [r2]
- 228:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 15){
- 365              		.loc 1 228 0
+ 230:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 15){
+ 365              		.loc 1 230 0
  366 0174 434B     		ldr	r3, .L26+64
  367 0176 1B68     		ldr	r3, [r3]
  368 0178 0F2B     		cmp	r3, #15
  369 017a 03DD     		ble	.L20
- 229:Generated_Source\PSoC5/tick.c ****                 lead_angle = 15;
- 370              		.loc 1 229 0
+ 231:Generated_Source\PSoC5/tick.c ****                 lead_angle = 15;
+ 370              		.loc 1 231 0
  371 017c 414B     		ldr	r3, .L26+64
  372 017e 0F22     		movs	r2, #15
  373 0180 1A60     		str	r2, [r3]
  374 0182 08E0     		b	.L21
  375              	.L20:
- 230:Generated_Source\PSoC5/tick.c ****             }
- 231:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < -15){
- 376              		.loc 1 231 0
+ 232:Generated_Source\PSoC5/tick.c ****             }
+ 233:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < -15){
+ 376              		.loc 1 233 0
  377 0184 3F4B     		ldr	r3, .L26+64
  378 0186 1B68     		ldr	r3, [r3]
  379 0188 13F10F0F 		cmn	r3, #15
  380 018c 03DA     		bge	.L21
- 232:Generated_Source\PSoC5/tick.c ****                 lead_angle = -15;
- 381              		.loc 1 232 0
+ 234:Generated_Source\PSoC5/tick.c ****                 lead_angle = -15;
+ 381              		.loc 1 234 0
  382 018e 3D4B     		ldr	r3, .L26+64
  383 0190 6FF00E02 		mvn	r2, #14
  384 0194 1A60     		str	r2, [r3]
  385              	.L21:
- 233:Generated_Source\PSoC5/tick.c ****             }
- 234:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 0){
- 386              		.loc 1 234 0
+ 235:Generated_Source\PSoC5/tick.c ****             }
+ 236:Generated_Source\PSoC5/tick.c ****             if(lead_angle > 0){
+ 386              		.loc 1 236 0
  387 0196 3B4B     		ldr	r3, .L26+64
  388 0198 1B68     		ldr	r3, [r3]
  389 019a 002B     		cmp	r3, #0
  390 019c 19DD     		ble	.L22
- 235:Generated_Source\PSoC5/tick.c ****                 Direction_Write(1);
- 391              		.loc 1 235 0
+ 237:Generated_Source\PSoC5/tick.c ****                 Direction_Write(1);
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 12
+
+
+ 391              		.loc 1 237 0
  392 019e 0120     		movs	r0, #1
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 12
-
-
  393 01a0 FFF7FEFF 		bl	Direction_Write
- 236:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
- 394              		.loc 1 236 0
+ 238:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
+ 394              		.loc 1 238 0
  395 01a4 0120     		movs	r0, #1
  396 01a6 FFF7FEFF 		bl	CyDelayUs
- 237:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
- 397              		.loc 1 237 0
+ 239:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
+ 397              		.loc 1 239 0
  398 01aa FFF7FEFF 		bl	ShiftReg_1_Stop
- 238:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
- 399              		.loc 1 238 0
+ 240:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
+ 399              		.loc 1 240 0
  400 01ae 354B     		ldr	r3, .L26+64
  401 01b0 1B68     		ldr	r3, [r3]
  402 01b2 354A     		ldr	r2, .L26+68
  403 01b4 52F82330 		ldr	r3, [r2, r3, lsl #2]
  404 01b8 1846     		mov	r0, r3
  405 01ba FFF7FEFF 		bl	ShiftReg_1_WriteRegValue
- 239:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
- 406              		.loc 1 239 0
+ 241:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
+ 406              		.loc 1 241 0
  407 01be FFF7FEFF 		bl	ShiftReg_1_Enable
- 240:Generated_Source\PSoC5/tick.c ****                 angle_electric += lead_angle;
- 408              		.loc 1 240 0
+ 242:Generated_Source\PSoC5/tick.c ****                 angle_electric += lead_angle;
+ 408              		.loc 1 242 0
  409 01c2 304B     		ldr	r3, .L26+64
  410 01c4 1A68     		ldr	r2, [r3]
  411 01c6 2C4B     		ldr	r3, .L26+52
@@ -689,71 +691,71 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  413 01ca 1344     		add	r3, r3, r2
  414 01cc 2A4A     		ldr	r2, .L26+52
  415 01ce 1360     		str	r3, [r2]
- 241:Generated_Source\PSoC5/tick.c ****             }
- 242:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < 0){
- 243:Generated_Source\PSoC5/tick.c ****                 Direction_Write(0);
- 244:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
- 245:Generated_Source\PSoC5/tick.c ****                 lead_angle *= -1;
- 246:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
- 247:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
- 248:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
- 249:Generated_Source\PSoC5/tick.c ****                 angle_electric -= lead_angle;
- 250:Generated_Source\PSoC5/tick.c ****             }
- 251:Generated_Source\PSoC5/tick.c ****             else{
- 252:Generated_Source\PSoC5/tick.c ****                 
- 253:Generated_Source\PSoC5/tick.c ****             }
- 254:Generated_Source\PSoC5/tick.c ****         }
- 255:Generated_Source\PSoC5/tick.c ****         else{
- 256:Generated_Source\PSoC5/tick.c ****             angle_electric = axis_position * 3200 / 16384;   
- 257:Generated_Source\PSoC5/tick.c ****             axis_position_filtered = axis_position;
- 258:Generated_Source\PSoC5/tick.c ****         }
- 259:Generated_Source\PSoC5/tick.c ****         #endif
- 260:Generated_Source\PSoC5/tick.c ****         
- 261:Generated_Source\PSoC5/tick.c ****     /* `#END` */
- 262:Generated_Source\PSoC5/tick.c **** }
- 416              		.loc 1 262 0
+ 243:Generated_Source\PSoC5/tick.c ****             }
+ 244:Generated_Source\PSoC5/tick.c ****             else if(lead_angle < 0){
+ 245:Generated_Source\PSoC5/tick.c ****                 Direction_Write(0);
+ 246:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
+ 247:Generated_Source\PSoC5/tick.c ****                 lead_angle *= -1;
+ 248:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
+ 249:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
+ 250:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
+ 251:Generated_Source\PSoC5/tick.c ****                 angle_electric -= lead_angle;
+ 252:Generated_Source\PSoC5/tick.c ****             }
+ 253:Generated_Source\PSoC5/tick.c ****             else{
+ 254:Generated_Source\PSoC5/tick.c ****                 
+ 255:Generated_Source\PSoC5/tick.c ****             }
+ 256:Generated_Source\PSoC5/tick.c ****         }
+ 257:Generated_Source\PSoC5/tick.c ****         else{
+ 258:Generated_Source\PSoC5/tick.c ****             angle_electric = axis_position * 3200 / 16384;   
+ 259:Generated_Source\PSoC5/tick.c ****             axis_position_filtered = axis_position;
+ 260:Generated_Source\PSoC5/tick.c ****         }
+ 261:Generated_Source\PSoC5/tick.c ****         #endif
+ 262:Generated_Source\PSoC5/tick.c ****         
+ 263:Generated_Source\PSoC5/tick.c ****     /* `#END` */
+ 264:Generated_Source\PSoC5/tick.c **** }
+ 416              		.loc 1 264 0
  417 01d0 35E0     		b	.L25
  418              	.L22:
- 242:Generated_Source\PSoC5/tick.c ****                 Direction_Write(0);
- 419              		.loc 1 242 0
+ 244:Generated_Source\PSoC5/tick.c ****                 Direction_Write(0);
+ 419              		.loc 1 244 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 13
+
+
  420 01d2 2C4B     		ldr	r3, .L26+64
  421 01d4 1B68     		ldr	r3, [r3]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 13
-
-
  422 01d6 002B     		cmp	r3, #0
  423 01d8 31DA     		bge	.L25
- 243:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
- 424              		.loc 1 243 0
+ 245:Generated_Source\PSoC5/tick.c ****                 CyDelayUs(1);
+ 424              		.loc 1 245 0
  425 01da 0020     		movs	r0, #0
  426 01dc FFF7FEFF 		bl	Direction_Write
- 244:Generated_Source\PSoC5/tick.c ****                 lead_angle *= -1;
- 427              		.loc 1 244 0
+ 246:Generated_Source\PSoC5/tick.c ****                 lead_angle *= -1;
+ 427              		.loc 1 246 0
  428 01e0 0120     		movs	r0, #1
  429 01e2 FFF7FEFF 		bl	CyDelayUs
- 245:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
- 430              		.loc 1 245 0
+ 247:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Stop();
+ 430              		.loc 1 247 0
  431 01e6 274B     		ldr	r3, .L26+64
  432 01e8 1B68     		ldr	r3, [r3]
  433 01ea 5B42     		negs	r3, r3
  434 01ec 254A     		ldr	r2, .L26+64
  435 01ee 1360     		str	r3, [r2]
- 246:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
- 436              		.loc 1 246 0
+ 248:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_WriteRegValue(step_array[lead_angle]);
+ 436              		.loc 1 248 0
  437 01f0 FFF7FEFF 		bl	ShiftReg_1_Stop
- 247:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
- 438              		.loc 1 247 0
+ 249:Generated_Source\PSoC5/tick.c ****                 ShiftReg_1_Enable();
+ 438              		.loc 1 249 0
  439 01f4 234B     		ldr	r3, .L26+64
  440 01f6 1B68     		ldr	r3, [r3]
  441 01f8 234A     		ldr	r2, .L26+68
  442 01fa 52F82330 		ldr	r3, [r2, r3, lsl #2]
  443 01fe 1846     		mov	r0, r3
  444 0200 FFF7FEFF 		bl	ShiftReg_1_WriteRegValue
- 248:Generated_Source\PSoC5/tick.c ****                 angle_electric -= lead_angle;
- 445              		.loc 1 248 0
+ 250:Generated_Source\PSoC5/tick.c ****                 angle_electric -= lead_angle;
+ 445              		.loc 1 250 0
  446 0204 FFF7FEFF 		bl	ShiftReg_1_Enable
- 249:Generated_Source\PSoC5/tick.c ****             }
- 447              		.loc 1 249 0
+ 251:Generated_Source\PSoC5/tick.c ****             }
+ 447              		.loc 1 251 0
  448 0208 1E4B     		ldr	r3, .L26+64
  449 020a 1B68     		ldr	r3, [r3]
  450 020c 1A4A     		ldr	r2, .L26+52
@@ -761,11 +763,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  452 0210 D31A     		subs	r3, r2, r3
  453 0212 194A     		ldr	r2, .L26+52
  454 0214 1360     		str	r3, [r2]
- 455              		.loc 1 262 0
+ 455              		.loc 1 264 0
  456 0216 12E0     		b	.L25
  457              	.L17:
- 256:Generated_Source\PSoC5/tick.c ****             axis_position_filtered = axis_position;
- 458              		.loc 1 256 0
+ 258:Generated_Source\PSoC5/tick.c ****             axis_position_filtered = axis_position;
+ 458              		.loc 1 258 0
  459 0218 0D4B     		ldr	r3, .L26+12
  460 021a 1B68     		ldr	r3, [r3]
  461 021c 4FF44862 		mov	r2, #3200
@@ -776,20 +778,20 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  466 022c 3F33     		adds	r3, r3, #63
  467              	.L24:
  468 022e 9B13     		asrs	r3, r3, #14
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 14
+
+
  469 0230 1A46     		mov	r2, r3
  470 0232 114B     		ldr	r3, .L26+52
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 14
-
-
  471 0234 1A60     		str	r2, [r3]
- 257:Generated_Source\PSoC5/tick.c ****         }
- 472              		.loc 1 257 0
+ 259:Generated_Source\PSoC5/tick.c ****         }
+ 472              		.loc 1 259 0
  473 0236 064B     		ldr	r3, .L26+12
  474 0238 1B68     		ldr	r3, [r3]
  475 023a 0A4A     		ldr	r2, .L26+32
  476 023c 1360     		str	r3, [r2]
  477              	.L25:
- 478              		.loc 1 262 0
+ 478              		.loc 1 264 0
  479 023e 00BF     		nop
  480 0240 80BD     		pop	{r7, pc}
  481              	.L27:
@@ -824,41 +826,41 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  510              		.type	tick_SetVector, %function
  511              	tick_SetVector:
  512              	.LFB4:
- 263:Generated_Source\PSoC5/tick.c **** 
- 264:Generated_Source\PSoC5/tick.c **** 
- 265:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 266:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetVector
- 267:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 268:Generated_Source\PSoC5/tick.c **** *
- 269:Generated_Source\PSoC5/tick.c **** * Summary:
- 270:Generated_Source\PSoC5/tick.c **** *   Change the ISR vector for the Interrupt. Note calling tick_Start
- 271:Generated_Source\PSoC5/tick.c **** *   will override any effect this method would have had. To set the vector 
- 272:Generated_Source\PSoC5/tick.c **** *   before the component has been started use tick_StartEx instead.
- 273:Generated_Source\PSoC5/tick.c **** * 
- 274:Generated_Source\PSoC5/tick.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
- 275:Generated_Source\PSoC5/tick.c **** *   used to provide consistent definition across compilers:
- 276:Generated_Source\PSoC5/tick.c **** *
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 15
+ 265:Generated_Source\PSoC5/tick.c **** 
+ 266:Generated_Source\PSoC5/tick.c **** 
+ 267:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 268:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetVector
+ 269:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 270:Generated_Source\PSoC5/tick.c **** *
+ 271:Generated_Source\PSoC5/tick.c **** * Summary:
+ 272:Generated_Source\PSoC5/tick.c **** *   Change the ISR vector for the Interrupt. Note calling tick_Start
+ 273:Generated_Source\PSoC5/tick.c **** *   will override any effect this method would have had. To set the vector 
+ 274:Generated_Source\PSoC5/tick.c **** *   before the component has been started use tick_StartEx instead.
+ 275:Generated_Source\PSoC5/tick.c **** * 
+ 276:Generated_Source\PSoC5/tick.c **** *   When defining ISR functions, the CY_ISR and CY_ISR_PROTO macros should be 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 15
 
 
- 277:Generated_Source\PSoC5/tick.c **** *   Function definition example:
- 278:Generated_Source\PSoC5/tick.c **** *   CY_ISR(MyISR)
- 279:Generated_Source\PSoC5/tick.c **** *   {
- 280:Generated_Source\PSoC5/tick.c **** *   }
- 281:Generated_Source\PSoC5/tick.c **** *
- 282:Generated_Source\PSoC5/tick.c **** *   Function prototype example:
- 283:Generated_Source\PSoC5/tick.c **** *     CY_ISR_PROTO(MyISR);
- 284:Generated_Source\PSoC5/tick.c **** *
- 285:Generated_Source\PSoC5/tick.c **** * Parameters:
- 286:Generated_Source\PSoC5/tick.c **** *   address: Address of the ISR to set in the interrupt vector table.
- 287:Generated_Source\PSoC5/tick.c **** *
- 288:Generated_Source\PSoC5/tick.c **** * Return:
- 289:Generated_Source\PSoC5/tick.c **** *   None
- 290:Generated_Source\PSoC5/tick.c **** *
- 291:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 292:Generated_Source\PSoC5/tick.c **** void tick_SetVector(cyisraddress address)
- 293:Generated_Source\PSoC5/tick.c **** {
- 513              		.loc 1 293 0
+ 277:Generated_Source\PSoC5/tick.c **** *   used to provide consistent definition across compilers:
+ 278:Generated_Source\PSoC5/tick.c **** *
+ 279:Generated_Source\PSoC5/tick.c **** *   Function definition example:
+ 280:Generated_Source\PSoC5/tick.c **** *   CY_ISR(MyISR)
+ 281:Generated_Source\PSoC5/tick.c **** *   {
+ 282:Generated_Source\PSoC5/tick.c **** *   }
+ 283:Generated_Source\PSoC5/tick.c **** *
+ 284:Generated_Source\PSoC5/tick.c **** *   Function prototype example:
+ 285:Generated_Source\PSoC5/tick.c **** *     CY_ISR_PROTO(MyISR);
+ 286:Generated_Source\PSoC5/tick.c **** *
+ 287:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 288:Generated_Source\PSoC5/tick.c **** *   address: Address of the ISR to set in the interrupt vector table.
+ 289:Generated_Source\PSoC5/tick.c **** *
+ 290:Generated_Source\PSoC5/tick.c **** * Return:
+ 291:Generated_Source\PSoC5/tick.c **** *   None
+ 292:Generated_Source\PSoC5/tick.c **** *
+ 293:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 294:Generated_Source\PSoC5/tick.c **** void tick_SetVector(cyisraddress address)
+ 295:Generated_Source\PSoC5/tick.c **** {
+ 513              		.loc 1 295 0
  514              		.cfi_startproc
  515              		@ args = 0, pretend = 0, frame = 16
  516              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -871,22 +873,22 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  523 0004 00AF     		add	r7, sp, #0
  524              		.cfi_def_cfa_register 7
  525 0006 7860     		str	r0, [r7, #4]
- 294:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
- 295:Generated_Source\PSoC5/tick.c **** 
- 296:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 526              		.loc 1 296 0
+ 296:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
+ 297:Generated_Source\PSoC5/tick.c **** 
+ 298:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 526              		.loc 1 298 0
  527 0008 054B     		ldr	r3, .L29
  528 000a 1B68     		ldr	r3, [r3]
  529 000c FB60     		str	r3, [r7, #12]
- 297:Generated_Source\PSoC5/tick.c **** 
- 298:Generated_Source\PSoC5/tick.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER] = address;
- 530              		.loc 1 298 0
+ 299:Generated_Source\PSoC5/tick.c **** 
+ 300:Generated_Source\PSoC5/tick.c ****     ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER] = address;
+ 530              		.loc 1 300 0
  531 000e FB68     		ldr	r3, [r7, #12]
  532 0010 4033     		adds	r3, r3, #64
  533 0012 7A68     		ldr	r2, [r7, #4]
  534 0014 1A60     		str	r2, [r3]
- 299:Generated_Source\PSoC5/tick.c **** }
- 535              		.loc 1 299 0
+ 301:Generated_Source\PSoC5/tick.c **** }
+ 535              		.loc 1 301 0
  536 0016 00BF     		nop
  537 0018 1437     		adds	r7, r7, #20
  538              		.cfi_def_cfa_offset 4
@@ -896,11 +898,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  542 001c 80BC     		pop	{r7}
  543              		.cfi_restore 7
  544              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 16
+
+
  545 001e 7047     		bx	lr
  546              	.L30:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 16
-
-
  547              		.align	2
  548              	.L29:
  549 0020 08ED00E0 		.word	-536810232
@@ -915,25 +917,25 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  558              		.type	tick_GetVector, %function
  559              	tick_GetVector:
  560              	.LFB5:
- 300:Generated_Source\PSoC5/tick.c **** 
- 301:Generated_Source\PSoC5/tick.c **** 
- 302:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 303:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetVector
- 304:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 305:Generated_Source\PSoC5/tick.c **** *
- 306:Generated_Source\PSoC5/tick.c **** * Summary:
- 307:Generated_Source\PSoC5/tick.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
- 308:Generated_Source\PSoC5/tick.c **** *
- 309:Generated_Source\PSoC5/tick.c **** * Parameters:
- 310:Generated_Source\PSoC5/tick.c **** *   None
- 311:Generated_Source\PSoC5/tick.c **** *
- 312:Generated_Source\PSoC5/tick.c **** * Return:
- 313:Generated_Source\PSoC5/tick.c **** *   Address of the ISR in the interrupt vector table.
- 314:Generated_Source\PSoC5/tick.c **** *
- 315:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 316:Generated_Source\PSoC5/tick.c **** cyisraddress tick_GetVector(void)
- 317:Generated_Source\PSoC5/tick.c **** {
- 561              		.loc 1 317 0
+ 302:Generated_Source\PSoC5/tick.c **** 
+ 303:Generated_Source\PSoC5/tick.c **** 
+ 304:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 305:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetVector
+ 306:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 307:Generated_Source\PSoC5/tick.c **** *
+ 308:Generated_Source\PSoC5/tick.c **** * Summary:
+ 309:Generated_Source\PSoC5/tick.c **** *   Gets the "address" of the current ISR vector for the Interrupt.
+ 310:Generated_Source\PSoC5/tick.c **** *
+ 311:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 312:Generated_Source\PSoC5/tick.c **** *   None
+ 313:Generated_Source\PSoC5/tick.c **** *
+ 314:Generated_Source\PSoC5/tick.c **** * Return:
+ 315:Generated_Source\PSoC5/tick.c **** *   Address of the ISR in the interrupt vector table.
+ 316:Generated_Source\PSoC5/tick.c **** *
+ 317:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 318:Generated_Source\PSoC5/tick.c **** cyisraddress tick_GetVector(void)
+ 319:Generated_Source\PSoC5/tick.c **** {
+ 561              		.loc 1 319 0
  562              		.cfi_startproc
  563              		@ args = 0, pretend = 0, frame = 8
  564              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -945,23 +947,23 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  570              		.cfi_def_cfa_offset 16
  571 0004 00AF     		add	r7, sp, #0
  572              		.cfi_def_cfa_register 7
- 318:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
- 319:Generated_Source\PSoC5/tick.c **** 
- 320:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
- 573              		.loc 1 320 0
+ 320:Generated_Source\PSoC5/tick.c ****     cyisraddress * ramVectorTable;
+ 321:Generated_Source\PSoC5/tick.c **** 
+ 322:Generated_Source\PSoC5/tick.c ****     ramVectorTable = (cyisraddress *) *CYINT_VECT_TABLE;
+ 573              		.loc 1 322 0
  574 0006 054B     		ldr	r3, .L33
  575 0008 1B68     		ldr	r3, [r3]
  576 000a 7B60     		str	r3, [r7, #4]
- 321:Generated_Source\PSoC5/tick.c **** 
- 322:Generated_Source\PSoC5/tick.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER];
- 577              		.loc 1 322 0
+ 323:Generated_Source\PSoC5/tick.c **** 
+ 324:Generated_Source\PSoC5/tick.c ****     return ramVectorTable[CYINT_IRQ_BASE + (uint32)tick__INTC_NUMBER];
+ 577              		.loc 1 324 0
  578 000c 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 17
+
+
  579 000e 1B6C     		ldr	r3, [r3, #64]
- 323:Generated_Source\PSoC5/tick.c **** }
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 17
-
-
- 580              		.loc 1 323 0
+ 325:Generated_Source\PSoC5/tick.c **** }
+ 580              		.loc 1 325 0
  581 0010 1846     		mov	r0, r3
  582 0012 0C37     		adds	r7, r7, #12
  583              		.cfi_def_cfa_offset 4
@@ -987,40 +989,40 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  603              		.type	tick_SetPriority, %function
  604              	tick_SetPriority:
  605              	.LFB6:
- 324:Generated_Source\PSoC5/tick.c **** 
- 325:Generated_Source\PSoC5/tick.c **** 
- 326:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 327:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPriority
- 328:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 329:Generated_Source\PSoC5/tick.c **** *
- 330:Generated_Source\PSoC5/tick.c **** * Summary:
- 331:Generated_Source\PSoC5/tick.c **** *   Sets the Priority of the Interrupt. 
- 332:Generated_Source\PSoC5/tick.c **** *
- 333:Generated_Source\PSoC5/tick.c **** *   Note calling tick_Start or tick_StartEx will 
- 334:Generated_Source\PSoC5/tick.c **** *   override any effect this API would have had. This API should only be called
- 335:Generated_Source\PSoC5/tick.c **** *   after tick_Start or tick_StartEx has been called. 
- 336:Generated_Source\PSoC5/tick.c **** *   To set the initial priority for the component, use the Design-Wide Resources
- 337:Generated_Source\PSoC5/tick.c **** *   Interrupt Editor.
- 338:Generated_Source\PSoC5/tick.c **** *
- 339:Generated_Source\PSoC5/tick.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 326:Generated_Source\PSoC5/tick.c **** 
+ 327:Generated_Source\PSoC5/tick.c **** 
+ 328:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 329:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPriority
+ 330:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 331:Generated_Source\PSoC5/tick.c **** *
+ 332:Generated_Source\PSoC5/tick.c **** * Summary:
+ 333:Generated_Source\PSoC5/tick.c **** *   Sets the Priority of the Interrupt. 
+ 334:Generated_Source\PSoC5/tick.c **** *
+ 335:Generated_Source\PSoC5/tick.c **** *   Note calling tick_Start or tick_StartEx will 
+ 336:Generated_Source\PSoC5/tick.c **** *   override any effect this API would have had. This API should only be called
+ 337:Generated_Source\PSoC5/tick.c **** *   after tick_Start or tick_StartEx has been called. 
+ 338:Generated_Source\PSoC5/tick.c **** *   To set the initial priority for the component, use the Design-Wide Resources
+ 339:Generated_Source\PSoC5/tick.c **** *   Interrupt Editor.
  340:Generated_Source\PSoC5/tick.c **** *
- 341:Generated_Source\PSoC5/tick.c **** * Parameters:
- 342:Generated_Source\PSoC5/tick.c **** *   priority: Priority of the interrupt, 0 being the highest priority
- 343:Generated_Source\PSoC5/tick.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
- 344:Generated_Source\PSoC5/tick.c **** *             PSoC 4: Priority is from 0 to 3.
- 345:Generated_Source\PSoC5/tick.c **** *
- 346:Generated_Source\PSoC5/tick.c **** * Return:
- 347:Generated_Source\PSoC5/tick.c **** *   None
- 348:Generated_Source\PSoC5/tick.c **** *
- 349:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 350:Generated_Source\PSoC5/tick.c **** void tick_SetPriority(uint8 priority)
- 351:Generated_Source\PSoC5/tick.c **** {
- 606              		.loc 1 351 0
+ 341:Generated_Source\PSoC5/tick.c **** *   Note This API has no effect on Non-maskable interrupt NMI).
+ 342:Generated_Source\PSoC5/tick.c **** *
+ 343:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 344:Generated_Source\PSoC5/tick.c **** *   priority: Priority of the interrupt, 0 being the highest priority
+ 345:Generated_Source\PSoC5/tick.c **** *             PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 346:Generated_Source\PSoC5/tick.c **** *             PSoC 4: Priority is from 0 to 3.
+ 347:Generated_Source\PSoC5/tick.c **** *
+ 348:Generated_Source\PSoC5/tick.c **** * Return:
+ 349:Generated_Source\PSoC5/tick.c **** *   None
+ 350:Generated_Source\PSoC5/tick.c **** *
+ 351:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 352:Generated_Source\PSoC5/tick.c **** void tick_SetPriority(uint8 priority)
+ 353:Generated_Source\PSoC5/tick.c **** {
+ 606              		.loc 1 353 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 18
+
+
  607              		.cfi_startproc
  608              		@ args = 0, pretend = 0, frame = 8
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 18
-
-
  609              		@ frame_needed = 1, uses_anonymous_args = 0
  610              		@ link register save eliminated.
  611 0000 80B4     		push	{r7}
@@ -1032,15 +1034,15 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  617              		.cfi_def_cfa_register 7
  618 0006 0346     		mov	r3, r0
  619 0008 FB71     		strb	r3, [r7, #7]
- 352:Generated_Source\PSoC5/tick.c ****     *tick_INTC_PRIOR = priority << 5;
- 620              		.loc 1 352 0
+ 354:Generated_Source\PSoC5/tick.c ****     *tick_INTC_PRIOR = priority << 5;
+ 620              		.loc 1 354 0
  621 000a 054A     		ldr	r2, .L36
  622 000c FB79     		ldrb	r3, [r7, #7]
  623 000e 5B01     		lsls	r3, r3, #5
  624 0010 DBB2     		uxtb	r3, r3
  625 0012 1370     		strb	r3, [r2]
- 353:Generated_Source\PSoC5/tick.c **** }
- 626              		.loc 1 353 0
+ 355:Generated_Source\PSoC5/tick.c **** }
+ 626              		.loc 1 355 0
  627 0014 00BF     		nop
  628 0016 0C37     		adds	r7, r7, #12
  629              		.cfi_def_cfa_offset 4
@@ -1066,30 +1068,30 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  649              		.type	tick_GetPriority, %function
  650              	tick_GetPriority:
  651              	.LFB7:
- 354:Generated_Source\PSoC5/tick.c **** 
- 355:Generated_Source\PSoC5/tick.c **** 
- 356:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 357:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetPriority
- 358:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 359:Generated_Source\PSoC5/tick.c **** *
- 360:Generated_Source\PSoC5/tick.c **** * Summary:
- 361:Generated_Source\PSoC5/tick.c **** *   Gets the Priority of the Interrupt.
- 362:Generated_Source\PSoC5/tick.c **** *
- 363:Generated_Source\PSoC5/tick.c **** * Parameters:
- 364:Generated_Source\PSoC5/tick.c **** *   None
- 365:Generated_Source\PSoC5/tick.c **** *
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 19
+ 356:Generated_Source\PSoC5/tick.c **** 
+ 357:Generated_Source\PSoC5/tick.c **** 
+ 358:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 359:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetPriority
+ 360:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 361:Generated_Source\PSoC5/tick.c **** *
+ 362:Generated_Source\PSoC5/tick.c **** * Summary:
+ 363:Generated_Source\PSoC5/tick.c **** *   Gets the Priority of the Interrupt.
+ 364:Generated_Source\PSoC5/tick.c **** *
+ 365:Generated_Source\PSoC5/tick.c **** * Parameters:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 19
 
 
- 366:Generated_Source\PSoC5/tick.c **** * Return:
- 367:Generated_Source\PSoC5/tick.c **** *   Priority of the interrupt, 0 being the highest priority
- 368:Generated_Source\PSoC5/tick.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
- 369:Generated_Source\PSoC5/tick.c **** *    PSoC 4: Priority is from 0 to 3.
- 370:Generated_Source\PSoC5/tick.c **** *
- 371:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 372:Generated_Source\PSoC5/tick.c **** uint8 tick_GetPriority(void)
- 373:Generated_Source\PSoC5/tick.c **** {
- 652              		.loc 1 373 0
+ 366:Generated_Source\PSoC5/tick.c **** *   None
+ 367:Generated_Source\PSoC5/tick.c **** *
+ 368:Generated_Source\PSoC5/tick.c **** * Return:
+ 369:Generated_Source\PSoC5/tick.c **** *   Priority of the interrupt, 0 being the highest priority
+ 370:Generated_Source\PSoC5/tick.c **** *    PSoC 3 and PSoC 5LP: Priority is from 0 to 7.
+ 371:Generated_Source\PSoC5/tick.c **** *    PSoC 4: Priority is from 0 to 3.
+ 372:Generated_Source\PSoC5/tick.c **** *
+ 373:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 374:Generated_Source\PSoC5/tick.c **** uint8 tick_GetPriority(void)
+ 375:Generated_Source\PSoC5/tick.c **** {
+ 652              		.loc 1 375 0
  653              		.cfi_startproc
  654              		@ args = 0, pretend = 0, frame = 8
  655              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1101,22 +1103,22 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  661              		.cfi_def_cfa_offset 16
  662 0004 00AF     		add	r7, sp, #0
  663              		.cfi_def_cfa_register 7
- 374:Generated_Source\PSoC5/tick.c ****     uint8 priority;
- 375:Generated_Source\PSoC5/tick.c **** 
- 376:Generated_Source\PSoC5/tick.c **** 
- 377:Generated_Source\PSoC5/tick.c ****     priority = *tick_INTC_PRIOR >> 5;
- 664              		.loc 1 377 0
+ 376:Generated_Source\PSoC5/tick.c ****     uint8 priority;
+ 377:Generated_Source\PSoC5/tick.c **** 
+ 378:Generated_Source\PSoC5/tick.c **** 
+ 379:Generated_Source\PSoC5/tick.c ****     priority = *tick_INTC_PRIOR >> 5;
+ 664              		.loc 1 379 0
  665 0006 054B     		ldr	r3, .L40
  666 0008 1B78     		ldrb	r3, [r3]
  667 000a DBB2     		uxtb	r3, r3
  668 000c 5B09     		lsrs	r3, r3, #5
  669 000e FB71     		strb	r3, [r7, #7]
- 378:Generated_Source\PSoC5/tick.c **** 
- 379:Generated_Source\PSoC5/tick.c ****     return priority;
- 670              		.loc 1 379 0
+ 380:Generated_Source\PSoC5/tick.c **** 
+ 381:Generated_Source\PSoC5/tick.c ****     return priority;
+ 670              		.loc 1 381 0
  671 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
- 380:Generated_Source\PSoC5/tick.c **** }
- 672              		.loc 1 380 0
+ 382:Generated_Source\PSoC5/tick.c **** }
+ 672              		.loc 1 382 0
  673 0012 1846     		mov	r0, r3
  674 0014 0C37     		adds	r7, r7, #12
  675              		.cfi_def_cfa_offset 4
@@ -1136,36 +1138,36 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  689              		.size	tick_GetPriority, .-tick_GetPriority
  690              		.section	.text.tick_Enable,"ax",%progbits
  691              		.align	2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 20
+
+
  692              		.global	tick_Enable
  693              		.thumb
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 20
-
-
  694              		.thumb_func
  695              		.type	tick_Enable, %function
  696              	tick_Enable:
  697              	.LFB8:
- 381:Generated_Source\PSoC5/tick.c **** 
- 382:Generated_Source\PSoC5/tick.c **** 
- 383:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 384:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Enable
- 385:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 386:Generated_Source\PSoC5/tick.c **** *
- 387:Generated_Source\PSoC5/tick.c **** * Summary:
- 388:Generated_Source\PSoC5/tick.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
- 389:Generated_Source\PSoC5/tick.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
- 390:Generated_Source\PSoC5/tick.c **** *   function, which sets the vector and the priority, has been called.
- 391:Generated_Source\PSoC5/tick.c **** *
- 392:Generated_Source\PSoC5/tick.c **** * Parameters:
- 393:Generated_Source\PSoC5/tick.c **** *   None
- 394:Generated_Source\PSoC5/tick.c **** *
- 395:Generated_Source\PSoC5/tick.c **** * Return:
- 396:Generated_Source\PSoC5/tick.c **** *   None
- 397:Generated_Source\PSoC5/tick.c **** *
- 398:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 399:Generated_Source\PSoC5/tick.c **** void tick_Enable(void)
- 400:Generated_Source\PSoC5/tick.c **** {
- 698              		.loc 1 400 0
+ 383:Generated_Source\PSoC5/tick.c **** 
+ 384:Generated_Source\PSoC5/tick.c **** 
+ 385:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 386:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Enable
+ 387:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 388:Generated_Source\PSoC5/tick.c **** *
+ 389:Generated_Source\PSoC5/tick.c **** * Summary:
+ 390:Generated_Source\PSoC5/tick.c **** *   Enables the interrupt to the interrupt controller. Do not call this function
+ 391:Generated_Source\PSoC5/tick.c **** *   unless ISR_Start() has been called or the functionality of the ISR_Start() 
+ 392:Generated_Source\PSoC5/tick.c **** *   function, which sets the vector and the priority, has been called.
+ 393:Generated_Source\PSoC5/tick.c **** *
+ 394:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 395:Generated_Source\PSoC5/tick.c **** *   None
+ 396:Generated_Source\PSoC5/tick.c **** *
+ 397:Generated_Source\PSoC5/tick.c **** * Return:
+ 398:Generated_Source\PSoC5/tick.c **** *   None
+ 399:Generated_Source\PSoC5/tick.c **** *
+ 400:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 401:Generated_Source\PSoC5/tick.c **** void tick_Enable(void)
+ 402:Generated_Source\PSoC5/tick.c **** {
+ 698              		.loc 1 402 0
  699              		.cfi_startproc
  700              		@ args = 0, pretend = 0, frame = 0
  701              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1175,14 +1177,14 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  705              		.cfi_offset 7, -4
  706 0002 00AF     		add	r7, sp, #0
  707              		.cfi_def_cfa_register 7
- 401:Generated_Source\PSoC5/tick.c ****     /* Enable the general interrupt. */
- 402:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_EN = tick__INTC_MASK;
- 708              		.loc 1 402 0
+ 403:Generated_Source\PSoC5/tick.c ****     /* Enable the general interrupt. */
+ 404:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_EN = tick__INTC_MASK;
+ 708              		.loc 1 404 0
  709 0004 034B     		ldr	r3, .L43
  710 0006 0122     		movs	r2, #1
  711 0008 1A60     		str	r2, [r3]
- 403:Generated_Source\PSoC5/tick.c **** }
- 712              		.loc 1 403 0
+ 405:Generated_Source\PSoC5/tick.c **** }
+ 712              		.loc 1 405 0
  713 000a 00BF     		nop
  714 000c BD46     		mov	sp, r7
  715              		.cfi_def_cfa_register 13
@@ -1196,11 +1198,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  723              	.L43:
  724 0014 00E100E0 		.word	-536813312
  725              		.cfi_endproc
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 21
+
+
  726              	.LFE8:
  727              		.size	tick_Enable, .-tick_Enable
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 21
-
-
  728              		.section	.text.tick_GetState,"ax",%progbits
  729              		.align	2
  730              		.global	tick_GetState
@@ -1209,25 +1211,25 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  733              		.type	tick_GetState, %function
  734              	tick_GetState:
  735              	.LFB9:
- 404:Generated_Source\PSoC5/tick.c **** 
- 405:Generated_Source\PSoC5/tick.c **** 
- 406:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 407:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetState
- 408:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 409:Generated_Source\PSoC5/tick.c **** *
- 410:Generated_Source\PSoC5/tick.c **** * Summary:
- 411:Generated_Source\PSoC5/tick.c **** *   Gets the state (enabled, disabled) of the Interrupt.
- 412:Generated_Source\PSoC5/tick.c **** *
- 413:Generated_Source\PSoC5/tick.c **** * Parameters:
- 414:Generated_Source\PSoC5/tick.c **** *   None
- 415:Generated_Source\PSoC5/tick.c **** *
- 416:Generated_Source\PSoC5/tick.c **** * Return:
- 417:Generated_Source\PSoC5/tick.c **** *   1 if enabled, 0 if disabled.
- 418:Generated_Source\PSoC5/tick.c **** *
- 419:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 420:Generated_Source\PSoC5/tick.c **** uint8 tick_GetState(void)
- 421:Generated_Source\PSoC5/tick.c **** {
- 736              		.loc 1 421 0
+ 406:Generated_Source\PSoC5/tick.c **** 
+ 407:Generated_Source\PSoC5/tick.c **** 
+ 408:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 409:Generated_Source\PSoC5/tick.c **** * Function Name: tick_GetState
+ 410:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 411:Generated_Source\PSoC5/tick.c **** *
+ 412:Generated_Source\PSoC5/tick.c **** * Summary:
+ 413:Generated_Source\PSoC5/tick.c **** *   Gets the state (enabled, disabled) of the Interrupt.
+ 414:Generated_Source\PSoC5/tick.c **** *
+ 415:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 416:Generated_Source\PSoC5/tick.c **** *   None
+ 417:Generated_Source\PSoC5/tick.c **** *
+ 418:Generated_Source\PSoC5/tick.c **** * Return:
+ 419:Generated_Source\PSoC5/tick.c **** *   1 if enabled, 0 if disabled.
+ 420:Generated_Source\PSoC5/tick.c **** *
+ 421:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 422:Generated_Source\PSoC5/tick.c **** uint8 tick_GetState(void)
+ 423:Generated_Source\PSoC5/tick.c **** {
+ 736              		.loc 1 423 0
  737              		.cfi_startproc
  738              		@ args = 0, pretend = 0, frame = 0
  739              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1237,16 +1239,16 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  743              		.cfi_offset 7, -4
  744 0002 00AF     		add	r7, sp, #0
  745              		.cfi_def_cfa_register 7
- 422:Generated_Source\PSoC5/tick.c ****     /* Get the state of the general interrupt. */
- 423:Generated_Source\PSoC5/tick.c ****     return ((*tick_INTC_SET_EN & (uint32)tick__INTC_MASK) != 0u) ? 1u:0u;
- 746              		.loc 1 423 0
+ 424:Generated_Source\PSoC5/tick.c ****     /* Get the state of the general interrupt. */
+ 425:Generated_Source\PSoC5/tick.c ****     return ((*tick_INTC_SET_EN & (uint32)tick__INTC_MASK) != 0u) ? 1u:0u;
+ 746              		.loc 1 425 0
  747 0004 044B     		ldr	r3, .L47
  748 0006 1B68     		ldr	r3, [r3]
  749 0008 DBB2     		uxtb	r3, r3
  750 000a 03F00103 		and	r3, r3, #1
  751 000e DBB2     		uxtb	r3, r3
- 424:Generated_Source\PSoC5/tick.c **** }
- 752              		.loc 1 424 0
+ 426:Generated_Source\PSoC5/tick.c **** }
+ 752              		.loc 1 426 0
  753 0010 1846     		mov	r0, r3
  754 0012 BD46     		mov	sp, r7
  755              		.cfi_def_cfa_register 13
@@ -1256,11 +1258,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  759              		.cfi_def_cfa_offset 0
  760 0016 7047     		bx	lr
  761              	.L48:
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 22
+
+
  762              		.align	2
  763              	.L47:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 22
-
-
  764 0018 00E100E0 		.word	-536813312
  765              		.cfi_endproc
  766              	.LFE9:
@@ -1273,25 +1275,25 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  773              		.type	tick_Disable, %function
  774              	tick_Disable:
  775              	.LFB10:
- 425:Generated_Source\PSoC5/tick.c **** 
- 426:Generated_Source\PSoC5/tick.c **** 
- 427:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 428:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Disable
- 429:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 430:Generated_Source\PSoC5/tick.c **** *
- 431:Generated_Source\PSoC5/tick.c **** * Summary:
- 432:Generated_Source\PSoC5/tick.c **** *   Disables the Interrupt in the interrupt controller.
- 433:Generated_Source\PSoC5/tick.c **** *
- 434:Generated_Source\PSoC5/tick.c **** * Parameters:
- 435:Generated_Source\PSoC5/tick.c **** *   None
- 436:Generated_Source\PSoC5/tick.c **** *
- 437:Generated_Source\PSoC5/tick.c **** * Return:
- 438:Generated_Source\PSoC5/tick.c **** *   None
- 439:Generated_Source\PSoC5/tick.c **** *
- 440:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 441:Generated_Source\PSoC5/tick.c **** void tick_Disable(void)
- 442:Generated_Source\PSoC5/tick.c **** {
- 776              		.loc 1 442 0
+ 427:Generated_Source\PSoC5/tick.c **** 
+ 428:Generated_Source\PSoC5/tick.c **** 
+ 429:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 430:Generated_Source\PSoC5/tick.c **** * Function Name: tick_Disable
+ 431:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 432:Generated_Source\PSoC5/tick.c **** *
+ 433:Generated_Source\PSoC5/tick.c **** * Summary:
+ 434:Generated_Source\PSoC5/tick.c **** *   Disables the Interrupt in the interrupt controller.
+ 435:Generated_Source\PSoC5/tick.c **** *
+ 436:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 437:Generated_Source\PSoC5/tick.c **** *   None
+ 438:Generated_Source\PSoC5/tick.c **** *
+ 439:Generated_Source\PSoC5/tick.c **** * Return:
+ 440:Generated_Source\PSoC5/tick.c **** *   None
+ 441:Generated_Source\PSoC5/tick.c **** *
+ 442:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 443:Generated_Source\PSoC5/tick.c **** void tick_Disable(void)
+ 444:Generated_Source\PSoC5/tick.c **** {
+ 776              		.loc 1 444 0
  777              		.cfi_startproc
  778              		@ args = 0, pretend = 0, frame = 0
  779              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1301,14 +1303,14 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  783              		.cfi_offset 7, -4
  784 0002 00AF     		add	r7, sp, #0
  785              		.cfi_def_cfa_register 7
- 443:Generated_Source\PSoC5/tick.c ****     /* Disable the general interrupt. */
- 444:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_EN = tick__INTC_MASK;
- 786              		.loc 1 444 0
+ 445:Generated_Source\PSoC5/tick.c ****     /* Disable the general interrupt. */
+ 446:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_EN = tick__INTC_MASK;
+ 786              		.loc 1 446 0
  787 0004 034B     		ldr	r3, .L50
  788 0006 0122     		movs	r2, #1
  789 0008 1A60     		str	r2, [r3]
- 445:Generated_Source\PSoC5/tick.c **** }
- 790              		.loc 1 445 0
+ 447:Generated_Source\PSoC5/tick.c **** }
+ 790              		.loc 1 447 0
  791 000a 00BF     		nop
  792 000c BD46     		mov	sp, r7
  793              		.cfi_def_cfa_register 13
@@ -1316,11 +1318,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  795 000e 80BC     		pop	{r7}
  796              		.cfi_restore 7
  797              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 23
+
+
  798 0010 7047     		bx	lr
  799              	.L51:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 23
-
-
  800 0012 00BF     		.align	2
  801              	.L50:
  802 0014 80E100E0 		.word	-536813184
@@ -1335,31 +1337,31 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  811              		.type	tick_SetPending, %function
  812              	tick_SetPending:
  813              	.LFB11:
- 446:Generated_Source\PSoC5/tick.c **** 
- 447:Generated_Source\PSoC5/tick.c **** 
- 448:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 449:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPending
- 450:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 451:Generated_Source\PSoC5/tick.c **** *
- 452:Generated_Source\PSoC5/tick.c **** * Summary:
- 453:Generated_Source\PSoC5/tick.c **** *   Causes the Interrupt to enter the pending state, a software method of
- 454:Generated_Source\PSoC5/tick.c **** *   generating the interrupt.
- 455:Generated_Source\PSoC5/tick.c **** *
- 456:Generated_Source\PSoC5/tick.c **** * Parameters:
- 457:Generated_Source\PSoC5/tick.c **** *   None
- 458:Generated_Source\PSoC5/tick.c **** *
- 459:Generated_Source\PSoC5/tick.c **** * Return:
- 460:Generated_Source\PSoC5/tick.c **** *   None
- 461:Generated_Source\PSoC5/tick.c **** *
- 462:Generated_Source\PSoC5/tick.c **** * Side Effects:
- 463:Generated_Source\PSoC5/tick.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
- 464:Generated_Source\PSoC5/tick.c **** *   entered (depending on the priority of this interrupt and other pending 
- 465:Generated_Source\PSoC5/tick.c **** *   interrupts).
- 466:Generated_Source\PSoC5/tick.c **** *
- 467:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 468:Generated_Source\PSoC5/tick.c **** void tick_SetPending(void)
- 469:Generated_Source\PSoC5/tick.c **** {
- 814              		.loc 1 469 0
+ 448:Generated_Source\PSoC5/tick.c **** 
+ 449:Generated_Source\PSoC5/tick.c **** 
+ 450:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 451:Generated_Source\PSoC5/tick.c **** * Function Name: tick_SetPending
+ 452:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 453:Generated_Source\PSoC5/tick.c **** *
+ 454:Generated_Source\PSoC5/tick.c **** * Summary:
+ 455:Generated_Source\PSoC5/tick.c **** *   Causes the Interrupt to enter the pending state, a software method of
+ 456:Generated_Source\PSoC5/tick.c **** *   generating the interrupt.
+ 457:Generated_Source\PSoC5/tick.c **** *
+ 458:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 459:Generated_Source\PSoC5/tick.c **** *   None
+ 460:Generated_Source\PSoC5/tick.c **** *
+ 461:Generated_Source\PSoC5/tick.c **** * Return:
+ 462:Generated_Source\PSoC5/tick.c **** *   None
+ 463:Generated_Source\PSoC5/tick.c **** *
+ 464:Generated_Source\PSoC5/tick.c **** * Side Effects:
+ 465:Generated_Source\PSoC5/tick.c **** *   If interrupts are enabled and the interrupt is set up properly, the ISR is
+ 466:Generated_Source\PSoC5/tick.c **** *   entered (depending on the priority of this interrupt and other pending 
+ 467:Generated_Source\PSoC5/tick.c **** *   interrupts).
+ 468:Generated_Source\PSoC5/tick.c **** *
+ 469:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 470:Generated_Source\PSoC5/tick.c **** void tick_SetPending(void)
+ 471:Generated_Source\PSoC5/tick.c **** {
+ 814              		.loc 1 471 0
  815              		.cfi_startproc
  816              		@ args = 0, pretend = 0, frame = 0
  817              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1369,18 +1371,18 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  821              		.cfi_offset 7, -4
  822 0002 00AF     		add	r7, sp, #0
  823              		.cfi_def_cfa_register 7
- 470:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_PD = tick__INTC_MASK;
- 824              		.loc 1 470 0
+ 472:Generated_Source\PSoC5/tick.c ****     *tick_INTC_SET_PD = tick__INTC_MASK;
+ 824              		.loc 1 472 0
  825 0004 034B     		ldr	r3, .L53
  826 0006 0122     		movs	r2, #1
  827 0008 1A60     		str	r2, [r3]
- 471:Generated_Source\PSoC5/tick.c **** }
- 828              		.loc 1 471 0
+ 473:Generated_Source\PSoC5/tick.c **** }
+ 828              		.loc 1 473 0
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 24
+
+
  829 000a 00BF     		nop
  830 000c BD46     		mov	sp, r7
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 24
-
-
  831              		.cfi_def_cfa_register 13
  832              		@ sp needed
  833 000e 80BC     		pop	{r7}
@@ -1402,30 +1404,30 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  849              		.type	tick_ClearPending, %function
  850              	tick_ClearPending:
  851              	.LFB12:
- 472:Generated_Source\PSoC5/tick.c **** 
- 473:Generated_Source\PSoC5/tick.c **** 
- 474:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
- 475:Generated_Source\PSoC5/tick.c **** * Function Name: tick_ClearPending
- 476:Generated_Source\PSoC5/tick.c **** ********************************************************************************
- 477:Generated_Source\PSoC5/tick.c **** *
- 478:Generated_Source\PSoC5/tick.c **** * Summary:
- 479:Generated_Source\PSoC5/tick.c **** *   Clears a pending interrupt in the interrupt controller.
- 480:Generated_Source\PSoC5/tick.c **** *
- 481:Generated_Source\PSoC5/tick.c **** *   Note Some interrupt sources are clear-on-read and require the block 
- 482:Generated_Source\PSoC5/tick.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
- 483:Generated_Source\PSoC5/tick.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
- 484:Generated_Source\PSoC5/tick.c **** *   pending state even though the interrupt itself is cleared using this API.
- 485:Generated_Source\PSoC5/tick.c **** *
- 486:Generated_Source\PSoC5/tick.c **** * Parameters:
- 487:Generated_Source\PSoC5/tick.c **** *   None
- 488:Generated_Source\PSoC5/tick.c **** *
- 489:Generated_Source\PSoC5/tick.c **** * Return:
- 490:Generated_Source\PSoC5/tick.c **** *   None
- 491:Generated_Source\PSoC5/tick.c **** *
- 492:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
- 493:Generated_Source\PSoC5/tick.c **** void tick_ClearPending(void)
- 494:Generated_Source\PSoC5/tick.c **** {
- 852              		.loc 1 494 0
+ 474:Generated_Source\PSoC5/tick.c **** 
+ 475:Generated_Source\PSoC5/tick.c **** 
+ 476:Generated_Source\PSoC5/tick.c **** /*******************************************************************************
+ 477:Generated_Source\PSoC5/tick.c **** * Function Name: tick_ClearPending
+ 478:Generated_Source\PSoC5/tick.c **** ********************************************************************************
+ 479:Generated_Source\PSoC5/tick.c **** *
+ 480:Generated_Source\PSoC5/tick.c **** * Summary:
+ 481:Generated_Source\PSoC5/tick.c **** *   Clears a pending interrupt in the interrupt controller.
+ 482:Generated_Source\PSoC5/tick.c **** *
+ 483:Generated_Source\PSoC5/tick.c **** *   Note Some interrupt sources are clear-on-read and require the block 
+ 484:Generated_Source\PSoC5/tick.c **** *   interrupt/status register to be read/cleared with the appropriate block API 
+ 485:Generated_Source\PSoC5/tick.c **** *   (GPIO, UART, and so on). Otherwise the ISR will continue to remain in 
+ 486:Generated_Source\PSoC5/tick.c **** *   pending state even though the interrupt itself is cleared using this API.
+ 487:Generated_Source\PSoC5/tick.c **** *
+ 488:Generated_Source\PSoC5/tick.c **** * Parameters:
+ 489:Generated_Source\PSoC5/tick.c **** *   None
+ 490:Generated_Source\PSoC5/tick.c **** *
+ 491:Generated_Source\PSoC5/tick.c **** * Return:
+ 492:Generated_Source\PSoC5/tick.c **** *   None
+ 493:Generated_Source\PSoC5/tick.c **** *
+ 494:Generated_Source\PSoC5/tick.c **** *******************************************************************************/
+ 495:Generated_Source\PSoC5/tick.c **** void tick_ClearPending(void)
+ 496:Generated_Source\PSoC5/tick.c **** {
+ 852              		.loc 1 496 0
  853              		.cfi_startproc
  854              		@ args = 0, pretend = 0, frame = 0
  855              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -1435,16 +1437,16 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  859              		.cfi_offset 7, -4
  860 0002 00AF     		add	r7, sp, #0
  861              		.cfi_def_cfa_register 7
- 495:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_PD = tick__INTC_MASK;
- 862              		.loc 1 495 0
+ 497:Generated_Source\PSoC5/tick.c ****     *tick_INTC_CLR_PD = tick__INTC_MASK;
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 25
+
+
+ 862              		.loc 1 497 0
  863 0004 034B     		ldr	r3, .L56
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 25
-
-
  864 0006 0122     		movs	r2, #1
  865 0008 1A60     		str	r2, [r3]
- 496:Generated_Source\PSoC5/tick.c **** }
- 866              		.loc 1 496 0
+ 498:Generated_Source\PSoC5/tick.c **** }
+ 866              		.loc 1 498 0
  867 000a 00BF     		nop
  868 000c BD46     		mov	sp, r7
  869              		.cfi_def_cfa_register 13
@@ -1496,11 +1498,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  915 0041 03       		.uleb128 0x3
  916 0042 01       		.byte	0x1
  917 0043 06       		.byte	0x6
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 26
+
+
  918 0044 59030000 		.4byte	.LASF3
  919 0048 03       		.uleb128 0x3
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 26
-
-
  920 0049 01       		.byte	0x1
  921 004a 08       		.byte	0x8
  922 004b 74010000 		.4byte	.LASF4
@@ -1556,11 +1558,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  972 00b0 02       		.byte	0x2
  973 00b1 9701     		.2byte	0x197
  974 00b3 5D000000 		.4byte	0x5d
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 27
+
+
  975 00b7 03       		.uleb128 0x3
  976 00b8 04       		.byte	0x4
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 27
-
-
  977 00b9 04       		.byte	0x4
  978 00ba 18010000 		.4byte	.LASF16
  979 00be 03       		.uleb128 0x3
@@ -1616,11 +1618,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1029 012c 00       		.byte	0
  1030 012d 08       		.uleb128 0x8
  1031 012e 27020000 		.4byte	.LASF22
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 28
+
+
  1032 0132 01       		.byte	0x1
  1033 0133 99       		.byte	0x99
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 28
-
-
  1034 0134 00000000 		.4byte	.LFB2
  1035 0138 18000000 		.4byte	.LFE2-.LFB2
  1036 013c 01       		.uleb128 0x1
@@ -1636,7 +1638,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1046 014f 0B       		.uleb128 0xb
  1047 0150 E2000000 		.4byte	.LASF25
  1048 0154 01       		.byte	0x1
- 1049 0155 2401     		.2byte	0x124
+ 1049 0155 2601     		.2byte	0x126
  1050 0157 00000000 		.4byte	.LFB4
  1051 015b 24000000 		.4byte	.LFE4-.LFB4
  1052 015f 01       		.uleb128 0x1
@@ -1645,7 +1647,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1055 0165 0C       		.uleb128 0xc
  1056 0166 67020000 		.4byte	.LASF26
  1057 016a 01       		.byte	0x1
- 1058 016b 2401     		.2byte	0x124
+ 1058 016b 2601     		.2byte	0x126
  1059 016d EC000000 		.4byte	0xec
  1060 0171 02       		.uleb128 0x2
  1061 0172 91       		.byte	0x91
@@ -1653,7 +1655,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1063 0174 0D       		.uleb128 0xd
  1064 0175 F1020000 		.4byte	.LASF27
  1065 0179 01       		.byte	0x1
- 1066 017a 2601     		.2byte	0x126
+ 1066 017a 2801     		.2byte	0x128
  1067 017c 84010000 		.4byte	0x184
  1068 0180 02       		.uleb128 0x2
  1069 0181 91       		.byte	0x91
@@ -1665,7 +1667,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1075 018a 0E       		.uleb128 0xe
  1076 018b 09010000 		.4byte	.LASF30
  1077 018f 01       		.byte	0x1
- 1078 0190 3C01     		.2byte	0x13c
+ 1078 0190 3E01     		.2byte	0x13e
  1079 0192 EC000000 		.4byte	0xec
  1080 0196 00000000 		.4byte	.LFB5
  1081 019a 20000000 		.4byte	.LFE5-.LFB5
@@ -1675,19 +1677,19 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1085 01a4 0D       		.uleb128 0xd
  1086 01a5 F1020000 		.4byte	.LASF27
  1087 01a9 01       		.byte	0x1
- 1088 01aa 3E01     		.2byte	0x13e
+ 1088 01aa 4001     		.2byte	0x140
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 29
+
+
  1089 01ac 84010000 		.4byte	0x184
  1090 01b0 02       		.uleb128 0x2
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 29
-
-
  1091 01b1 91       		.byte	0x91
  1092 01b2 74       		.sleb128 -12
  1093 01b3 00       		.byte	0
  1094 01b4 0B       		.uleb128 0xb
  1095 01b5 86020000 		.4byte	.LASF28
  1096 01b9 01       		.byte	0x1
- 1097 01ba 5E01     		.2byte	0x15e
+ 1097 01ba 6001     		.2byte	0x160
  1098 01bc 00000000 		.4byte	.LFB6
  1099 01c0 24000000 		.4byte	.LFE6-.LFB6
  1100 01c4 01       		.uleb128 0x1
@@ -1696,7 +1698,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1103 01ca 0C       		.uleb128 0xc
  1104 01cb BC010000 		.4byte	.LASF29
  1105 01cf 01       		.byte	0x1
- 1106 01d0 5E01     		.2byte	0x15e
+ 1106 01d0 6001     		.2byte	0x160
  1107 01d2 87000000 		.4byte	0x87
  1108 01d6 02       		.uleb128 0x2
  1109 01d7 91       		.byte	0x91
@@ -1705,7 +1707,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1112 01da 0E       		.uleb128 0xe
  1113 01db F8000000 		.4byte	.LASF31
  1114 01df 01       		.byte	0x1
- 1115 01e0 7401     		.2byte	0x174
+ 1115 01e0 7601     		.2byte	0x176
  1116 01e2 87000000 		.4byte	0x87
  1117 01e6 00000000 		.4byte	.LFB7
  1118 01ea 20000000 		.4byte	.LFE7-.LFB7
@@ -1715,7 +1717,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1122 01f4 0D       		.uleb128 0xd
  1123 01f5 BC010000 		.4byte	.LASF29
  1124 01f9 01       		.byte	0x1
- 1125 01fa 7601     		.2byte	0x176
+ 1125 01fa 7801     		.2byte	0x178
  1126 01fc 87000000 		.4byte	0x87
  1127 0200 02       		.uleb128 0x2
  1128 0201 91       		.byte	0x91
@@ -1724,7 +1726,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1131 0204 0F       		.uleb128 0xf
  1132 0205 A4020000 		.4byte	.LASF32
  1133 0209 01       		.byte	0x1
- 1134 020a 8F01     		.2byte	0x18f
+ 1134 020a 9101     		.2byte	0x191
  1135 020c 00000000 		.4byte	.LFB8
  1136 0210 18000000 		.4byte	.LFE8-.LFB8
  1137 0214 01       		.uleb128 0x1
@@ -1732,19 +1734,19 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1139 0216 10       		.uleb128 0x10
  1140 0217 2D030000 		.4byte	.LASF54
  1141 021b 01       		.byte	0x1
- 1142 021c A401     		.2byte	0x1a4
+ 1142 021c A601     		.2byte	0x1a6
  1143 021e 87000000 		.4byte	0x87
  1144 0222 00000000 		.4byte	.LFB9
  1145 0226 1C000000 		.4byte	.LFE9-.LFB9
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 30
+
+
  1146 022a 01       		.uleb128 0x1
  1147 022b 9C       		.byte	0x9c
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 30
-
-
  1148 022c 0F       		.uleb128 0xf
  1149 022d 97020000 		.4byte	.LASF33
  1150 0231 01       		.byte	0x1
- 1151 0232 B901     		.2byte	0x1b9
+ 1151 0232 BB01     		.2byte	0x1bb
  1152 0234 00000000 		.4byte	.LFB10
  1153 0238 18000000 		.4byte	.LFE10-.LFB10
  1154 023c 01       		.uleb128 0x1
@@ -1752,7 +1754,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1156 023e 0F       		.uleb128 0xf
  1157 023f 38020000 		.4byte	.LASF34
  1158 0243 01       		.byte	0x1
- 1159 0244 D401     		.2byte	0x1d4
+ 1159 0244 D601     		.2byte	0x1d6
  1160 0246 00000000 		.4byte	.LFB11
  1161 024a 18000000 		.4byte	.LFE11-.LFB11
  1162 024e 01       		.uleb128 0x1
@@ -1760,7 +1762,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1164 0250 0F       		.uleb128 0xf
  1165 0251 48020000 		.4byte	.LASF35
  1166 0255 01       		.byte	0x1
- 1167 0256 ED01     		.2byte	0x1ed
+ 1167 0256 EF01     		.2byte	0x1ef
  1168 0258 00000000 		.4byte	.LFB12
  1169 025c 18000000 		.4byte	.LFE12-.LFB12
  1170 0260 01       		.uleb128 0x1
@@ -1796,11 +1798,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1200 02a2 00       		.byte	0
  1201 02a3 11       		.uleb128 0x11
  1202 02a4 E3010000 		.4byte	.LASF40
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 31
+
+
  1203 02a8 01       		.byte	0x1
  1204 02a9 27       		.byte	0x27
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 31
-
-
  1205 02aa AE020000 		.4byte	0x2ae
  1206 02ae 07       		.uleb128 0x7
  1207 02af 93020000 		.4byte	0x293
@@ -1856,11 +1858,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1257 031e 00000000 		.4byte	axis_position_old
  1258 0322 11       		.uleb128 0x11
  1259 0323 00000000 		.4byte	.LASF48
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 32
+
+
  1260 0327 01       		.byte	0x1
  1261 0328 2F       		.byte	0x2f
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 32
-
-
  1262 0329 78020000 		.4byte	0x278
  1263 032d 15       		.uleb128 0x15
  1264 032e 82010000 		.4byte	.LASF49
@@ -1916,11 +1918,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1314 0020 00       		.byte	0
  1315 0021 0B       		.uleb128 0xb
  1316 0022 0B       		.uleb128 0xb
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 33
+
+
  1317 0023 3E       		.uleb128 0x3e
  1318 0024 0B       		.uleb128 0xb
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 33
-
-
  1319 0025 03       		.uleb128 0x3
  1320 0026 0E       		.uleb128 0xe
  1321 0027 00       		.byte	0
@@ -1976,11 +1978,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1371 0059 19       		.uleb128 0x19
  1372 005a 11       		.uleb128 0x11
  1373 005b 01       		.uleb128 0x1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 34
+
+
  1374 005c 12       		.uleb128 0x12
  1375 005d 06       		.uleb128 0x6
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 34
-
-
  1376 005e 40       		.uleb128 0x40
  1377 005f 18       		.uleb128 0x18
  1378 0060 9642     		.uleb128 0x2116
@@ -2036,11 +2038,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1428 0094 0E       		.uleb128 0xe
  1429 0095 3A       		.uleb128 0x3a
  1430 0096 0B       		.uleb128 0xb
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 35
+
+
  1431 0097 3B       		.uleb128 0x3b
  1432 0098 05       		.uleb128 0x5
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 35
-
-
  1433 0099 27       		.uleb128 0x27
  1434 009a 19       		.uleb128 0x19
  1435 009b 11       		.uleb128 0x11
@@ -2096,11 +2098,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1485 00ce 0B       		.uleb128 0xb
  1486 00cf 3B       		.uleb128 0x3b
  1487 00d0 05       		.uleb128 0x5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 36
+
+
  1488 00d1 27       		.uleb128 0x27
  1489 00d2 19       		.uleb128 0x19
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 36
-
-
  1490 00d3 49       		.uleb128 0x49
  1491 00d4 13       		.uleb128 0x13
  1492 00d5 11       		.uleb128 0x11
@@ -2156,11 +2158,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1542 0109 11       		.uleb128 0x11
  1543 010a 01       		.uleb128 0x1
  1544 010b 12       		.uleb128 0x12
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 37
+
+
  1545 010c 06       		.uleb128 0x6
  1546 010d 40       		.uleb128 0x40
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 37
-
-
  1547 010e 18       		.uleb128 0x18
  1548 010f 9742     		.uleb128 0x2117
  1549 0111 19       		.uleb128 0x19
@@ -2216,11 +2218,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1599 0143 03       		.uleb128 0x3
  1600 0144 0E       		.uleb128 0xe
  1601 0145 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 38
+
+
  1602 0146 0B       		.uleb128 0xb
  1603 0147 3B       		.uleb128 0x3b
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 38
-
-
  1604 0148 0B       		.uleb128 0xb
  1605 0149 49       		.uleb128 0x49
  1606 014a 13       		.uleb128 0x13
@@ -2276,11 +2278,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1656 0010 00000000 		.4byte	.LFB2
  1657 0014 18000000 		.4byte	.LFE2
  1658 0018 00000000 		.4byte	.LFB3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 39
+
+
  1659 001c 8C020000 		.4byte	.LFE3
  1660 0020 00000000 		.4byte	.LFB4
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 39
-
-
  1661 0024 24000000 		.4byte	.LFE4
  1662 0028 00000000 		.4byte	.LFB5
  1663 002c 20000000 		.4byte	.LFE5
@@ -2336,11 +2338,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1692 00ab 746F7271 		.ascii	"torque_command\000"
  1692      75655F63 
  1692      6F6D6D61 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 40
+
+
  1692      6E6400
  1693              	.LASF50:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 40
-
-
  1694 00ba 636F756E 		.ascii	"count\000"
  1694      7400
  1695              	.LASF23:
@@ -2396,11 +2398,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1715 0174 756E7369 		.ascii	"unsigned char\000"
  1715      676E6564 
  1715      20636861 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 41
+
+
  1715      7200
  1716              	.LASF49:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 41
-
-
  1717 0182 73746172 		.ascii	"start_count\000"
  1717      745F636F 
  1717      756E7400 
@@ -2456,11 +2458,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1741      726F6C6C 
  1741      65725F74 
  1741      69636B00 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 42
+
+
  1742              	.LASF22:
  1743 0227 7469636B 		.ascii	"tick_Stop\000"
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 42
-
-
  1743      5F53746F 
  1743      7000
  1744              	.LASF14:
@@ -2516,11 +2518,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1765      5F537461 
  1765      72744578 
  1765      00
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 43
+
+
  1766              	.LASF39:
  1767 02ca 6C656164 		.ascii	"lead_angle\000"
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 43
-
-
  1767      5F616E67 
  1767      6C6500
  1768              	.LASF10:
@@ -2576,11 +2578,11 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 1
  1791      626C6500 
  1792              	.LASF3:
  1793 0359 7369676E 		.ascii	"signed char\000"
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccpfK10Z.s 			page 44
+
+
  1793      65642063 
  1793      68617200 
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccHfA02f.s 			page 44
-
-
  1794              	.LASF42:
  1795 0365 616E676C 		.ascii	"angle_diff\000"
  1795      655F6469 

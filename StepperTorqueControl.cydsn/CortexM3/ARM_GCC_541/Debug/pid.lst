@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
   39 0004 00AF     		add	r7, sp, #0
   40              		.cfi_def_cfa_register 7
   41 0006 F860     		str	r0, [r7, #12]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 2
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 2
 
 
   42 0008 B960     		str	r1, [r7, #8]
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
   86 0056 C2E90C34 		strd	r3, [r2, #48]
   27:pid.c         ****     PID->error_last = 0;
   87              		.loc 1 27 0
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 3
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 3
 
 
   88 005a 3A6A     		ldr	r2, [r7, #32]
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  135 0000 90B4     		push	{r4, r7}
  136              		.cfi_def_cfa_offset 8
  137              		.cfi_offset 4, -8
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 4
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 4
 
 
  138              		.cfi_offset 7, -4
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  184              		.align	2
  185              		.global	PID
  186              		.thumb
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 5
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 5
 
 
  187              		.thumb_func
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  228              		.loc 1 55 0
  229 002c 3B68     		ldr	r3, [r7]
  230 002e 1B69     		ldr	r3, [r3, #16]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 6
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 6
 
 
  231 0030 7A69     		ldr	r2, [r7, #20]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  278 00a2 5B18     		adds	r3, r3, r1
  279 00a4 44EB0204 		adc	r4, r4, r2
  280 00a8 3A68     		ldr	r2, [r7]
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 7
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 7
 
 
  281 00aa D269     		ldr	r2, [r2, #28]
@@ -390,7 +390,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  303 00de C2E90C34 		strd	r3, [r2, #48]
  304              	.L7:
   67:pid.c         ****     }
-  68:pid.c         ****     PID->error_d = (error - PID->error_last) * PID->kd / 1000;
+  68:pid.c         ****     PID->error_d = ((error - PID->error_last) * PID->kd) / 1000;
  305              		.loc 1 68 0
  306 00e2 7B69     		ldr	r3, [r7, #20]
  307 00e4 1946     		mov	r1, r3
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  329 0126 C2E90E34 		strd	r3, [r2, #56]
   69:pid.c         ****     PID->error_last = error;
  330              		.loc 1 69 0
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 8
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 8
 
 
  331 012a 7B69     		ldr	r3, [r7, #20]
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
   75:pid.c         **** 
   76:pid.c         **** uint32 PIDStatus(pid_ts* PID){
  380              		.loc 1 76 0
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 9
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 9
 
 
  381              		.cfi_startproc
@@ -526,25 +526,25 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  421 000c 08000000 		.4byte	.LASF33
  422 0010 0C       		.byte	0xc
  423 0011 D1000000 		.4byte	.LASF34
- 424 0015 A4010000 		.4byte	.LASF35
+ 424 0015 E9000000 		.4byte	.LASF35
  425 0019 00000000 		.4byte	.Ldebug_ranges0+0
  426 001d 00000000 		.4byte	0
  427 0021 00000000 		.4byte	.Ldebug_line0
  428 0025 02       		.uleb128 0x2
  429 0026 01       		.byte	0x1
  430 0027 06       		.byte	0x6
- 431 0028 21020000 		.4byte	.LASF0
+ 431 0028 11020000 		.4byte	.LASF0
  432 002c 02       		.uleb128 0x2
  433 002d 01       		.byte	0x1
  434 002e 08       		.byte	0x8
- 435 002f E9000000 		.4byte	.LASF1
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 10
+ 435 002f 31010000 		.4byte	.LASF1
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 10
 
 
  436 0033 02       		.uleb128 0x2
  437 0034 02       		.byte	0x2
  438 0035 05       		.byte	0x5
- 439 0036 9A010000 		.4byte	.LASF2
+ 439 0036 E2010000 		.4byte	.LASF2
  440 003a 02       		.uleb128 0x2
  441 003b 02       		.byte	0x2
  442 003c 07       		.byte	0x7
@@ -552,19 +552,19 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  444 0041 02       		.uleb128 0x2
  445 0042 04       		.byte	0x4
  446 0043 05       		.byte	0x5
- 447 0044 03020000 		.4byte	.LASF4
+ 447 0044 F3010000 		.4byte	.LASF4
  448 0048 02       		.uleb128 0x2
  449 0049 04       		.byte	0x4
  450 004a 07       		.byte	0x7
- 451 004b FD000000 		.4byte	.LASF5
+ 451 004b 45010000 		.4byte	.LASF5
  452 004f 02       		.uleb128 0x2
  453 0050 08       		.byte	0x8
  454 0051 05       		.byte	0x5
- 455 0052 7B010000 		.4byte	.LASF6
+ 455 0052 C3010000 		.4byte	.LASF6
  456 0056 02       		.uleb128 0x2
  457 0057 08       		.byte	0x8
  458 0058 07       		.byte	0x7
- 459 0059 4D010000 		.4byte	.LASF7
+ 459 0059 95010000 		.4byte	.LASF7
  460 005d 03       		.uleb128 0x3
  461 005e 04       		.byte	0x4
  462 005f 05       		.byte	0x5
@@ -572,33 +572,33 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  464 0064 02       		.uleb128 0x2
  465 0065 04       		.byte	0x4
  466 0066 07       		.byte	0x7
- 467 0067 37010000 		.4byte	.LASF8
+ 467 0067 7F010000 		.4byte	.LASF8
  468 006b 02       		.uleb128 0x2
  469 006c 08       		.byte	0x8
  470 006d 04       		.byte	0x4
- 471 006e 0C020000 		.4byte	.LASF9
+ 471 006e FC010000 		.4byte	.LASF9
  472 0072 02       		.uleb128 0x2
  473 0073 04       		.byte	0x4
  474 0074 07       		.byte	0x7
- 475 0075 6C010000 		.4byte	.LASF10
+ 475 0075 B4010000 		.4byte	.LASF10
  476 0079 02       		.uleb128 0x2
  477 007a 01       		.byte	0x1
  478 007b 08       		.byte	0x8
- 479 007c 89010000 		.4byte	.LASF11
+ 479 007c D1010000 		.4byte	.LASF11
  480 0080 04       		.uleb128 0x4
- 481 0081 30010000 		.4byte	.LASF12
+ 481 0081 78010000 		.4byte	.LASF12
  482 0085 02       		.byte	0x2
  483 0086 9401     		.2byte	0x194
  484 0088 48000000 		.4byte	0x48
  485 008c 04       		.uleb128 0x4
- 486 008d 23010000 		.4byte	.LASF13
+ 486 008d 6B010000 		.4byte	.LASF13
  487 0091 02       		.byte	0x2
  488 0092 9501     		.2byte	0x195
  489 0094 25000000 		.4byte	0x25
  490 0098 04       		.uleb128 0x4
- 491 0099 0F010000 		.4byte	.LASF14
+ 491 0099 57010000 		.4byte	.LASF14
  492 009d 02       		.byte	0x2
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 11
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 11
 
 
  493 009e 9701     		.2byte	0x197
@@ -610,38 +610,38 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  499 00ab 02       		.uleb128 0x2
  500 00ac 08       		.byte	0x8
  501 00ad 04       		.byte	0x4
- 502 00ae 1C010000 		.4byte	.LASF16
+ 502 00ae 64010000 		.4byte	.LASF16
  503 00b2 04       		.uleb128 0x4
- 504 00b3 37020000 		.4byte	.LASF17
+ 504 00b3 27020000 		.4byte	.LASF17
  505 00b7 02       		.byte	0x2
  506 00b8 9D01     		.2byte	0x19d
  507 00ba 4F000000 		.4byte	0x4f
  508 00be 05       		.uleb128 0x5
- 509 00bf 15010000 		.4byte	.LASF29
+ 509 00bf 5D010000 		.4byte	.LASF29
  510 00c3 58       		.byte	0x58
  511 00c4 03       		.byte	0x3
  512 00c5 13       		.byte	0x13
  513 00c6 7B010000 		.4byte	0x17b
  514 00ca 06       		.uleb128 0x6
- 515 00cb F7000000 		.4byte	.LASF18
+ 515 00cb 3F010000 		.4byte	.LASF18
  516 00cf 03       		.byte	0x3
  517 00d0 14       		.byte	0x14
  518 00d1 98000000 		.4byte	0x98
  519 00d5 00       		.byte	0
  520 00d6 06       		.uleb128 0x6
- 521 00d7 44010000 		.4byte	.LASF19
+ 521 00d7 8C010000 		.4byte	.LASF19
  522 00db 03       		.byte	0x3
  523 00dc 15       		.byte	0x15
  524 00dd 98000000 		.4byte	0x98
  525 00e1 04       		.byte	0x4
  526 00e2 06       		.uleb128 0x6
- 527 00e3 FC010000 		.4byte	.LASF20
+ 527 00e3 EC010000 		.4byte	.LASF20
  528 00e7 03       		.byte	0x3
  529 00e8 16       		.byte	0x16
  530 00e9 98000000 		.4byte	0x98
  531 00ed 08       		.byte	0x8
  532 00ee 06       		.uleb128 0x6
- 533 00ef 8E010000 		.4byte	.LASF21
+ 533 00ef D6010000 		.4byte	.LASF21
  534 00f3 03       		.byte	0x3
  535 00f4 17       		.byte	0x17
  536 00f5 98000000 		.4byte	0x98
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  547 010a 19       		.byte	0x19
  548 010b 98000000 		.4byte	0x98
  549 010f 14       		.byte	0x14
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 12
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 12
 
 
  550 0110 07       		.uleb128 0x7
@@ -686,13 +686,13 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  572 013a B2000000 		.4byte	0xb2
  573 013e 28       		.byte	0x28
  574 013f 06       		.uleb128 0x6
- 575 0140 64010000 		.4byte	.LASF25
+ 575 0140 AC010000 		.4byte	.LASF25
  576 0144 03       		.byte	0x3
  577 0145 1E       		.byte	0x1e
  578 0146 B2000000 		.4byte	0xb2
  579 014a 30       		.byte	0x30
  580 014b 06       		.uleb128 0x6
- 581 014c 28010000 		.4byte	.LASF26
+ 581 014c 70010000 		.4byte	.LASF26
  582 0150 03       		.byte	0x3
  583 0151 1F       		.byte	0x1f
  584 0152 B2000000 		.4byte	0xb2
@@ -717,8 +717,8 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  603 0179 50       		.byte	0x50
  604 017a 00       		.byte	0
  605 017b 08       		.uleb128 0x8
- 606 017c 15010000 		.4byte	.LASF29
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 13
+ 606 017c 5D010000 		.4byte	.LASF29
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 13
 
 
  607 0180 03       		.byte	0x3
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  661 01e3 667300   		.ascii	"fs\000"
  662 01e6 01       		.byte	0x1
  663 01e7 10       		.byte	0x10
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 14
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 14
 
 
  664 01e8 98000000 		.4byte	0x98
@@ -798,7 +798,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  678 01ff 04       		.byte	0x4
  679 0200 7B010000 		.4byte	0x17b
  680 0204 09       		.uleb128 0x9
- 681 0205 18020000 		.4byte	.LASF31
+ 681 0205 08020000 		.4byte	.LASF31
  682 0209 01       		.byte	0x1
  683 020a 22       		.byte	0x22
  684 020b 8C000000 		.4byte	0x8c
@@ -827,7 +827,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  707 0240 9C       		.byte	0x9c
  708 0241 9A020000 		.4byte	0x29a
  709 0245 0B       		.uleb128 0xb
- 710 0246 F7000000 		.4byte	.LASF18
+ 710 0246 3F010000 		.4byte	.LASF18
  711 024a 01       		.byte	0x1
  712 024b 2C       		.byte	0x2c
  713 024c 98000000 		.4byte	0x98
@@ -835,10 +835,10 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  715 0251 91       		.byte	0x91
  716 0252 64       		.sleb128 -28
  717 0253 0B       		.uleb128 0xb
- 718 0254 44010000 		.4byte	.LASF19
+ 718 0254 8C010000 		.4byte	.LASF19
  719 0258 01       		.byte	0x1
  720 0259 2C       		.byte	0x2c
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 15
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 15
 
 
  721 025a 98000000 		.4byte	0x98
@@ -846,7 +846,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  723 025f 91       		.byte	0x91
  724 0260 60       		.sleb128 -32
  725 0261 0B       		.uleb128 0xb
- 726 0262 8E010000 		.4byte	.LASF21
+ 726 0262 D6010000 		.4byte	.LASF21
  727 0266 01       		.byte	0x1
  728 0267 2C       		.byte	0x2c
  729 0268 98000000 		.4byte	0x98
@@ -862,7 +862,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  739 027b 91       		.byte	0x91
  740 027c 58       		.sleb128 -40
  741 027d 0E       		.uleb128 0xe
- 742 027e 75010000 		.4byte	.LASF32
+ 742 027e BD010000 		.4byte	.LASF32
  743 0282 01       		.byte	0x1
  744 0283 2E       		.byte	0x2e
  745 0284 98000000 		.4byte	0x98
@@ -870,7 +870,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  747 0289 91       		.byte	0x91
  748 028a 6C       		.sleb128 -20
  749 028b 0E       		.uleb128 0xe
- 750 028c 64010000 		.4byte	.LASF25
+ 750 028c AC010000 		.4byte	.LASF25
  751 0290 01       		.byte	0x1
  752 0291 2F       		.byte	0x2f
  753 0292 98000000 		.4byte	0x98
@@ -879,7 +879,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  756 0298 68       		.sleb128 -24
  757 0299 00       		.byte	0
  758 029a 0F       		.uleb128 0xf
- 759 029b 2D020000 		.4byte	.LASF36
+ 759 029b 1D020000 		.4byte	.LASF36
  760 029f 01       		.byte	0x1
  761 02a0 4C       		.byte	0x4c
  762 02a1 80000000 		.4byte	0x80
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  775 02bd 00       		.byte	0
  776 02be 00       		.byte	0
  777              		.section	.debug_abbrev,"",%progbits
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 16
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 16
 
 
  778              	.Ldebug_abbrev0:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  832 0035 00       		.byte	0
  833 0036 05       		.uleb128 0x5
  834 0037 13       		.uleb128 0x13
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 17
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 17
 
 
  835 0038 01       		.byte	0x1
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  889 006e 00       		.byte	0
  890 006f 00       		.byte	0
  891 0070 09       		.uleb128 0x9
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 18
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 18
 
 
  892 0071 2E       		.uleb128 0x2e
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  946 00a8 00       		.byte	0
  947 00a9 00       		.byte	0
  948 00aa 0C       		.uleb128 0xc
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 19
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 19
 
 
  949 00ab 0F       		.uleb128 0xf
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  1003 00e2 19       		.uleb128 0x19
  1004 00e3 03       		.uleb128 0x3
  1005 00e4 0E       		.uleb128 0xe
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 20
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 20
 
 
  1006 00e5 3A       		.uleb128 0x3a
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  1057      FB0E0D00 
  1057      01010101 
  1058              	.LASF24:
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 21
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 21
 
 
  1059 0000 6572726F 		.ascii	"error_p\000"
@@ -1250,120 +1250,120 @@ ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 1
  1078              	.LASF15:
  1079 00e3 666C6F61 		.ascii	"float\000"
  1079      7400
- 1080              	.LASF1:
- 1081 00e9 756E7369 		.ascii	"unsigned char\000"
- 1081      676E6564 
- 1081      20636861 
- 1081      7200
- 1082              	.LASF18:
- 1083 00f7 696E7075 		.ascii	"input\000"
- 1083      7400
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 22
+ 1080              	.LASF35:
+ 1081 00e9 433A5C55 		.ascii	"C:\\Users\\pajoh\\projects\\StepperTorqueControl\\S"
+ 1081      73657273 
+ 1081      5C70616A 
+ 1081      6F685C70 
+ 1081      726F6A65 
+ 1082 0117 74657070 		.ascii	"tepperTorqueControl.cydsn\000"
+ 1082      6572546F 
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 22
 
 
- 1084              	.LASF5:
- 1085 00fd 6C6F6E67 		.ascii	"long unsigned int\000"
- 1085      20756E73 
- 1085      69676E65 
- 1085      6420696E 
- 1085      7400
- 1086              	.LASF14:
- 1087 010f 696E7433 		.ascii	"int32\000"
- 1087      3200
- 1088              	.LASF29:
- 1089 0115 7069645F 		.ascii	"pid_ts\000"
- 1089      747300
- 1090              	.LASF16:
- 1091 011c 646F7562 		.ascii	"double\000"
- 1091      6C6500
- 1092              	.LASF13:
- 1093 0123 696E7438 		.ascii	"int8\000"
- 1093      00
- 1094              	.LASF26:
- 1095 0128 6572726F 		.ascii	"error_d\000"
- 1095      725F6400 
- 1096              	.LASF12:
- 1097 0130 75696E74 		.ascii	"uint32\000"
- 1097      333200
- 1098              	.LASF8:
- 1099 0137 756E7369 		.ascii	"unsigned int\000"
- 1099      676E6564 
- 1099      20696E74 
- 1099      00
- 1100              	.LASF19:
- 1101 0144 73657470 		.ascii	"setpoint\000"
- 1101      6F696E74 
- 1101      00
- 1102              	.LASF7:
- 1103 014d 6C6F6E67 		.ascii	"long long unsigned int\000"
- 1103      206C6F6E 
- 1103      6720756E 
- 1103      7369676E 
- 1103      65642069 
- 1104              	.LASF25:
- 1105 0164 6572726F 		.ascii	"error_i\000"
- 1105      725F6900 
- 1106              	.LASF10:
- 1107 016c 73697A65 		.ascii	"sizetype\000"
- 1107      74797065 
- 1107      00
- 1108              	.LASF32:
- 1109 0175 6572726F 		.ascii	"error\000"
- 1109      7200
- 1110              	.LASF6:
- 1111 017b 6C6F6E67 		.ascii	"long long int\000"
- 1111      206C6F6E 
- 1111      6720696E 
- 1111      7400
- 1112              	.LASF11:
- 1113 0189 63686172 		.ascii	"char\000"
- 1113      00
-ARM GAS  C:\Users\pajoh\AppData\Local\Temp\ccOLwa0b.s 			page 23
+ 1082      72717565 
+ 1082      436F6E74 
+ 1082      726F6C2E 
+ 1083              	.LASF1:
+ 1084 0131 756E7369 		.ascii	"unsigned char\000"
+ 1084      676E6564 
+ 1084      20636861 
+ 1084      7200
+ 1085              	.LASF18:
+ 1086 013f 696E7075 		.ascii	"input\000"
+ 1086      7400
+ 1087              	.LASF5:
+ 1088 0145 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1088      20756E73 
+ 1088      69676E65 
+ 1088      6420696E 
+ 1088      7400
+ 1089              	.LASF14:
+ 1090 0157 696E7433 		.ascii	"int32\000"
+ 1090      3200
+ 1091              	.LASF29:
+ 1092 015d 7069645F 		.ascii	"pid_ts\000"
+ 1092      747300
+ 1093              	.LASF16:
+ 1094 0164 646F7562 		.ascii	"double\000"
+ 1094      6C6500
+ 1095              	.LASF13:
+ 1096 016b 696E7438 		.ascii	"int8\000"
+ 1096      00
+ 1097              	.LASF26:
+ 1098 0170 6572726F 		.ascii	"error_d\000"
+ 1098      725F6400 
+ 1099              	.LASF12:
+ 1100 0178 75696E74 		.ascii	"uint32\000"
+ 1100      333200
+ 1101              	.LASF8:
+ 1102 017f 756E7369 		.ascii	"unsigned int\000"
+ 1102      676E6564 
+ 1102      20696E74 
+ 1102      00
+ 1103              	.LASF19:
+ 1104 018c 73657470 		.ascii	"setpoint\000"
+ 1104      6F696E74 
+ 1104      00
+ 1105              	.LASF7:
+ 1106 0195 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1106      206C6F6E 
+ 1106      6720756E 
+ 1106      7369676E 
+ 1106      65642069 
+ 1107              	.LASF25:
+ 1108 01ac 6572726F 		.ascii	"error_i\000"
+ 1108      725F6900 
+ 1109              	.LASF10:
+ 1110 01b4 73697A65 		.ascii	"sizetype\000"
+ 1110      74797065 
+ 1110      00
+ARM GAS  C:\Users\pajoh\AppData\Local\Temp\cc5KfkER.s 			page 23
 
 
- 1114              	.LASF21:
- 1115 018e 66656564 		.ascii	"feedforward\000"
- 1115      666F7277 
- 1115      61726400 
- 1116              	.LASF2:
- 1117 019a 73686F72 		.ascii	"short int\000"
- 1117      7420696E 
- 1117      7400
- 1118              	.LASF35:
- 1119 01a4 433A5C55 		.ascii	"C:\\Users\\pajoh\\Desktop\\closed_loop_printer\\cod"
- 1119      73657273 
- 1119      5C70616A 
- 1119      6F685C44 
- 1119      65736B74 
- 1120 01d2 655C416E 		.ascii	"e\\Angle_Sensor\\StepperTorqueControl.cydsn\000"
- 1120      676C655F 
- 1120      53656E73 
- 1120      6F725C53 
- 1120      74657070 
+ 1111              	.LASF32:
+ 1112 01bd 6572726F 		.ascii	"error\000"
+ 1112      7200
+ 1113              	.LASF6:
+ 1114 01c3 6C6F6E67 		.ascii	"long long int\000"
+ 1114      206C6F6E 
+ 1114      6720696E 
+ 1114      7400
+ 1115              	.LASF11:
+ 1116 01d1 63686172 		.ascii	"char\000"
+ 1116      00
+ 1117              	.LASF21:
+ 1118 01d6 66656564 		.ascii	"feedforward\000"
+ 1118      666F7277 
+ 1118      61726400 
+ 1119              	.LASF2:
+ 1120 01e2 73686F72 		.ascii	"short int\000"
+ 1120      7420696E 
+ 1120      7400
  1121              	.LASF20:
- 1122 01fc 6F757470 		.ascii	"output\000"
+ 1122 01ec 6F757470 		.ascii	"output\000"
  1122      757400
  1123              	.LASF4:
- 1124 0203 6C6F6E67 		.ascii	"long int\000"
+ 1124 01f3 6C6F6E67 		.ascii	"long int\000"
  1124      20696E74 
  1124      00
  1125              	.LASF9:
- 1126 020c 6C6F6E67 		.ascii	"long double\000"
+ 1126 01fc 6C6F6E67 		.ascii	"long double\000"
  1126      20646F75 
  1126      626C6500 
  1127              	.LASF31:
- 1128 0218 50494452 		.ascii	"PIDReset\000"
+ 1128 0208 50494452 		.ascii	"PIDReset\000"
  1128      65736574 
  1128      00
  1129              	.LASF0:
- 1130 0221 7369676E 		.ascii	"signed char\000"
+ 1130 0211 7369676E 		.ascii	"signed char\000"
  1130      65642063 
  1130      68617200 
  1131              	.LASF36:
- 1132 022d 50494453 		.ascii	"PIDStatus\000"
+ 1132 021d 50494453 		.ascii	"PIDStatus\000"
  1132      74617475 
  1132      7300
  1133              	.LASF17:
- 1134 0237 696E7436 		.ascii	"int64\000"
+ 1134 0227 696E7436 		.ascii	"int64\000"
  1134      3400
  1135              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran
