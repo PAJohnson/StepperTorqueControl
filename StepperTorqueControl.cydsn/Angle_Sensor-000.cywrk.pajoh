@@ -303,7 +303,23 @@
 </userData>
 </CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
 <Unloaded />
-<OpenDocs />
+<OpenDocs>
+<name v=".\TopDesign\TopDesign.cysch" />
+<name v=".\main.c" />
+<name v=".\lis3dh.h" />
+<name v=".\lis3dh.c" />
+<name v=".\Generated_Source\PSoC5\CyLib.h" />
+<name v=".\macros.h" />
+<name v=".\Generated_Source\PSoC5\tick.c" />
+<name v=".\pid.c" />
+</OpenDocs>
+<OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
+
+  Actipro Docking/MDI for WinForms
+  Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
+  http://www.actiprosoftware.com
+
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1174, 610" SelectedTabbedMdiWindow="4df5a1e3-2b35-483d-b2a8-959fcfcf8c80"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="a7a995c6-37f5-4f83-b964-4e27fa05cfb7" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\TopDesign\TopDesign.cysch" Guid="a5ca1c72-090b-4fe7-92fb-3394082f6c8f" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\main.c" Guid="3d40840a-ab08-481a-ba8c-673883102640" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\lis3dh.h" Guid="ad07369f-bb28-49eb-8d57-8208150301b0" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\lis3dh.c" Guid="d0aef19f-709d-4bea-bb7b-a889b311a3d0" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\Generated_Source\PSoC5\CyLib.h" Guid="73e9f64f-cf69-4c40-abbd-ba655d70833a" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\macros.h" Guid="eb68f96a-f3e0-4d8b-9296-d4018f657623" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\Generated_Source\PSoC5\tick.c" Guid="4df5a1e3-2b35-483d-b2a8-959fcfcf8c80" /><DocumentWindow Key="C:\Users\pajoh\projects\StepperTorqueControl\StepperTorqueControl.cydsn\pid.c" Guid="b9fa200b-d91a-4e23-9ed2-d5ea7a20567f" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
 <config v="" />
 <AutoUpdate v="true" />
 </CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
